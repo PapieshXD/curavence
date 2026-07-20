@@ -1,0 +1,17 @@
+<app-summary-strip caption="Zakres udostępniony" [items]="summary()" />
+<div class="therapy-layout"><aside class="work-panel schedule-panel"><header class="panel-header"><div><h2>Pacjenci</h2><p>Dostępni na podstawie access_grants</p></div></header><div class="session-list">
+  @for (patient of workspace.data()?.patients ?? []; track patient.id) { <button class="session-row" [class.active]="selected()?.id === patient.id" type="button" (click)="selectedId.set(patient.id)">
+    <span class="avatar tiny">{{ initials(patient.firstName, patient.lastName) }}</span><span><strong>{{ patient.firstName }} {{ patient.lastName }}</strong><small>{{ patient.studyCount }} badań</small></span></button>
+  } @empty { <div class="empty-state compact"><p>Żaden pacjent nie udostępnił danych do terapii.</p></div> }
+</div></aside><section class="work-panel therapy-detail">
+  @if (selected(); as patient) { <header class="panel-header patient-panel-header"><div><span class="subtle-label">Pacjent</span><h2>{{ patient.firstName }} {{ patient.lastName }}</h2></div></header>
+    <div class="therapy-detail-grid"><div class="therapy-main"><section class="detail-section"><h3>Badania w zakresie</h3><div class="metric-list">
+      @for (study of studies(); track study.id) { <div class="metric-row"><span>{{ study.title }}</span><strong>{{ study.typeName }}</strong><small>{{ date(study.performedAt) }}</small></div> }
+      @empty { <p>Brak badań dostępnych w tym zakresie.</p> }
+    </div></section></div><aside class="therapy-side"><section class="scope-panel"><h3>Aktywne zakresy</h3>
+      @for (grant of grants(); track grant.id) { <app-status-text [tone]="grant.status === 'ACTIVE' ? 'success' : 'neutral'">{{ grant.scope | enumLabel }}</app-status-text><p>{{ grant.purpose || 'Bez dodatkowego celu' }} · do {{ date(grant.expiresAt) }}</p> }
+      @empty { <p>Brak zakresu dla tego pacjenta.</p> }
+      <app-status-text tone="neutral" icon="lock">Dane ograniczone</app-status-text><p>Backend odrzuca dostęp do badań poza aktywnym zakresem.</p>
+    </section></aside></div>
+  } @else { <div class="empty-state"><h2>Brak danych</h2><p>Pacjent musi najpierw utworzyć udostępnienie.</p></div> }
+</section></div>

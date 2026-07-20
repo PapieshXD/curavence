@@ -1,0 +1,32 @@
+<div class="patient-home-grid">
+  <div class="patient-left-column">
+    <section class="next-step-panel"><div class="next-step-copy"><span class="subtle-label">Profil pacjenta</span>
+      @if (workspace.data()?.profile; as profile) { <h2>{{ profile.firstName }} {{ profile.lastName }}</h2><div class="meta-line"><span>{{ profile.email }}</span><span>{{ profile.phone || 'Brak telefonu' }}</span></div> }
+      @else { <h2>Brak profilu pacjenta</h2> }
+    </div><div class="next-step-actions"><button class="primary-button" type="button" (click)="openView('documents')">Dodaj dokument</button></div></section>
+    <section class="work-panel timeline-preview"><header class="panel-header"><div><h2>Ostatnie badania</h2><p>Dane pobrane z tabeli studies</p></div>
+      <button class="text-button" type="button" (click)="openView('timeline')">Pełna historia <app-icon name="arrow" [size]="15" /></button></header>
+      <div class="timeline-list">
+        @for (study of (workspace.data()?.studies ?? []).slice(0, 4); track study.id) {
+          <article class="timeline-row"><div class="timeline-marker" [class.success]="study.ingestionStatus === 'READY'"></div><time><strong>{{ date(study.performedAt) }}</strong></time>
+            <div><h3>{{ study.title }}</h3><p>{{ study.typeName }} · {{ study.sourceName || 'Źródło niepodane' }}</p>
+              <button class="text-button" type="button" (click)="download(study.primaryAssetId, study.originalFilename)">{{ study.primaryAssetId ? 'Pobierz plik' : 'Brak pliku' }}</button></div></article>
+        } @empty { <div class="empty-state compact"><p>Nie ma jeszcze żadnych badań.</p></div> }
+      </div>
+    </section>
+    <section class="work-panel document-preview"><header class="panel-header"><div><h2>Opisy kliniczne</h2><p>Recenzje lekarzy bez modyfikowania oryginalnego pliku</p></div></header>
+      <div class="compact-table">
+        @for (review of workspace.data()?.reviews ?? []; track review.id) {
+          <div class="compact-row"><span class="document-symbol"><app-icon name="document" [size]="15" /></span><strong>{{ review.studyTitle }}</strong><span>{{ review.reviewerName }}</span><span>{{ review.status | enumLabel }}</span></div>
+        } @empty { <div class="empty-state compact"><p>Brak opisów klinicznych.</p></div> }
+      </div>
+    </section>
+  </div>
+  <aside class="patient-right-column"><section class="work-panel sharing-preview"><header class="panel-header"><div><h2>Udostępnienia</h2><p>Aktywne zakresy dostępu do Twoich danych</p></div></header>
+    <div class="permission-list">
+      @for (grant of workspace.data()?.grants ?? []; track grant.id) {
+        <div class="permission-row"><span class="avatar tiny">{{ initials(grant.recipientName) }}</span><span><strong>{{ grant.recipientName }}</strong><small>{{ grant.recipientRole | enumLabel }}</small></span>
+          <app-status-text [tone]="grant.status === 'ACTIVE' ? 'success' : 'neutral'">{{ grant.scope | enumLabel }}</app-status-text></div>
+      } @empty { <div class="empty-state compact"><p>Nie udostępniono jeszcze danych.</p></div> }
+    </div><button class="secondary-button full-width" type="button" (click)="openView('sharing')">Zarządzaj dostępem</button></section></aside>
+</div>

@@ -1,0 +1,11 @@
+<section class="page-intro"><div><h2>Oś zdrowia</h2><p>Chronologiczna lista badań przechowywanych w PostgreSQL.</p></div>
+  <div class="segmented-control"><button [class.active]="filter() === 'all'" type="button" (click)="filter.set('all')">Wszystko</button>
+    @for (type of workspace.data()?.studyTypes ?? []; track type.code) { <button [class.active]="filter() === type.code" type="button" (click)="filter.set(type.code)">{{ type.name }}</button> }
+  </div></section>
+<section class="work-panel full-timeline">
+  @for (study of studies(); track study.id) {
+    <article class="history-event"><div class="history-icon"><app-icon name="document" [size]="17" /></div><time>{{ date(study.performedAt) }}</time>
+      <div><h4>{{ study.title }}</h4><span>{{ study.typeName }} · {{ study.sourceName || 'Źródło niepodane' }}</span><p>{{ study.description || 'Brak dodatkowego opisu.' }}</p></div>
+      <span>{{ study.clinicalStatus | enumLabel }}</span></article>
+  } @empty { <div class="empty-state"><p>Brak badań dla wybranego filtra.</p></div> }
+</section>

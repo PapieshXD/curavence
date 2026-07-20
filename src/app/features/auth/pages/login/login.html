@@ -1,0 +1,28 @@
+<main class="login-page">
+  <section class="login-card">
+    <div class="login-brand">
+      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div><strong>Med-Node</strong><small>Bezpieczna dokumentacja medyczna</small></div>
+    </div>
+    <div class="login-heading">
+      <span>Środowisko lokalne</span>
+      <h1>Zaloguj się</h1>
+      <p>Użyj jednego z kont opisanych w pliku DANE_LOGOWANIA_TESTOWE.txt.</p>
+    </div>
+    <form (ngSubmit)="submit()">
+      <label>Login
+        <input type="email" name="username" autocomplete="username" [ngModel]="username()"
+          (ngModelChange)="username.set($event)" placeholder="użytkownik@med-node.test" />
+      </label>
+      <label>Hasło
+        <input type="password" name="password" autocomplete="current-password" [ngModel]="password()"
+          (ngModelChange)="password.set($event)" />
+      </label>
+      @if (error()) { <p class="login-error" role="alert">{{ error() }}</p> }
+      <button class="primary-button" type="submit" [disabled]="submitting()">
+        {{ submitting() ? 'Logowanie…' : 'Zaloguj się' }}
+      </button>
+    </form>
+    <p class="login-footnote">To logowanie korzysta z Keycloak; aplikacja nie przechowuje hasła.</p>
+  </section>
+</main>

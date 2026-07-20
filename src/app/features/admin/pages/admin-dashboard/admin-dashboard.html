@@ -1,0 +1,23 @@
+<app-summary-strip caption="Dane z PostgreSQL" [items]="summary()" />
+<section class="work-panel">
+  <header class="panel-header"><div><h2>Ostatnia aktywność</h2><p>Zdarzenia zapisane w tabeli audit_events</p></div>
+    <button class="text-button" type="button" (click)="showAudit()">Zobacz dziennik <app-icon name="arrow" [size]="15" /></button></header>
+  <div class="table-wrap"><table><thead><tr><th>Data</th><th>Użytkownik</th><th>Operacja</th><th>Zasób</th><th>Status</th></tr></thead><tbody>
+    @for (event of events(); track event.id) {
+      <tr><td class="muted-cell">{{ time(event.createdAt) }}</td><td><span class="table-person"><span class="avatar tiny">{{ initials(event.actorName) }}</span>{{ event.actorName }}</span></td>
+        <td>{{ action(event.action) }}</td><td class="muted-cell mono">{{ event.resourceType }}</td>
+        <td><app-status-text [tone]="tone(event)" [icon]="event.success ? 'check' : 'lock'">{{ event.success ? 'Powodzenie' : 'Odmowa' }}</app-status-text></td></tr>
+    } @empty { <tr><td colspan="5" class="empty-row">Brak zdarzeń w bazie.</td></tr> }
+  </tbody></table></div>
+</section>
+<section class="work-panel requests-panel">
+  <header class="panel-header"><div><h2>Udostępnienia</h2><p>Zakresy dostępu zapisane w PostgreSQL</p></div></header>
+  <div class="request-list">
+    @for (grant of workspace.data()?.grants ?? []; track grant.id) {
+      <div class="request-row"><span class="avatar tiny">{{ initials(grant.recipientName) }}</span>
+        <span class="request-main"><strong>{{ grant.recipientName }}</strong><small>{{ grant.patientName }} · {{ grant.scope | enumLabel }}</small></span>
+        <span class="request-meta"><strong>{{ grant.expiresAt ? time(grant.expiresAt) : 'Bezterminowo' }}</strong><small>{{ grant.status | enumLabel }}</small></span>
+        <app-status-text [tone]="grant.status === 'ACTIVE' ? 'success' : 'neutral'">{{ grant.status | enumLabel }}</app-status-text></div>
+    } @empty { <div class="empty-state compact"><p>Brak udostępnień.</p></div> }
+  </div>
+</section>

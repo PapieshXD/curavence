@@ -1,0 +1,17 @@
+<app-summary-strip caption="Aktualny zakres dostępu" [items]="summary()" />
+<div class="doctor-workspace"><div class="doctor-left-column"><section class="work-panel queue-panel"><header class="panel-header"><div><h2>Badania do obsługi</h2><p>Tylko badania objęte aktywnym udostępnieniem</p></div></header><div class="queue-list">
+  @for (study of studies(); track study.id) {
+    <button class="clinical-queue-row" [class.active]="selected().id === study.id" type="button" (click)="selectedId.set(study.id)">
+      <span class="table-person"><span class="avatar tiny">{{ initials(study.patientName) }}</span><strong>{{ study.patientName }}</strong></span>
+      <span class="queue-reason"><strong>{{ study.title }}</strong><small>{{ study.typeName }}</small></span>
+      <app-status-text [tone]="clinicalTone(study.clinicalStatus)">{{ study.clinicalStatus | enumLabel }}</app-status-text><time>{{ date(study.performedAt) }}</time></button>
+  } @empty { <div class="empty-state compact"><p>Brak udostępnionych badań.</p></div> }
+</div></section></div>
+<section class="work-panel patient-context">
+  @if (selected(); as study) { <header class="panel-header patient-context-header"><div><span class="subtle-label">Wybrane badanie</span><h2>{{ study.title }}</h2></div><button class="text-button" type="button" (click)="openPatient()">Karta pacjenta</button></header>
+    <section class="context-section"><h3>Dane badania</h3><dl class="clinical-definition-list"><div><dt>Pacjent</dt><dd>{{ study.patientName }}</dd></div><div><dt>Typ</dt><dd>{{ study.typeName }}</dd></div><div><dt>Data wykonania</dt><dd>{{ date(study.performedAt) }}</dd></div><div><dt>Status techniczny</dt><dd>{{ study.ingestionStatus | enumLabel }}</dd></div><div><dt>Opis źródłowy</dt><dd>{{ study.description || 'Brak opisu' }}</dd></div></dl></section>
+    <section class="context-section"><h3>Nowy opis kliniczny</h3><label class="field-label">Podsumowanie<textarea rows="4" [ngModel]="summaryText()" (ngModelChange)="summaryText.set($event)"></textarea></label>
+      <label class="field-label">Wniosek<textarea rows="3" [ngModel]="conclusion()" (ngModelChange)="conclusion.set($event)"></textarea></label></section>
+    <footer class="action-bar sticky-actions"><button class="secondary-button" type="button" [disabled]="saving()" (click)="saveReview(false)">Zapisz szkic</button><button class="primary-button" type="button" [disabled]="saving()" (click)="saveReview(true)"><app-icon name="check" [size]="16" />Podpisz opis</button></footer>
+  } @else { <div class="empty-state"><h2>Brak badania</h2><p>Po udostępnieniu przez pacjenta badanie pojawi się w tym miejscu.</p></div> }
+</section></div>

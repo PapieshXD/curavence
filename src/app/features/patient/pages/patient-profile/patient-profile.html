@@ -1,0 +1,12 @@
+<section class="page-intro"><div><h2>Moje dane</h2><p>Profil pacjenta odczytywany bezpośrednio z bazy.</p></div>
+  @if (workspace.data()?.profile) { <button class="secondary-button" type="button" (click)="toggleEdit()"><app-icon name="edit" [size]="16" />{{ editing() ? 'Anuluj edycję' : 'Edytuj telefon' }}</button> }
+</section>
+@if (workspace.data()?.profile; as profile) {
+  <div class="profile-grid"><section class="work-panel profile-panel"><header class="profile-header"><span class="avatar profile-avatar">{{ profile.firstName[0] }}{{ profile.lastName[0] }}</span>
+    <div><h2>{{ profile.firstName }} {{ profile.lastName }}</h2><p>Pacjent · {{ profile.patientId }}</p></div></header>
+    <dl class="definition-list"><div><dt>Data urodzenia</dt><dd>{{ date(profile.dateOfBirth) }}</dd></div><div><dt>Płeć biologiczna</dt><dd>{{ (profile.biologicalSex | enumLabel) || 'Nie podano' }}</dd></div><div><dt>E-mail</dt><dd>{{ profile.email }}</dd></div></dl></section>
+    <section class="work-panel settings-panel"><header class="panel-header"><div><h2>Kontakt</h2><p>Dane przechowywane w tabeli patients</p></div></header><div class="form-body">
+      <label>Numer telefonu<input [disabled]="!editing()" [value]="editing() ? phone() : (profile.phone || '')" (input)="phone.set($any($event.target).value)" /></label>
+      @if (editing()) { <button class="primary-button" type="button" [disabled]="saving()" (click)="save()">{{ saving() ? 'Zapisywanie…' : 'Zapisz zmiany' }}</button> }
+    </div></section></div>
+} @else { <section class="work-panel empty-state"><h2>Brak profilu pacjenta</h2><p>Ten widok jest dostępny po wybraniu roli pacjenta.</p></section> }

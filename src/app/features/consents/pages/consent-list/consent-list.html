@@ -1,0 +1,23 @@
+<section class="page-intro"><div><h2>Udostępnienia</h2><p>Każdy zakres jest weryfikowany przez backend i rejestrowany w audycie.</p></div>
+  @if (canManage()) { <button class="primary-button" type="button" (click)="createOpen.set(true)"><app-icon name="plus" [size]="16" />Dodaj osobę</button> }
+</section>
+<section class="control-note"><app-icon name="shield" [size]="21" /><div><strong>Dostęp zgodny z zakresem</strong><p>Personel widzi tylko pacjentów i badania objęte aktywnym udostępnieniem.</p></div></section>
+<section class="work-panel sharing-table"><header class="panel-header"><div><h2>Udostępnienia w bazie</h2><p>{{ (workspace.data()?.grants ?? []).length }} rekordów</p></div></header><div class="sharing-list">
+  @for (grant of workspace.data()?.grants ?? []; track grant.id) {
+    <article class="sharing-row"><span class="avatar tiny">{{ initials(grant.recipientName) }}</span><div><strong>{{ grant.recipientName }}</strong><small>{{ grant.recipientEmail }}</small></div>
+      <div class="scope-copy"><span>{{ grant.scope | enumLabel }}</span><small>Pacjent: {{ grant.patientName }}</small></div>
+      <app-status-text [tone]="grant.status === 'ACTIVE' ? 'success' : 'neutral'">{{ date(grant.expiresAt) }}</app-status-text>
+      @if (canManage() && grant.status === 'ACTIVE') { <button class="menu-text-button" type="button" (click)="revoke(grant.id)">Cofnij dostęp</button> }
+    </article>
+  } @empty { <div class="empty-state compact"><p>Brak udostępnień.</p></div> }
+</div></section>
+@if (createOpen()) {
+  <div class="modal-backdrop" role="presentation" (click)="createOpen.set(false)"><section class="modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+    <header><div><h2>Nowe udostępnienie</h2><p>Wybierz istniejącego użytkownika personelu</p></div><button class="icon-button" type="button" (click)="createOpen.set(false)"><app-icon name="close" [size]="18" /></button></header>
+    <div class="modal-form"><label>Odbiorca<select [ngModel]="recipient()" (ngModelChange)="recipient.set($event)"><option value="">Wybierz odbiorcę</option>
+      @for (person of workspace.data()?.recipients ?? []; track person.id) { <option [value]="person.email">{{ person.name }} · {{ person.role | enumLabel }}</option> }</select></label>
+      <label>Zakres<select [ngModel]="scope()" (ngModelChange)="scope.set($event)"><option value="FULL_STUDY">Pełne badania</option><option value="LAB_RESULTS">Wyniki laboratoryjne</option><option value="DIAGNOSTIC_REPORT">Raport diagnostyczny</option><option value="REHABILITATION_SUMMARY">Podsumowanie rehabilitacji</option><option value="TRAINING_RESTRICTIONS">Ograniczenia treningowe</option></select></label>
+      <label>Ważność<select [ngModel]="validityDays()" (ngModelChange)="validityDays.set(+$event)"><option [value]="30">30 dni</option><option [value]="90">90 dni</option><option [value]="365">Rok</option></select></label>
+    </div><footer><button class="secondary-button" type="button" (click)="createOpen.set(false)">Anuluj</button><button class="primary-button" type="button" [disabled]="saving()" (click)="create()">{{ saving() ? 'Zapisywanie…' : 'Udostępnij' }}</button></footer>
+  </section></div>
+}
