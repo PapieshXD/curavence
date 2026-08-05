@@ -1,0 +1,23 @@
+:host { display: block; }
+.details-intro { align-items: flex-end; }
+.back-link { display: inline-flex; gap: 7px; align-items: center; margin: 0 0 10px; padding: 0; border: 0; background: transparent; color: var(--blue); font: 600 var(--text-sm) var(--font-family-ui); cursor: pointer; }
+.details-layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+.series-panel { overflow: hidden; }
+.panel-header h2 { margin: 0 0 3px; }
+.panel-header p { margin: 0; color: var(--muted); font-size: var(--text-sm); }
+td small { display: block; max-width: 420px; margin-top: 4px; overflow: hidden; color: var(--faint); font: var(--text-2xs) var(--font-family-mono); text-overflow: ellipsis; white-space: nowrap; }
+.technical-panel { padding: 19px; }
+.technical-panel header { display: flex; align-items: center; gap: 11px; padding-bottom: 17px; border-bottom: 1px solid var(--border-light); }
+.technical-panel h2 { margin: 0 0 5px; font-size: var(--text-section); }
+.study-symbol { display: grid; place-items: center; width: 42px; height: 42px; border-radius: var(--radius-md); background: var(--blue-soft); color: var(--blue); }
+.technical-panel dl { margin: 0; }
+.technical-panel dl div { display: grid; grid-template-columns: 105px minmax(0, 1fr); gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--border-light); }
+.technical-panel dt { color: var(--muted); font-size: var(--text-xs); }
+.technical-panel dd { margin: 0; color: var(--ink); font-size: var(--text-sm); font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+.technical-panel .uid-row { grid-template-columns: 1fr; }
+.technical-panel .uid-row dd { font: var(--text-2xs) var(--font-family-mono); text-align: left; }
+.details-state { min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--muted); }
+.details-state div { display: flex; gap: 10px; }
+.error-state { color: var(--red); }
+@media (max-width: 940px) { .details-layout { grid-template-columns: 1fr; } }
+@media (max-width: 680px) { .series-panel .table-wrap { overflow-x: auto; } .series-panel table { min-width: 620px; } }

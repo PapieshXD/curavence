@@ -1,0 +1,100 @@
+<section class="page-intro upload-intro">
+  <div>
+    <button class="back-link" type="button" (click)="back()">
+      <span aria-hidden="true">←</span> Lista badań obrazowych
+    </button>
+    <h2>Dodaj badanie MR lub CT</h2>
+    <p>Prześlij archiwum ZIP albo komplet plików DICOM CT/MR. NIfTI pozostaje dostępne dla MRI.</p>
+  </div>
+</section>
+
+<div class="upload-layout">
+  <section class="work-panel upload-form">
+    <header class="panel-header"><div><h2>Dane badania</h2><p>Pola oznaczone gwiazdką są wymagane.</p></div></header>
+    <div class="form-body">
+      <label class="field-label">
+        <span>Nazwa badania *</span>
+        <input
+          type="text"
+          [ngModel]="description()"
+          (ngModelChange)="description.set($event)"
+          placeholder="np. CT jamy brzusznej"
+          [disabled]="submitting()"
+        />
+      </label>
+      <label class="field-label date-field">
+        <span>Data badania</span>
+        <input
+          type="date"
+          [ngModel]="performedAt()"
+          (ngModelChange)="performedAt.set($event)"
+          [disabled]="submitting()"
+        />
+      </label>
+
+      <label
+        class="drop-zone"
+        [class.drag-active]="dragActive()"
+        [class.has-files]="files().length > 0"
+        (drop)="drop($event)"
+        (dragover)="dragOver($event)"
+        (dragleave)="dragActive.set(false)"
+      >
+        <input
+          type="file"
+          accept=".nii,.nii.gz,.zip,.dcm,application/gzip,application/x-nifti,application/zip,application/dicom"
+          multiple
+          (change)="chooseFiles($event)"
+          [disabled]="submitting()"
+        />
+        <span class="upload-symbol"><app-icon name="scan" [size]="24" /></span>
+        <strong>{{ files().length ? 'Zmień wybrane pliki' : 'Wybierz NIfTI, ZIP lub DICOM' }}</strong>
+        <p>Możesz też przeciągnąć pliki w to miejsce.</p>
+      </label>
+
+      @if (files().length) {
+        <div class="file-list" aria-label="Wybrane pliki">
+          @for (file of files(); track file.name + file.size; let index = $index) {
+            <div class="file-row">
+              <app-icon name="document" [size]="16" />
+              <span><strong>{{ file.name }}</strong><small>{{ fileSize(file.size) }}</small></span>
+              <button class="icon-button" type="button" aria-label="Usuń plik" (click)="remove(index)" [disabled]="submitting()">
+                <app-icon name="close" [size]="15" />
+              </button>
+            </div>
+          }
+        </div>
+      }
+
+      @if (submitting() || status() === 'AVAILABLE' || status() === 'FAILED') {
+        <div class="import-progress" [class.failed]="status() === 'FAILED'" [class.complete]="status() === 'AVAILABLE'">
+          <div><strong>{{ statusLabel() }}</strong><span>{{ progress() }}%</span></div>
+          <progress max="100" [value]="progress()">{{ progress() }}%</progress>
+          @if (status() === 'AVAILABLE') { <p>Za chwilę wrócisz do listy badań.</p> }
+        </div>
+      }
+
+      @if (error()) {
+        <div class="form-error" role="alert"><app-icon name="info" [size]="17" />{{ error() }}</div>
+      }
+    </div>
+    <footer class="form-actions">
+      <button class="secondary-button" type="button" (click)="back()" [disabled]="submitting()">Anuluj</button>
+      <button class="primary-button" type="button" (click)="upload()" [disabled]="submitting() || !files().length">
+        {{ submitting() ? 'Przetwarzanie…' : 'Zapisz badanie' }}
+      </button>
+    </footer>
+  </section>
+
+  <aside class="work-panel upload-guidance">
+    <h2>Wymagania plików</h2>
+    <ul>
+      <li><app-icon name="check" [size]="15" /><span>NIfTI może mieć format <strong>.nii</strong> lub skompresowany <strong>.nii.gz</strong>.</span></li>
+      <li><app-icon name="check" [size]="15" /><span>Jeden plik NIfTI tworzy badanie; dane 4D zostaną rozdzielone na serie.</span></li>
+      <li><app-icon name="check" [size]="15" /><span>Jedno badanie może zawierać modalność <strong>MR albo CT</strong>.</span></li>
+      <li><app-icon name="check" [size]="15" /><span>Wszystkie serie muszą mieć ten sam StudyInstanceUID.</span></li>
+      <li><app-icon name="check" [size]="15" /><span>ZIP może zawierać foldery, ale tylko jedno badanie.</span></li>
+    </ul>
+    <p>DICOM trafi do skonfigurowanego magazynu Orthanc lub Google Healthcare, a geometria, status i audyt do PostgreSQL. NIfTI jest konwertowane do pochodnej serii MR.</p>
+  </aside>
+</div>

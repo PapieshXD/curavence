@@ -10,14 +10,14 @@
     <nav class="primary-nav" aria-label="Główna nawigacja">
       <span class="nav-heading">Nawigacja</span>
       @for (item of workspace.config().navigation; track item.id) {
-        <button class="nav-item" [class.active]="workspace.activeView() === item.id" type="button"
-          (click)="workspace.selectView(item.id)">
+        <button class="nav-item" [class.active]="isNavigationActive(item.id)" type="button"
+          (click)="selectNavigation(item.id)">
           <app-icon [name]="item.icon" [size]="17" /><span>{{ item.label }}</span>
         </button>
       }
     </nav>
     <div class="sidebar-bottom">
-      <div class="privacy-note"><app-icon name="lock" [size]="15" /><span>Pliki są w MinIO, a metadane i audyt w PostgreSQL.</span></div>
+      <div class="privacy-note"><app-icon name="lock" [size]="15" /><span>Dokumenty są w MinIO, DICOM w Orthanc, a metadane i audyt w PostgreSQL.</span></div>
       <button class="sidebar-user" type="button" (click)="logout()" title="Wyloguj">
         <span class="avatar small">{{ workspace.config().shortLabel }}</span>
         <span><strong>{{ workspace.config().userName }}</strong><small>{{ workspace.config().label }}</small></span>
@@ -57,7 +57,15 @@
         <section class="work-panel empty-state"><h2>Nie udało się pobrać danych</h2><p>{{ workspace.error() }}</p>
           <button class="primary-button" type="button" (click)="workspace.load()">Spróbuj ponownie</button></section>
       } @else {
-        @switch (workspace.activeView()) {
+        @if (routePath().endsWith('/mri/upload') || routePath().endsWith('/imaging/upload')) {
+          <app-mri-upload />
+        } @else if (routePath().includes('/patients/') && (routePath().endsWith('/mri') || routePath().endsWith('/imaging'))) {
+          <app-mri-study-list />
+        } @else if (routePath().endsWith('/viewer') && routePath().includes('/imaging-studies/')) {
+          <app-mri-viewer />
+        } @else if (routePath().includes('/imaging-studies/')) {
+          <app-mri-study-details />
+        } @else { @switch (workspace.activeView()) {
           @case ('overview') {
             @switch (workspace.role()) {
               @case ('admin') { <app-admin-dashboard /> }
@@ -73,7 +81,7 @@
           @case ('profile') { <app-patient-profile /> }
           @case ('patients') { <app-patient-details /> }
           @default { <app-patient-profile /> }
-        }
+        } }
       }
     </main>
   </div>

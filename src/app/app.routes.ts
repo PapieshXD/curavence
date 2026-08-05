@@ -14,6 +14,36 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'patients/:patientId/imaging',
+    component: MainLayout,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'patients/:patientId/imaging/upload',
+    component: MainLayout,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'patients/:patientId/mri',
+    component: MainLayout,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'patients/:patientId/mri/upload',
+    component: MainLayout,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'imaging-studies/:studyId',
+    component: MainLayout,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'imaging-studies/:studyId/viewer',
+    component: MainLayout,
+    canActivate: [authGuard],
+  },
+  {
     path: '**',
     redirectTo: '',
   },

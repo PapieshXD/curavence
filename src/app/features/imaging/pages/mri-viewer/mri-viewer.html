@@ -1,0 +1,55 @@
+<section class="viewer-page">
+  <header class="viewer-header">
+    <div>
+      <button class="viewer-back" type="button" (click)="back()"><span aria-hidden="true">←</span> Szczegóły badania</button>
+      <strong>Viewer {{ details()?.study?.modality || 'DICOM' }}</strong>
+    </div>
+    <div class="viewer-actions">
+      <span>Obrazy są przesyłane przez autoryzowany DICOMweb</span>
+      <button type="button" (click)="fullscreen()" [disabled]="!frameLoaded()"><app-icon name="maximize" [size]="17" />Pełny ekran</button>
+    </div>
+  </header>
+
+  <div class="viewer-workspace">
+    <div class="viewer-frame" #viewerFrame>
+      @if (viewerUrl()) {
+        <iframe
+          [src]="viewerUrl()"
+          title="Przeglądarka badania DICOM OHIF"
+          allow="fullscreen"
+          (load)="loaded()"
+        ></iframe>
+      }
+      @if (loading()) {
+        <div class="viewer-overlay"><span class="viewer-loader"></span><strong>Uruchamianie OHIF…</strong><p>Ładowanie serii i obrazów DICOM.</p></div>
+      }
+      @if (error()) {
+        <div class="viewer-overlay error-overlay"><app-icon name="info" [size]="24" /><strong>Nie można otworzyć badania</strong><p>{{ error() }}</p><div><button type="button" (click)="back()">Wróć</button><button class="retry" type="button" (click)="openSession()">Spróbuj ponownie</button></div></div>
+      }
+    </div>
+
+    <aside class="annotation-panel">
+      <header><div><strong>Adnotacje</strong><span>{{ annotations().length }}</span></div><small>Zapisywane w Med-Node</small></header>
+      <div class="annotation-list">
+        @for (annotation of annotations(); track annotation.id) {
+          <article>
+            <div><strong>{{ annotationText(annotation) }}</strong><button type="button" aria-label="Usuń adnotację" (click)="deleteAnnotation(annotation)">×</button></div>
+            <small>{{ annotationDate(annotation.updatedAt) }}</small>
+          </article>
+        } @empty {
+          <p>Brak zapisanych adnotacji.</p>
+        }
+      </div>
+      <div class="annotation-form">
+        @if (details()?.series?.length) {
+          <label><span>Seria</span><select [ngModel]="selectedSeriesId()" (ngModelChange)="selectedSeriesId.set($event)">
+            @for (series of details()!.series; track series.id) { <option [ngValue]="series.id">{{ series.description || 'Seria ' + (series.seriesNumber ?? '') }}</option> }
+          </select></label>
+        }
+        <label><span>Notatka</span><textarea rows="3" [ngModel]="note()" (ngModelChange)="note.set($event)" placeholder="Dodaj obserwację do badania"></textarea></label>
+        <button type="button" (click)="saveNote()" [disabled]="savingNote() || !note().trim()">{{ savingNote() ? 'Zapisywanie…' : 'Zapisz adnotację' }}</button>
+        @if (annotationError()) { <p class="annotation-error">{{ annotationError() }}</p> }
+      </div>
+    </aside>
+  </div>
+</section>

@@ -5,6 +5,7 @@ import { WorkspaceConfig, WorkspaceRole } from '../models/workspace';
 import { Api } from './api';
 
 const SHARED_DOCUMENTS = { id: 'documents', label: 'Dokumenty', icon: 'document' };
+const SHARED_IMAGING = { id: 'imaging', label: 'Badania obrazowe', icon: 'scan' };
 
 const WORKSPACES: Record<WorkspaceRole, Omit<WorkspaceConfig, 'userName' | 'shortLabel'>> = {
   admin: {
@@ -15,6 +16,7 @@ const WORKSPACES: Record<WorkspaceRole, Omit<WorkspaceConfig, 'userName' | 'shor
       { id: 'overview', label: 'Przegląd', icon: 'overview' },
       { id: 'patients', label: 'Pacjenci', icon: 'users' },
       SHARED_DOCUMENTS,
+      SHARED_IMAGING,
       { id: 'sharing', label: 'Udostępnianie', icon: 'share' },
       { id: 'audit', label: 'Dziennik audytu', icon: 'audit' },
     ],
@@ -27,6 +29,7 @@ const WORKSPACES: Record<WorkspaceRole, Omit<WorkspaceConfig, 'userName' | 'shor
       { id: 'overview', label: 'Strona główna', icon: 'home' },
       { id: 'timeline', label: 'Oś zdrowia', icon: 'timeline' },
       SHARED_DOCUMENTS,
+      SHARED_IMAGING,
       { id: 'sharing', label: 'Udostępnienia', icon: 'share' },
       { id: 'profile', label: 'Moje dane', icon: 'user' },
     ],
@@ -39,6 +42,7 @@ const WORKSPACES: Record<WorkspaceRole, Omit<WorkspaceConfig, 'userName' | 'shor
       { id: 'overview', label: 'Workspace kliniczny', icon: 'clipboard' },
       { id: 'patients', label: 'Moi pacjenci', icon: 'users' },
       SHARED_DOCUMENTS,
+      SHARED_IMAGING,
       { id: 'audit', label: 'Historia dostępu', icon: 'audit' },
     ],
   },
@@ -50,6 +54,7 @@ const WORKSPACES: Record<WorkspaceRole, Omit<WorkspaceConfig, 'userName' | 'shor
       { id: 'overview', label: 'Podsumowanie', icon: 'clipboard' },
       { id: 'patients', label: 'Moi pacjenci', icon: 'users' },
       SHARED_DOCUMENTS,
+      SHARED_IMAGING,
       { id: 'sharing', label: 'Zakres dostępu', icon: 'shield' },
       { id: 'audit', label: 'Historia dostępu', icon: 'audit' },
     ],
@@ -85,6 +90,17 @@ export class WorkspaceStore {
 
   initialize(): void {
     if (!this.data() && !this.loading()) this.load();
+  }
+
+  reset(): void {
+    this.role.set('patient');
+    this.activeView.set('overview');
+    this.search.set('');
+    this.mobileNavigationOpen.set(false);
+    this.notification.set('');
+    this.data.set(null);
+    this.loading.set(false);
+    this.error.set('');
   }
 
   load(): void {
