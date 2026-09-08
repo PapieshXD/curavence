@@ -1,0 +1,149 @@
+<section class="results-page patient-surface">
+  <header class="patient-page-heading">
+    <div>
+      <h2>Wyniki badań</h2>
+      <p>Sprawdzaj wyniki i obserwuj, jak zmieniają się w czasie.</p>
+    </div>
+    <button class="primary-button patient-primary" type="button" (click)="addResult()">
+      <app-icon name="plus" [size]="18" />Dodaj wynik badania
+    </button>
+  </header>
+
+  <nav class="patient-tabs" aria-label="Kategorie wyników">
+    @for (filter of filters(); track filter.id) {
+      <button type="button" [class.active]="activeFilter() === filter.id" (click)="setFilter(filter.id)">
+        {{ filter.label }} <span>{{ filter.count }}</span>
+      </button>
+    }
+  </nav>
+
+  <div class="results-layout">
+    <div class="results-list">
+      @for (study of filteredStudies(); track study.id) {
+        <article class="result-exam" [class.selected]="selectedStudyId() === study.id">
+          <button class="exam-select" type="button" (click)="selectStudy(study)">
+            <span class="patient-icon teal"><app-icon name="lab" [size]="24" /></span>
+            <span class="exam-title"><strong>{{ study.name }}</strong><time>{{ date(study.performedAt) }}</time></span>
+            <span class="exam-summary">
+              @if (isReport(study)) {
+                <span>Raport opisowy</span>
+                <span class="normal">{{ study.sections.length }} {{ study.sections.length === 1 ? 'sekcja' : 'sekcji' }}</span>
+              } @else if (study.parameters.length) {
+                <span>{{ study.parameters.length }} parametrów</span>
+                @if (count(study, 'normal')) { <span class="normal">{{ count(study, 'normal') }} w normie</span> }
+                @if (count(study, 'attention')) { <span class="attention">{{ count(study, 'attention') }} wymaga uwagi</span> }
+                @if (count(study, 'unknown')) { <span class="unknown">{{ count(study, 'unknown') }} bez interpretacji</span> }
+              } @else {
+                <span>Brak parametrów do wyświetlenia</span>
+              }
+            </span>
+            <app-icon class="exam-chevron" name="chevron" [size]="20" />
+          </button>
+
+          @if (selectedStudyId() === study.id && study.parameters.length) {
+            <div class="result-parameters" aria-label="Parametry badania">
+              @for (parameter of visibleParameters(study); track parameter.id) {
+                <button type="button" [class.active]="selectedParameterId() === parameter.id" (click)="selectParameter(study, parameter)">
+                  <span>{{ parameter.name }}</span>
+                  <strong [class]="status(parameter)">{{ value(parameter) }}</strong>
+                </button>
+              }
+            </div>
+            @if (study.parameters.length > 5) {
+              <button class="patient-link" type="button" (click)="toggleExpanded(study.id)">
+                {{ expandedStudies().has(study.id) ? 'Pokaż mniej wyników' : 'Pokaż wszystkie wyniki' }}
+                <app-icon name="arrow" [size]="15" />
+              </button>
+            }
+          } @else if (selectedStudyId() === study.id && isReport(study)) {
+            <div class="report-preview">
+              @for (section of study.sections.slice(0, 2); track section.id) {
+                <div><strong>{{ section.title }}</strong><p>{{ section.content }}</p></div>
+              }
+              @if (study.source.primaryAssetId) {
+                <button class="patient-link" type="button" (click)="openSource(study)">Otwórz dokument źródłowy</button>
+              }
+            </div>
+          } @else if (selectedStudyId() === study.id) {
+            <div class="unstructured-note">
+              <span>To badanie nie zawiera jeszcze parametrów w formie strukturalnej.</span>
+              @if (study.source.primaryAssetId) {
+                <button class="patient-link" type="button" (click)="openSource(study)">Otwórz dokument źródłowy</button>
+              }
+            </div>
+          }
+        </article>
+      } @empty {
+        <div class="patient-empty">
+          <app-icon name="lab" [size]="26" />
+          @if (resolvingResults()) {
+            <h3>Rozpoznajemy wyniki</h3>
+            <p>Analizujemy dodane dokumenty i przypisujemy je do właściwych kategorii.</p>
+          } @else {
+            <h3>Brak wyników w tej kategorii</h3>
+            <p>Po dodaniu badania pojawi się tutaj automatycznie.</p>
+          }
+        </div>
+      }
+    </div>
+
+    <aside class="result-detail" aria-label="Szczegóły wybranego wyniku">
+      @if (selectedStudy(); as study) {
+        <span class="detail-context"><app-icon name="chevron" [size]="15" />{{ study.name }}</span>
+        @if (selectedParameter(); as parameter) {
+          <h3>{{ parameter.name }}</h3>
+          <strong [class]="'detail-value ' + status(parameter)">{{ value(parameter) }}</strong>
+          <p class="reference-copy">Zakres referencyjny: {{ reference(parameter) }}</p>
+
+          <app-result-range-chart [parameter]="parameter" />
+          <p [class]="'interpretation-copy ' + status(parameter)">{{ statusCopy(parameter) }}</p>
+
+          <section class="trend-section">
+            <h4>Zmiany w czasie</h4>
+            @if (hasTrend(parameter)) {
+              <app-result-trend-chart [parameter]="parameter" />
+            } @else {
+              <div class="trend-empty">
+                <app-icon name="chart" [size]="21" />
+                <p>Trend pojawi się po dodaniu kolejnego wyniku tego parametru.</p>
+              </div>
+            }
+          </section>
+        } @else if (isReport(study)) {
+          <div class="report-detail">
+            <header>
+              <span>Raport opisowy</span>
+              <h3>{{ study.name }}</h3>
+              <p>{{ study.categoryLabel }}@if (study.material) { · Materiał: {{ study.material }} }</p>
+            </header>
+            @for (section of study.sections; track section.id) {
+              <section [class.key-section]="sectionTone(section) === 'key'">
+                <h4>{{ section.title }}</h4>
+                <p>{{ section.content }}</p>
+              </section>
+            }
+            @if (study.comment) { <p class="report-comment">{{ study.comment }}</p> }
+            @if (study.source.primaryAssetId) {
+              <button class="secondary-button" type="button" (click)="openSource(study)">Otwórz pełny dokument</button>
+            }
+          </div>
+        } @else {
+          <div class="detail-empty">
+            <app-icon name="document" [size]="24" />
+            <h3>Brak danych strukturalnych</h3>
+            <p>Dokument jest zapisany, ale laboratorium nie przekazało parametrów potrzebnych do wykresów.</p>
+            @if (study.source.primaryAssetId) {
+              <button class="secondary-button" type="button" (click)="openSource(study)">Otwórz dokument</button>
+            }
+          </div>
+        }
+      } @else {
+        <div class="detail-empty">
+          <app-icon name="lab" [size]="24" />
+          <h3>Wybierz badanie</h3>
+          <p>Po wybraniu badania zobaczysz tutaj jego parametry, zakresy i historię.</p>
+        </div>
+      }
+    </aside>
+  </div>
+</section>

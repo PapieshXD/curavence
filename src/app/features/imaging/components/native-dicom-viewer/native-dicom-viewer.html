@@ -1,0 +1,93 @@
+<section class="native-viewer" [class.patient-viewer]="patientMode()" #viewerShell aria-label="Natywna przeglądarka DICOM Curavence">
+  <header class="native-header">
+    <div>
+      <span class="product-mark">curavence viewer</span>
+      <strong>{{ patientMode() ? 'Twoje obrazy badania' : 'Diagnostyczny obraz DICOM' }}</strong>
+    </div>
+    <div [hidden]="patientMode()" class="layout-switch" aria-label="Układ obrazu">
+      <button type="button" [class.active]="layout() === 'stack'" (click)="setLayout('stack')">1 obraz</button>
+      <button type="button" [class.active]="layout() === 'mpr'" (click)="setLayout('mpr')" [disabled]="!selectedSeries()?.mprEligible" [title]="selectedSeries()?.mprEligible ? 'Rekonstrukcja w trzech płaszczyznach' : selectedSeries()?.eligibilityReason || 'Brak danych przestrzennych'">MPR 3 płaszczyzny</button>
+      <button type="button" [class.active]="layout() === 'volume'" (click)="setLayout('volume')" [disabled]="!selectedSeries()?.volumeEligible" [title]="selectedSeries()?.volumeEligible ? 'Rekonstrukcja objętościowa' : selectedSeries()?.eligibilityReason || 'Brak pełnej objętości'">3D</button>
+    </div>
+    <button class="icon-action" type="button" (click)="fullscreen()" title="Pełny ekran" aria-label="Otwórz pełny ekran">⛶</button>
+  </header>
+
+  <div class="primary-toolbar" aria-label="Narzędzia obrazu">
+    @for (tool of tools; track tool.id) {
+      <button type="button" [class.active]="activeTool() === tool.id" [disabled]="layout() === 'volume'" (click)="selectTool(tool.id)" [title]="tool.help">
+        <kbd>{{ tool.key }}</kbd><span>{{ tool.name }}</span>
+      </button>
+    }
+    <span class="toolbar-separator"></span>
+    <button [hidden]="patientMode()" type="button" (click)="invert()" [class.active]="inverted()" [disabled]="layout() !== 'stack'" title="Odwróć skalę szarości">◐<span>Odwróć</span></button>
+    <button [hidden]="patientMode()" type="button" (click)="flip('horizontal')" [disabled]="layout() !== 'stack'" title="Odbij w poziomie">↔<span>Odbij H</span></button>
+    <button [hidden]="patientMode()" type="button" (click)="flip('vertical')" [disabled]="layout() !== 'stack'" title="Odbij w pionie">↕<span>Odbij V</span></button>
+    <button [hidden]="patientMode()" type="button" (click)="rotate(-90)" [disabled]="layout() !== 'stack'" title="Obróć w lewo">↶<span>Obrót</span></button>
+    <button type="button" (click)="resetView()" title="Przywróć widok">⌂<span>Reset</span></button>
+  </div>
+
+  <div class="viewer-body">
+    <aside class="series-rail" aria-label="Serie badania">
+      <h2>Serie</h2>
+      <p>Każda seria pokazuje inny sposób obrazowania.</p>
+      @for (item of series(); track item.uid; let index = $index) {
+        <button type="button" [class.active]="selectedSeriesUid() === item.uid" (click)="chooseSeries(item.uid)">
+          <span class="series-number">{{ item.number }}</span>
+          <span><strong>{{ patientMode() ? 'Grupa obrazów ' + (index + 1) : item.description }}</strong><small>{{ item.modality }} · {{ item.imageCount || '—' }} obrazów</small></span>
+        </button>
+      }
+    </aside>
+
+    <main class="diagnostic-stage" [class.mpr-layout]="layout() === 'mpr'" [class.volume-layout]="layout() === 'volume'">
+      <div #stackViewport class="dicom-viewport stack" [class.visible]="layout() === 'stack'" tabindex="0" aria-label="Obraz DICOM. Kółko myszy zmienia przekrój.">
+        <div class="viewport-label top-left">{{ selectedSeries()?.modality }} · {{ selectedSeries()?.description }}</div>
+        <div class="viewport-label top-right">Przekrój {{ frameLabel() }}</div>
+        <div class="viewport-label bottom-left">{{ windowLabel() }}</div>
+        <div class="orientation top">A</div><div class="orientation bottom">P</div><div class="orientation left">R</div><div class="orientation right">L</div>
+      </div>
+      <div #axialViewport class="dicom-viewport mpr axial" [class.visible]="layout() === 'mpr'"><span class="plane-label">Poprzeczna (AXIAL)</span></div>
+      <div #coronalViewport class="dicom-viewport mpr coronal" [class.visible]="layout() === 'mpr'"><span class="plane-label">Czołowa (CORONAL)</span></div>
+      <div #sagittalViewport class="dicom-viewport mpr sagittal" [class.visible]="layout() === 'mpr'"><span class="plane-label">Strzałkowa (SAGITTAL)</span></div>
+      <div #volumeViewport class="dicom-viewport volume" [class.visible]="layout() === 'volume'"><span class="plane-label">Rekonstrukcja objętościowa 3D</span></div>
+
+      @if (loading()) {
+        <div class="viewer-state"><span class="spinner"></span><strong>{{ progressText() }}</strong><small>Odczytujemy oryginalne dane badania, bez generowania zastępczych obrazów.</small></div>
+      }
+      @if (error()) {
+        <div class="viewer-state error-state"><strong>Nie można wyświetlić badania</strong><p>{{ error() }}</p><button type="button" (click)="retry()">Uruchom ponownie</button></div>
+      }
+      @if (warning()) { <div class="viewer-warning" role="status">{{ warning() }} <button type="button" (click)="warning.set('')" aria-label="Zamknij komunikat">×</button></div> }
+      @if (annotationStatus()) { <div class="save-status" role="status">{{ annotationStatus() }}</div> }
+    </main>
+
+    <aside [hidden]="patientMode()" class="help-rail" [class.collapsed]="!showHelp()">
+      <button class="help-toggle" type="button" (click)="showHelp.set(!showHelp())">{{ showHelp() ? 'Ukryj pomoc' : 'Pokaż pomoc' }}</button>
+      @if (showHelp()) {
+        <span class="step">AKTYWNE NARZĘDZIE</span>
+        <h2>{{ currentTool().name }}</h2>
+        <p>{{ currentTool().help }}</p>
+        <div class="mouse-guide"><span>Lewy przycisk</span><strong>{{ currentTool().name }}</strong><span>Prawy przycisk</span><strong>Powiększenie</strong><span>Środkowy przycisk</span><strong>Przesuwanie</strong><span>Kółko</span><strong>Kolejny przekrój</strong></div>
+        <hr />
+        <h3>Jak czytać serię?</h3>
+        <ol><li>Wybierz serię po lewej.</li><li>Ustaw jasność i kontrast narzędziem <kbd>W</kbd>.</li><li>Przejdź przez wszystkie przekroje kółkiem lub suwakiem.</li><li>Pomiar wykonaj dopiero na właściwym przekroju.</li></ol>
+        <p class="medical-note">Viewer pomaga oglądać i mierzyć materiał. Automatyczne oznaczenia nie są rozpoznaniem i wymagają oceny specjalisty.</p>
+      }
+    </aside>
+  </div>
+
+  <footer class="frame-toolbar">
+    @if (layout() === 'stack') {
+      <button type="button" (click)="changeFrame(frameIndex() - 1)" [disabled]="frameIndex() === 0">←</button>
+      <input type="range" min="0" [max]="imageIds().length - 1" [ngModel]="frameIndex()" (ngModelChange)="changeFrame($event)" aria-label="Numer przekroju" />
+      <output>{{ frameLabel() }}</output>
+      <button type="button" (click)="changeFrame(frameIndex() + 1)" [disabled]="frameIndex() >= imageIds().length - 1">→</button>
+      <span class="toolbar-separator"></span>
+      <button class="cine-button" type="button" (click)="toggleCine()" [disabled]="imageIds().length < 2">{{ cinePlaying() ? '■ Zatrzymaj' : '▶ Cine' }}</button>
+      <label>Prędkość <select [ngModel]="cineFps()" (ngModelChange)="updateCineSpeed($event)"><option [ngValue]="4">4 kl./s</option><option [ngValue]="8">8 kl./s</option><option [ngValue]="12">12 kl./s</option><option [ngValue]="20">20 kl./s</option></select></label>
+    } @else if (layout() === 'mpr') {
+      <p><strong>MPR:</strong> trzy zsynchronizowane płaszczyzny tej samej objętości. Lewy przycisk ustawia jasność/kontrast, prawy powiększa.</p>
+    } @else {
+      <p><strong>3D:</strong> przeciągnij lewym przyciskiem, aby obrócić objętość; prawym, aby ją powiększyć.</p>
+    }
+  </footer>
+</section>

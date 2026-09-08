@@ -14,6 +14,16 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'documents/upload',
+    component: MainLayout,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'documents/:documentId',
+    component: MainLayout,
+    canActivate: [authGuard],
+  },
+  {
     path: 'patients/:patientId/imaging',
     component: MainLayout,
     canActivate: [authGuard],

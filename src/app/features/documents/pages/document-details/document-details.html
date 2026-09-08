@@ -1,4 +1,156 @@
-<section class="work-panel document-detail-page">
-  <header class="page-intro compact"><div><h2>Szczegóły dokumentu</h2><p>Wybierz rekord na liście dokumentów, aby zobaczyć metadane i pobrać plik.</p></div><app-status-text tone="neutral">Dane z API</app-status-text></header>
-  <div class="document-preview-placeholder"><app-icon name="document" [size]="32" /><p>Pliki są pobierane strumieniowo z MinIO.</p></div>
-</section>
+@if (document(); as item) {
+  <section class="document-detail-header">
+    <button class="back-button" type="button" (click)="goBack()">
+      <span aria-hidden="true">←</span> Dokumenty
+    </button>
+    <div class="document-heading">
+      <span class="document-file-icon"><app-icon name="document" [size]="22" /></span>
+      <div>
+        <div class="heading-line">
+          <h2>{{ workspace.role() === 'patient' ? displayTitle(item.title) : item.title }}</h2>
+          <app-status-text [tone]="item.ingestionStatus === 'READY' ? 'success' : 'warning'">
+            {{ item.ingestionStatus | enumLabel }}
+          </app-status-text>
+        </div>
+        <p>{{ workspace.role() === 'patient' ? item.typeName + ' · ' + date(item.performedAt) : (item.originalFilename || 'Plik bez nazwy') + ' · ' + size(item.sizeBytes) }}</p>
+      </div>
+    </div>
+    <button class="secondary-button" type="button" [disabled]="!item.primaryAssetId" (click)="download()">
+      <app-icon name="download" [size]="16" /> Pobierz
+    </button>
+  </section>
+
+  <div class="document-detail-layout">
+    <section class="work-panel preview-panel" aria-label="Podgląd dokumentu">
+      <div class="preview-toolbar">
+        <span>Podgląd pliku</span>
+        <small>{{ workspace.role() === 'patient' ? 'Bezpieczny podgląd' : (item.mimeType || 'Nieznany format') }}</small>
+      </div>
+      <div class="preview-stage">
+        @if (previewLoading()) {
+          <div class="preview-state"><span class="spinner" aria-hidden="true"></span><p>Wczytywanie podglądu…</p></div>
+        } @else if (previewError()) {
+          <div class="preview-state error"><app-icon name="info" [size]="26" /><p>{{ previewError() }}</p>
+            <button class="secondary-button" type="button" (click)="download()">Pobierz plik</button></div>
+        } @else if (isPdf() && previewUrl()) {
+          <iframe [src]="previewUrl()" [title]="'Podgląd PDF: ' + item.title"></iframe>
+        } @else if (isImage() && imagePreviewUrl()) {
+          <img [src]="imagePreviewUrl()" [alt]="'Podgląd: ' + item.title" />
+        } @else if (!item.primaryAssetId) {
+          <div class="preview-state"><app-icon name="document" [size]="28" /><p>Dokument nie ma dołączonego pliku.</p></div>
+        } @else {
+          <div class="preview-state"><app-icon name="document" [size]="28" /><p>Ten format nie ma podglądu w przeglądarce.</p>
+            <button class="secondary-button" type="button" (click)="download()">Pobierz plik</button></div>
+        }
+      </div>
+    </section>
+
+    <aside class="work-panel detail-sidebar">
+      <nav class="detail-tabs" aria-label="Sekcje dokumentu">
+        <button type="button" [class.active]="tab() === 'info'" (click)="tab.set('info')">Informacje</button>
+        <button type="button" [class.active]="tab() === 'chat'" (click)="tab.set('chat')">
+          Zapytaj AI <span class="ai-dot" aria-hidden="true"></span>
+        </button>
+      </nav>
+
+      @if (tab() === 'info') {
+        <div class="sidebar-content info-content">
+          @if (canManage()) {
+            <label class="detail-field">Nazwa dokumentu
+              <input type="text" maxlength="255" [ngModel]="title()" (ngModelChange)="title.set($event)" />
+            </label>
+            <label class="detail-field">Data dokumentu
+              <input type="date" [ngModel]="performedAt()" (ngModelChange)="performedAt.set($event)" />
+            </label>
+            <button class="primary-button full-width" type="button" [disabled]="!title().trim() || saving()" (click)="save()">
+              <app-icon name="check" [size]="16" /> {{ saving() ? 'Zapisywanie…' : 'Zapisz zmiany' }}
+            </button>
+          }
+
+          <dl class="document-meta">
+            @if (workspace.role() !== 'patient') { <div><dt>Pacjent</dt><dd>{{ item.patientName }}</dd></div> }
+            <div><dt>Typ</dt><dd>{{ item.typeName }}</dd></div>
+            <div><dt>Data</dt><dd>{{ date(item.performedAt) }}</dd></div>
+            @if (workspace.role() !== 'patient') {
+              <div><dt>Źródło</dt><dd>{{ item.sourceName || 'Nie podano' }}</dd></div>
+              <div><dt>Tekst dla AI</dt><dd>{{ item.hasExtractedText ? 'Dostępny' : 'Niedostępny' }}</dd></div>
+            }
+          </dl>
+
+          @if (canManage()) {
+            <div class="archive-section">
+              @if (archiveConfirm()) {
+                <p>Dokument zniknie z aktywnej listy. Plik nie zostanie trwale usunięty.</p>
+                <div class="archive-actions">
+                  <button class="danger-button" type="button" [disabled]="archiving()" (click)="archive()">
+                    {{ archiving() ? 'Archiwizowanie…' : 'Potwierdź' }}
+                  </button>
+                  <button class="text-button" type="button" (click)="archiveConfirm.set(false)">Anuluj</button>
+                </div>
+              } @else {
+                <button class="archive-button" type="button" (click)="archive()">Archiwizuj dokument</button>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="chat-pane">
+          @if (!item.hasExtractedText) {
+            <div class="chat-unavailable">
+              <span><app-icon name="info" [size]="20" /></span>
+              @if (isPdf()) {
+                <h3>Najpierw potrzebny jest OCR</h3>
+                <p>Ten PDF wygląda na skan i nie ma warstwy tekstowej. Pytania będą dostępne po dodaniu OCR.</p>
+              } @else {
+                <h3>Brak tekstu do analizy</h3>
+                <p>Pytania AI są dostępne dla dokumentów PDF z wyodrębnioną warstwą tekstową.</p>
+              }
+            </div>
+          } @else {
+            <div class="chat-notice"><app-icon name="shield" [size]="15" /> Odpowiedzi powstają tylko na podstawie tego dokumentu.</div>
+            <div class="chat-messages" aria-live="polite">
+              @if (messages().length === 0) {
+                <div class="chat-welcome">
+                  <span class="ai-mark">AI</span>
+                  <h3>O co chcesz zapytać?</h3>
+                  <p>Mogę wyszukać fakty, daty i wartości lub przygotować krótkie podsumowanie.</p>
+                  <div class="suggestion-list">
+                    @for (suggestion of suggestions; track suggestion) {
+                      <button type="button" (click)="askSuggestion(suggestion)">{{ suggestion }}</button>
+                    }
+                  </div>
+                </div>
+              }
+              @for (message of messages(); track $index) {
+                <article class="chat-message" [class.user]="message.role === 'user'">
+                  <span>{{ message.role === 'assistant' ? 'AI' : 'Ty' }}</span>
+                  <p>{{ message.content }}</p>
+                </article>
+              }
+              @if (asking()) {
+                <article class="chat-message thinking"><span>AI</span><p><i></i><i></i><i></i><em>Analizuję dokument…</em></p></article>
+              }
+              @if (chatError()) { <p class="chat-error"><app-icon name="info" [size]="15" />{{ chatError() }}</p> }
+            </div>
+            <div class="chat-composer">
+              <textarea rows="2" maxlength="1000" placeholder="Zadaj pytanie o dokument…"
+                aria-label="Pytanie o dokument" [ngModel]="question()" (ngModelChange)="question.set($event)"
+                (keydown)="questionKeydown($event)"></textarea>
+              <button type="button" aria-label="Wyślij pytanie" [disabled]="!question().trim() || asking()" (click)="ask()">
+                <app-icon name="arrow" [size]="17" />
+              </button>
+              <small>Enter wysyła · Shift+Enter dodaje nową linię</small>
+            </div>
+          }
+        </div>
+      }
+    </aside>
+  </div>
+} @else {
+  <section class="work-panel missing-document">
+    <app-icon name="document" [size]="30" />
+    <h2>Nie znaleziono dokumentu</h2>
+    <p>Dokument nie istnieje, został zarchiwizowany albo nie masz do niego dostępu.</p>
+    <button class="secondary-button" type="button" (click)="goBack()">Wróć do dokumentów</button>
+  </section>
+}

@@ -36,8 +36,57 @@ export interface PatientRecord extends Omit<PatientProfile, 'patientId'> {
   studyCount: number;
 }
 
+export type ClinicalResultInterpretation = 'LOW' | 'NORMAL' | 'HIGH' | 'ABNORMAL' | 'UNKNOWN';
+
+export interface ClinicalResultReferenceRange {
+  low: number | null;
+  high: number | null;
+  label?: string | null;
+}
+
+export interface ClinicalResultHistoryPoint {
+  observedAt: string;
+  value: number;
+}
+
+export interface ClinicalResultParameter {
+  id: string;
+  code?: string | null;
+  name: string;
+  value: number | string | null;
+  numericValue?: number | null;
+  unit?: string | null;
+  interpretation?: ClinicalResultInterpretation | null;
+  referenceRange?: ClinicalResultReferenceRange | null;
+  observedAt?: string | null;
+  history?: ClinicalResultHistoryPoint[];
+}
+
+export interface ClinicalResultSection {
+  id: string;
+  title: string;
+  content: string;
+}
+
+/**
+ * Generic payload for any structured diagnostic result. Categories are deliberately
+ * open strings so new laboratory domains can be rendered without changing the UI.
+ */
+export interface ClinicalResultSet {
+  name?: string | null;
+  category?: string | null;
+  categoryLabel?: string | null;
+  presentation?: 'parameters' | 'report' | string | null;
+  material?: string | null;
+  comment?: string | null;
+  parameters: ClinicalResultParameter[];
+  sections?: ClinicalResultSection[];
+}
+
 export interface StudyRecord {
   id: string;
+  /** Present only when this record has a real DICOM/NIfTI study. */
+  imagingStudyId?: string | null;
   patientId: string;
   patientName: string;
   typeCode: string;
@@ -52,6 +101,31 @@ export interface StudyRecord {
   originalFilename: string | null;
   mimeType: string | null;
   sizeBytes: number | null;
+  hasExtractedText: boolean;
+  documentProcessingStatus: DocumentProcessingStatus | null;
+  resultSet?: ClinicalResultSet | null;
+}
+
+export type DocumentProcessingStatus = 'TEXT_EXTRACTED' | 'OCR_REQUIRED';
+
+export interface DocumentUploadResult {
+  id: string;
+  status: 'READY';
+  processingStatus: DocumentProcessingStatus;
+  pages: number;
+  extractedCharacters: number;
+  textTruncated: boolean;
+}
+
+export interface DocumentConversationMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface DocumentQuestionResponse {
+  answer: string;
+  model: string;
+  contextTruncated: boolean;
 }
 
 export interface AccessGrantRecord {

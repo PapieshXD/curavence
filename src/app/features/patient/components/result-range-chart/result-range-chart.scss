@@ -1,0 +1,12 @@
+:host { display: block; }
+.range-chart { position: relative; padding: 24px 0 32px; }
+.range-labels { position: relative; height: 18px; color: var(--ink-soft); font-size: 12px; }
+.range-labels span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.range-labels span.high { transform: translateX(-50%); }
+.range-track { position: relative; height: 8px; border-radius: 999px; background: #d6dee7; }
+.range-normal { position: absolute; inset-block: 0; border-radius: inherit; background: #3bc5a3; }
+.range-point { position: absolute; top: 50%; width: 12px; height: 12px; border: 3px solid var(--blue); border-radius: 50%; background: var(--white); transform: translate(-50%, -50%); }
+.range-point::after { position: absolute; top: 13px; left: 2px; height: 17px; border-left: 1px dashed var(--muted); content: ''; }
+.range-point.low, .range-point.high, .range-point.abnormal { border-color: #d52f31; }
+.range-chart > strong { position: absolute; bottom: 0; color: var(--blue); font-size: 12px; transform: translateX(-50%); white-space: nowrap; }
+.range-chart > strong.low, .range-chart > strong.high, .range-chart > strong.abnormal { color: #d52f31; }

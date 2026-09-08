@@ -1,23 +1,31 @@
-<section class="page-intro"><div><h2>Udostępnienia</h2><p>Każdy zakres jest weryfikowany przez backend i rejestrowany w audycie.</p></div>
-  @if (canManage()) { <button class="primary-button" type="button" (click)="createOpen.set(true)"><app-icon name="plus" [size]="16" />Dodaj osobę</button> }
+<section class="sharing-page">
+  <header class="sharing-heading"><div><span class="eyebrow">Bezpieczne udostępnianie</span><h1>{{ isPatient() ? 'Kto może zobaczyć Twoje dane?' : 'Połącz się z pacjentem' }}</h1><p>{{ isPatient() ? 'Generujesz krótkotrwały kod. Dostęp powstaje dopiero po Twojej wyraźnej zgodzie.' : 'Pacjent zachowuje pełną kontrolę. Wpisz kod otrzymany od pacjenta i określ, czego potrzebujesz.' }}</p></div></header>
+
+  @if (error()) { <div class="sharing-alert error" role="alert"><app-icon name="info" [size]="18" />{{ error() }}</div> }
+  @if (notice()) { <div class="sharing-alert success" role="status"><app-icon name="check" [size]="18" />{{ notice() }}</div> }
+
+  @if (isPatient()) {
+    <div class="sharing-grid patient-grid">
+      <article class="sharing-card code-card">
+        <div class="card-number">1</div><div class="card-copy"><h2>Wygeneruj kod dla specjalisty</h2><p>Kod działa przez 60 sekund i może być użyty tylko raz. Nie wysyła jeszcze żadnych danych.</p></div>
+        @if (code(); as active) {
+          <div class="one-time-code" aria-live="polite"><span>Twój kod</span><strong>{{ active.value.slice(0, 5) }} {{ active.value.slice(5) }}</strong><div><b><app-icon name="clock" [size]="15" />Ważny jeszcze {{ codeSeconds() }} s</b><button type="button" (click)="copyCode()">{{ codeCopied() ? 'Skopiowano' : 'Kopiuj kod' }}</button></div></div>
+          <button class="outline-button cancel-button" type="button" (click)="cancelCode()" [disabled]="busy()">Unieważnij kod</button>
+        } @else { <button class="primary-button" type="button" (click)="generateCode()" [disabled]="busy()"><app-icon name="plus" [size]="18" />{{ busy() ? 'Generowanie…' : 'Wygeneruj kod na 60 sekund' }}</button> }
+      </article>
+      <article class="sharing-card trust-card"><app-icon name="shield" [size]="30" /><div><h2>Ty decydujesz</h2><p>Specjalista najpierw opisuje cel i zakres dostępu. Zobaczysz listę konkretnych badań przed zatwierdzeniem.</p><ul><li>Nie udostępniamy danych bez Twojego kliknięcia.</li><li>Nowe badania nie dołączają się automatycznie.</li><li>Każdy dostęp zostaje zapisany w historii.</li></ul></div></article>
+    </div>
+    <section class="request-section"><div class="section-heading"><div><span class="eyebrow">Do zatwierdzenia</span><h2>Prośby od specjalistów <span>{{ pending().length }}</span></h2></div><button class="text-button" type="button" (click)="load()">Odśwież</button></div>
+      @if (loading()) { <div class="empty-sharing">Sprawdzam prośby…</div> } @else if (!pending().length) { <div class="empty-sharing"><app-icon name="check" [size]="22" /><strong>Brak oczekujących próśb</strong><p>Gdy specjalista wpisze Twój kod, zobaczysz tutaj dokładny zakres i cel dostępu.</p></div> } @else {
+        <div class="request-list">@for (request of pending(); track request.id) { <article class="request-card"><button class="request-summary" type="button" (click)="toggleExpanded(request.id)" [attr.aria-expanded]="expandedRequest() === request.id"><span class="request-avatar">{{ request.requesterName.charAt(0) }}</span><span><strong>{{ requestLabel(request) }}</strong><small>{{ request.requesterRole }} · {{ date(request.createdAt) }}</small></span><span class="request-status">{{ scopeLabel(request.scope) }}<app-icon [name]="expandedRequest() === request.id ? 'arrow' : 'chevron'" [size]="16" /></span></button>
+          @if (expandedRequest() === request.id) { <div class="request-detail"><div class="request-purpose"><span>Cel</span><strong>{{ request.purpose }}</strong><small>Proponowany dostęp: {{ request.durationDays }} dni · Prośba wygasa {{ date(request.expiresAt) }}</small></div><h3>Wybierz dokładne badania do udostępnienia</h3><div class="study-checks">@for (study of request.studies; track study.id) { <label><input type="checkbox" [checked]="isStudySelected(request.id, study.id)" (change)="toggleStudy(request.id, study.id)" /><span><strong>{{ study.title }}</strong><small>{{ study.typeName }}</small></span></label> }</div><div class="request-actions"><button class="outline-button" type="button" (click)="approve(request, false)" [disabled]="busy()">Odrzuć</button><button class="primary-button" type="button" (click)="approve(request, true)" [disabled]="busy()">Zatwierdź wybrane dane</button></div></div> }
+        </article> }</div>
+      }
+    </section>
+    <section class="request-section history-section"><div class="section-heading"><div><span class="eyebrow">Historia decyzji</span><h2>Udostępnienia</h2></div></div>@if (!history().length) { <p class="muted-line">Nie masz jeszcze historii próśb o dostęp.</p> } @else { <div class="history-list">@for (request of history(); track request.id) { <div><span><strong>{{ requestLabel(request) }}</strong><small>{{ scopeLabel(request.scope) }} · {{ date(request.createdAt) }}</small></span><b [class.active]="request.status === 'APPROVED'">{{ statusLabel(request.status) }}</b></div> }</div> }</section>
+  } @else {
+    <div class="sharing-grid practitioner-grid"><article class="sharing-card redeem-card"><div class="card-number">1</div><div class="card-copy"><h2>Wpisz kod pacjenta</h2><p>Kod znajdziesz w aplikacji pacjenta. Nie próbuj zgadywać — po kilku błędach formularz zostanie czasowo zablokowany.</p></div><label class="big-label">Kod ważny 60 sekund<input inputmode="text" autocomplete="one-time-code" maxlength="12" [ngModel]="typedCode()" (ngModelChange)="typedCode.set($event.toUpperCase())" placeholder="np. K7H4P Q9XM2" /></label></article>
+      <article class="sharing-card scope-card"><div class="card-number">2</div><div class="card-copy"><h2>Określ potrzebny zakres</h2><p>Pacjent zobaczy te parametry i wybierze konkretne badania.</p></div><label>Potrzebuję<select [ngModel]="scope()" (ngModelChange)="scope.set($event)"><option value="IMAGING_STUDIES">Badań obrazowych</option><option value="LAB_RESULTS">Wyników laboratoryjnych</option><option value="FULL_STUDY">Pełnej historii przypadku</option></select></label><label>Cel dostępu<input maxlength="500" [ngModel]="purpose()" (ngModelChange)="purpose.set($event)" /></label><label>Czas dostępu<select [ngModel]="durationDays()" (ngModelChange)="durationDays.set(+$event)"><option [ngValue]="1">1 dzień</option><option [ngValue]="7">7 dni</option><option [ngValue]="14">14 dni</option><option [ngValue]="30">30 dni</option><option [ngValue]="90">90 dni</option></select></label><button class="primary-button" type="button" (click)="redeem()" [disabled]="busy() || !typedCode().trim()">{{ busy() ? 'Sprawdzanie kodu…' : 'Wyślij prośbę do pacjenta' }}</button></article></div>
+    <section class="request-section"><div class="section-heading"><div><span class="eyebrow">Twoje prośby</span><h2>Oczekiwanie na zgodę</h2></div><button class="text-button" type="button" (click)="load()">Odśwież</button></div>@if (loading()) { <div class="empty-sharing">Sprawdzam statusy…</div> } @else if (!requests().length) { <div class="empty-sharing"><app-icon name="clock" [size]="22" /><strong>Nie wysłano jeszcze prośby</strong><p>Po wpisaniu kodu pacjenta status pojawi się tutaj.</p></div> } @else { <div class="history-list">@for (request of requests(); track request.id) { <div><span><strong>{{ request.patientName || 'Pacjent' }}</strong><small>{{ scopeLabel(request.scope) }} · {{ request.purpose }}</small></span><b [class.active]="request.status === 'APPROVED'">{{ statusLabel(request.status) }}</b></div> }</div> }</section>
+  }
 </section>
-<section class="control-note"><app-icon name="shield" [size]="21" /><div><strong>Dostęp zgodny z zakresem</strong><p>Personel widzi tylko pacjentów i badania objęte aktywnym udostępnieniem.</p></div></section>
-<section class="work-panel sharing-table"><header class="panel-header"><div><h2>Udostępnienia w bazie</h2><p>{{ (workspace.data()?.grants ?? []).length }} rekordów</p></div></header><div class="sharing-list">
-  @for (grant of workspace.data()?.grants ?? []; track grant.id) {
-    <article class="sharing-row"><span class="avatar tiny">{{ initials(grant.recipientName) }}</span><div><strong>{{ grant.recipientName }}</strong><small>{{ grant.recipientEmail }}</small></div>
-      <div class="scope-copy"><span>{{ grant.scope | enumLabel }}</span><small>Pacjent: {{ grant.patientName }}</small></div>
-      <app-status-text [tone]="grant.status === 'ACTIVE' ? 'success' : 'neutral'">{{ date(grant.expiresAt) }}</app-status-text>
-      @if (canManage() && grant.status === 'ACTIVE') { <button class="menu-text-button" type="button" (click)="revoke(grant.id)">Cofnij dostęp</button> }
-    </article>
-  } @empty { <div class="empty-state compact"><p>Brak udostępnień.</p></div> }
-</div></section>
-@if (createOpen()) {
-  <div class="modal-backdrop" role="presentation" (click)="createOpen.set(false)"><section class="modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-    <header><div><h2>Nowe udostępnienie</h2><p>Wybierz istniejącego użytkownika personelu</p></div><button class="icon-button" type="button" (click)="createOpen.set(false)"><app-icon name="close" [size]="18" /></button></header>
-    <div class="modal-form"><label>Odbiorca<select [ngModel]="recipient()" (ngModelChange)="recipient.set($event)"><option value="">Wybierz odbiorcę</option>
-      @for (person of workspace.data()?.recipients ?? []; track person.id) { <option [value]="person.email">{{ person.name }} · {{ person.role | enumLabel }}</option> }</select></label>
-      <label>Zakres<select [ngModel]="scope()" (ngModelChange)="scope.set($event)"><option value="FULL_STUDY">Pełne badania</option><option value="LAB_RESULTS">Wyniki laboratoryjne</option><option value="DIAGNOSTIC_REPORT">Raport diagnostyczny</option><option value="REHABILITATION_SUMMARY">Podsumowanie rehabilitacji</option><option value="TRAINING_RESTRICTIONS">Ograniczenia treningowe</option></select></label>
-      <label>Ważność<select [ngModel]="validityDays()" (ngModelChange)="validityDays.set(+$event)"><option [value]="30">30 dni</option><option [value]="90">90 dni</option><option [value]="365">Rok</option></select></label>
-    </div><footer><button class="secondary-button" type="button" (click)="createOpen.set(false)">Anuluj</button><button class="primary-button" type="button" [disabled]="saving()" (click)="create()">{{ saving() ? 'Zapisywanie…' : 'Udostępnij' }}</button></footer>
-  </section></div>
-}

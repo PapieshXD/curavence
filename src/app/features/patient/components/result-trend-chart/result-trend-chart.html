@@ -1,0 +1,21 @@
+@if (visualization(); as chart) {
+  <div class="trend-chart" role="img" [attr.aria-label]="ariaLabel()">
+    <div class="trend-values" [style.grid-template-columns]="chart.columns" aria-hidden="true">
+      @for (point of chart.points; track $index) {
+        <span [class]="point.status">{{ point.valueLabel }}</span>
+      }
+    </div>
+    <svg viewBox="0 0 400 130" preserveAspectRatio="none" aria-hidden="true">
+      <path class="chart-grid" d="M18 112H382" />
+      @if (chart.lowLineY !== null) { <path class="reference-line" [attr.d]="'M18 ' + chart.lowLineY + ' H382'" /> }
+      @if (chart.highLineY !== null) { <path class="reference-line" [attr.d]="'M18 ' + chart.highLineY + ' H382'" /> }
+      <polyline class="chart-line" [attr.points]="chart.polyline" />
+      @for (point of chart.points; track $index) {
+        <circle [class]="point.status" [attr.cx]="point.x" [attr.cy]="point.y" r="4.5" />
+      }
+    </svg>
+    <div class="trend-dates" [style.grid-template-columns]="chart.columns" aria-hidden="true">
+      @for (point of chart.points; track $index) { <span>{{ point.dateLabel }}</span> }
+    </div>
+  </div>
+}

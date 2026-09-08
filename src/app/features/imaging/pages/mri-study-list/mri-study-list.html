@@ -1,88 +1,37 @@
-<section class="page-intro">
-  <div>
-    <h2>Badania obrazowe</h2>
-    <p>Badania MR i CT dostępne przez bezpieczny DICOMweb.</p>
-  </div>
-  @if (canUpload()) {
-    <button class="primary-button" type="button" (click)="upload()">
-      <app-icon name="plus" [size]="16" />Dodaj badanie
-    </button>
-  }
-</section>
-
-<section class="work-panel mri-list-panel">
-  <header class="panel-header">
-    <div>
-      <h2>Lista badań</h2>
-      <p>{{ visibleStudies().length }} {{ visibleStudies().length === 1 ? 'badanie' : 'badań' }}</p>
-    </div>
-    <button class="secondary-button compact-button" type="button" (click)="load()" [disabled]="loading()">
-      Odśwież
-    </button>
+<section class="imaging-page patient-surface">
+  <header class="patient-page-heading imaging-heading">
+    <div><h2>Badania obrazowe</h2><p>Twoje rezonanse, tomografie, RTG i USG w jednym miejscu.</p></div>
+    @if (canUpload()) { <button class="primary-button patient-primary" type="button" (click)="upload()"><app-icon name="plus" [size]="18" />Dodaj badanie obrazowe</button> }
   </header>
 
   @if (loading()) {
-    <div class="mri-state"><span class="loader" aria-hidden="true"></span><p>Pobieranie badań MRI…</p></div>
+    <div class="imaging-state"><span class="loader" aria-hidden="true"></span><p>Pobieranie badań…</p></div>
   } @else if (error()) {
-    <div class="mri-state error-state">
-      <app-icon name="info" [size]="20" />
-      <p>{{ error() }}</p>
-      <button class="text-button" type="button" (click)="load()">Spróbuj ponownie</button>
-    </div>
+    <div class="imaging-state error-state"><app-icon name="info" [size]="22" /><h3>Nie udało się pobrać badań</h3><p>{{ error() }}</p><button class="secondary-button" type="button" (click)="load()">Spróbuj ponownie</button></div>
   } @else {
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Badanie</th>
-            <th>Modalność</th>
-            <th>Obszar</th>
-            <th>Serie</th>
-            <th>Status</th>
-            <th>Akcje</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (study of visibleStudies(); track study.id) {
-            <tr>
-              <td class="muted-cell">{{ date(study.performedAt) }}</td>
-              <td>
-                <button class="study-link" type="button" (click)="details(study)">
-                  <app-icon name="scan" [size]="17" /><strong>{{ study.description }}</strong>
-                </button>
-                <small>{{ study.instanceCount }} instancji · {{ study.storageProvider === 'GOOGLE_HEALTHCARE' ? 'Google' : 'Orthanc' }}</small>
-              </td>
-              <td><strong>{{ study.modality || '—' }}</strong></td>
-              <td>{{ study.bodyPart || 'Nie podano' }}</td>
-              <td>{{ study.seriesCount }}</td>
-              <td>
-                <app-status-text [tone]="statusTone(study.status)">{{ statusLabel(study.status) }}</app-status-text>
-              </td>
-              <td>
-                @if (study.status === 'FAILED' && canUpload()) {
-                  <button class="text-button open-action" type="button" (click)="retry(study)">Ponów</button>
-                } @else {
-                  <button
-                    class="text-button open-action"
-                    type="button"
-                    [disabled]="study.status !== 'AVAILABLE'"
-                    (click)="open(study)"
-                  >
-                    Otwórz <app-icon name="arrow" [size]="14" />
-                  </button>
-                }
-              </td>
-            </tr>
-          } @empty {
-            <tr>
-              <td colspan="7" class="empty-row">
-                {{ workspace.search() ? 'Brak badań pasujących do wyszukiwania.' : 'Nie dodano jeszcze żadnego badania obrazowego.' }}
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+    <section class="imaging-list" aria-label="Lista badań obrazowych">
+      @for (study of visibleStudies(); track study.id) {
+        <article class="imaging-study" [class.failed]="study.status === 'FAILED'">
+          <span class="imaging-icon"><app-icon name="scan" [size]="25" /></span>
+          <div class="study-heading"><h3>{{ displayTitle(study) }}</h3><time>{{ date(study.performedAt) }}</time><p>{{ study.bodyPart || 'Obszar nie został opisany' }}</p></div>
+          <div class="study-numbers"><div><strong>{{ study.instanceCount }}</strong><span>obrazów</span></div><div><strong>{{ study.seriesCount }}</strong><span>{{ study.seriesCount === 1 ? 'seria' : 'serii' }}</span></div></div>
+          <div class="study-ready">
+            @if (study.status === 'AVAILABLE') { <span class="ready-copy"><app-icon name="check" [size]="16" />{{ statusLabel(study.status) }}</span> }
+            @else { <app-status-text [tone]="statusTone(study.status)">{{ statusLabel(study.status) }}</app-status-text> }
+            @if (study.status === 'FAILED') { <small>Spróbuj ponownie. Jeśli problem się powtórzy, dodaj plik jeszcze raz.</small> }
+          </div>
+          <div class="study-actions">
+            <button class="secondary-button" type="button" (click)="details(study)">Szczegóły</button>
+            @if (study.status === 'FAILED' && canUpload()) {
+              <button class="primary-button" type="button" (click)="retry(study)">Spróbuj ponownie</button>
+            } @else {
+              <button class="primary-button" type="button" [disabled]="study.status !== 'AVAILABLE'" (click)="open(study)">Otwórz badanie <app-icon name="arrow" [size]="15" /></button>
+            }
+          </div>
+        </article>
+      } @empty {
+        <div class="imaging-state"><app-icon name="scan" [size]="27" /><h3>Nie ma jeszcze badań obrazowych</h3><p>Po dodaniu badania zobaczysz tutaj obrazy i najważniejsze informacje.</p>@if (canUpload()) { <button class="primary-button" type="button" (click)="upload()">Dodaj pierwsze badanie</button> }</div>
+      }
+    </section>
   }
 </section>

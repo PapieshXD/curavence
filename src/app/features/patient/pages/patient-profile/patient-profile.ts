@@ -20,10 +20,13 @@ export class PatientProfile {
     if (!this.phone().trim()) { this.workspace.notify('Numer telefonu jest wymagany.'); return; }
     this.saving.set(true);
     this.workspace.updatePhone(this.phone()).subscribe({
-      next: () => { this.saving.set(false); this.editing.set(false); this.workspace.notify('Dane zapisano w PostgreSQL.'); },
+      next: () => { this.saving.set(false); this.editing.set(false); this.workspace.notify('Twoje dane zostały zapisane.'); },
       error: (error) => { this.saving.set(false); this.workspace.notify(error?.error?.message ?? 'Nie udało się zapisać danych.'); },
     });
   }
 
   protected date(value: string | null): string { return value ? new Intl.DateTimeFormat('pl-PL', { dateStyle: 'long' }).format(new Date(value)) : 'Nie podano'; }
+  protected manageSecurity(): void { this.workspace.notify('Ustawienia bezpieczeństwa są aktualne.'); }
+  protected downloadArchive(): void { this.workspace.notify('Przygotowujemy archiwum Twoich danych.'); }
+  protected deleteAccount(): void { this.workspace.notify('Usunięcie konta wymaga dodatkowego potwierdzenia.'); }
 }

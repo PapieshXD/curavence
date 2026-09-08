@@ -1,0 +1,13 @@
+@if (visualization(); as chart) {
+  <div class="range-chart" role="img" [attr.aria-label]="ariaLabel()">
+    <div class="range-labels" aria-hidden="true">
+      @if (chart.lowLabel) { <span [style.left.%]="chart.normalStart">{{ chart.lowLabel }}</span> }
+      @if (chart.highLabel) { <span class="high" [style.left.%]="chart.normalStart + chart.normalWidth">{{ chart.highLabel }}</span> }
+    </div>
+    <div class="range-track" aria-hidden="true">
+      <span class="range-normal" [style.left.%]="chart.normalStart" [style.width.%]="chart.normalWidth"></span>
+      <span class="range-point" [class]="'range-point ' + chart.status" [style.left.%]="chart.point"></span>
+    </div>
+    <strong [class]="chart.status" [style.left.%]="chart.point">{{ chart.valueLabel }}</strong>
+  </div>
+}

@@ -1,31 +1,35 @@
-<section class="page-intro"><div><h2>Dokumenty i badania</h2><p>Metadane z PostgreSQL; pliki PDF/JPG/PNG są strumieniowane z MinIO.</p></div>
-  @if (canUpload()) { <button class="primary-button" type="button" (click)="uploadOpen.set(true)"><app-icon name="plus" [size]="16" />Dodaj dokument</button> }
+<section class="documents-page patient-surface">
+  <header class="patient-page-heading documents-heading">
+    <div><h2>Dokumenty i badania</h2><p>Wszystkie dodane pliki i obrazy. Otwórz wybraną pozycję, aby zobaczyć oryginał.</p></div>
+    @if (canUpload()) { <button class="primary-button patient-primary" type="button" (click)="openUpload()"><app-icon name="plus" [size]="18" />Dodaj badanie lub dokument</button> }
+  </header>
+  <div class="document-controls">
+    <label class="library-search"><app-icon name="search" [size]="18" /><input type="search" aria-label="Szukaj dokumentu lub badania" placeholder="Szukaj po nazwie, pliku lub placówce…" [ngModel]="query()" (ngModelChange)="query.set($event)" /></label>
+    <label class="document-filter"><span>Rodzaj</span><select [ngModel]="category()" (ngModelChange)="category.set($event)"><option value="all">Wszystkie rodzaje</option>@for (type of categories(); track type.code) { <option [value]="type.code">{{ type.name }}</option> }</select></label>
+    <div class="view-switch" aria-label="Sposób wyświetlania"><button type="button" [class.active]="view() === 'list'" [attr.aria-pressed]="view() === 'list'" (click)="view.set('list')">Lista z podglądem</button><button type="button" [class.active]="view() === 'table'" [attr.aria-pressed]="view() === 'table'" (click)="view.set('table')">Tabela</button></div>
+  </div>
+  <p class="library-count">{{ documents().length }} pozycji</p>
+  @if (documents().length) {
+    @if (view() === 'table') {
+      <div class="library-table-wrap" tabindex="0" aria-label="Tabela wszystkich dokumentów i badań">
+        <table class="library-table"><thead><tr><th scope="col">Badanie / dokument</th><th scope="col">Rodzaj</th><th scope="col">Data</th><th scope="col">Źródło</th><th scope="col">Format</th><th scope="col">Status</th><th scope="col">Działania</th></tr></thead>
+          <tbody>@for (document of documents(); track document.id) { <tr><td><button class="table-title" type="button" (click)="openDocument(document)">{{ displayTitle(document.title) }}</button><small>{{ document.originalFilename || document.patientName }}</small></td><td>{{ document.typeName }}</td><td class="nowrap">{{ date(document.performedAt) }}</td><td>{{ document.sourceName || 'Dodano samodzielnie' }}</td><td>{{ format(document) }}</td><td>{{ note(document) }}</td><td><button class="secondary-button" type="button" (click)="openDocument(document)">{{ document.imagingStudyId ? 'Obrazy' : 'Otwórz' }} <app-icon name="chevron" [size]="15" /></button></td></tr> }</tbody>
+        </table>
+      </div>
+    } @else {
+      <section class="documents-list" aria-label="Lista dokumentów i badań">
+        @for (document of documents(); track document.id) {
+          <article class="document-row" [class.failed]="document.ingestionStatus === 'FAILED'">
+            <button class="preview-button" type="button" (click)="openDocument(document)" [attr.aria-label]="'Otwórz ' + displayTitle(document.title)"><app-study-preview [study]="document" [compact]="true" /></button>
+            <div class="document-title"><h3>{{ displayTitle(document.title) }}</h3><p>{{ document.typeName }} · {{ format(document) }}</p><small>{{ document.originalFilename }}</small></div>
+            <div class="document-origin"><strong>{{ date(document.performedAt) }}</strong><span>{{ document.sourceName || 'Dodano samodzielnie' }}</span></div>
+            <div class="document-note" [class.error]="document.ingestionStatus === 'FAILED'"><app-icon [name]="document.ingestionStatus === 'FAILED' ? 'info' : 'document'" [size]="15" />{{ note(document) }}</div>
+            <div class="document-actions"><button class="icon-button" type="button" [disabled]="!document.primaryAssetId" aria-label="Pobierz dokument" (click)="download(document.primaryAssetId, document.originalFilename)"><app-icon name="download" [size]="18" /></button><button class="secondary-button" type="button" (click)="openDocument(document)">{{ document.imagingStudyId ? 'Zobacz obrazy' : 'Otwórz plik' }} <app-icon name="chevron" [size]="15" /></button></div>
+          </article>
+        }
+      </section>
+    }
+  } @else {
+    <div class="documents-empty"><span><app-icon name="document" [size]="27" /></span><h3>{{ query() || category() !== 'all' || workspace.search() ? 'Brak pasujących pozycji' : 'Tu znajdziesz swoje dokumenty i badania' }}</h3><p>{{ query() || category() !== 'all' || workspace.search() ? 'Zmień nazwę lub rodzaj badania, aby zobaczyć inne pozycje.' : 'Dodaj plik PDF albo obrazy otrzymane z placówki.' }}</p>@if (query() || category() !== 'all' || workspace.search()) { <button class="secondary-button" type="button" (click)="clearFilters()">Wyczyść filtry</button> } @else if (canUpload()) { <button class="primary-button" type="button" (click)="openUpload()">Dodaj pierwszy plik</button> }</div>
+  }
 </section>
-<div class="document-toolbar"><label>Typ badania<select [ngModel]="category()" (ngModelChange)="category.set($event)"><option value="all">Wszystkie typy</option>
-  @for (type of workspace.data()?.studyTypes ?? []; track type.code) { <option [value]="type.code">{{ type.name }}</option> }</select></label><span>{{ documents().length }} rekordów</span></div>
-<div class="document-workspace">
-  <section class="work-panel document-table-panel"><div class="table-wrap"><table><thead><tr><th>Nazwa</th><th>Pacjent / źródło</th><th>Data</th><th>Typ</th><th>Status</th><th></th></tr></thead><tbody>
-    @for (document of documents(); track document.id) {
-      <tr [class.selected]="selected().id === document.id" (click)="selectedId.set(document.id)"><td><span class="document-name"><app-icon name="document" [size]="17" /><strong>{{ document.title }}</strong></span></td>
-        <td>{{ document.patientName }}<br><small>{{ document.sourceName || 'Źródło niepodane' }}</small></td><td class="muted-cell">{{ date(document.performedAt) }}</td><td>{{ document.typeName }}</td>
-        <td><app-status-text [tone]="statusTone(document.ingestionStatus)">{{ document.ingestionStatus | enumLabel }}</app-status-text></td><td><button class="icon-button" type="button" [disabled]="!document.primaryAssetId"
-          (click)="$event.stopPropagation(); download(document.primaryAssetId, document.originalFilename)" aria-label="Pobierz plik"><app-icon name="download" [size]="16" /></button></td></tr>
-    } @empty { <tr><td colspan="6" class="empty-row">Brak rekordów dla wybranego filtra.</td></tr> }
-  </tbody></table></div></section>
-  <aside class="work-panel document-inspector">
-    @if (selected(); as document) { <header><span class="document-symbol large"><app-icon name="document" [size]="21" /></span><div><h2>{{ document.title }}</h2><p>{{ document.typeName }}</p></div></header>
-      <dl class="definition-list compact"><div><dt>Pacjent</dt><dd>{{ document.patientName }}</dd></div><div><dt>Data</dt><dd>{{ date(document.performedAt) }}</dd></div><div><dt>Plik</dt><dd>{{ document.originalFilename || 'Nie dołączono' }}</dd></div><div><dt>Rozmiar</dt><dd>{{ size(document.sizeBytes) }}</dd></div><div><dt>Status kliniczny</dt><dd>{{ document.clinicalStatus | enumLabel }}</dd></div></dl>
-      <button class="primary-button full-width" type="button" [disabled]="!document.primaryAssetId" (click)="download(document.primaryAssetId, document.originalFilename)"><app-icon name="download" [size]="16" />Pobierz plik</button>
-    } @else { <div class="empty-state compact"><p>Wybierz badanie z listy.</p></div> }
-  </aside>
-</div>
-@if (uploadOpen()) {
-  <div class="modal-backdrop" role="presentation" (click)="uploadOpen.set(false)"><section class="modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
-    <header><div><h2>Dodaj dokument</h2><p>PDF, JPG lub PNG</p></div><button class="icon-button" type="button" (click)="uploadOpen.set(false)"><app-icon name="close" [size]="18" /></button></header>
-    <div class="modal-form"><label>Plik<input type="file" accept="application/pdf,image/jpeg,image/png" (change)="chooseFile($event)" /></label>
-      <label>Nazwa badania<input [ngModel]="title()" (ngModelChange)="title.set($event)" /></label>
-      <label>Typ<select [ngModel]="typeCode()" (ngModelChange)="typeCode.set($event)">@for (type of workspace.data()?.studyTypes ?? []; track type.code) { <option [value]="type.code">{{ type.name }}</option> }</select></label>
-      @if (workspace.role() === 'admin' || workspace.data()?.session?.superuser) { <label>Pacjent<select [ngModel]="patientId()" (ngModelChange)="patientId.set($event)"><option value="">Pierwszy dostępny pacjent</option>@for (patient of workspace.data()?.patients ?? []; track patient.id) { <option [value]="patient.id">{{ patient.firstName }} {{ patient.lastName }}</option> }</select></label> }
-    </div><footer><button class="secondary-button" type="button" (click)="uploadOpen.set(false)">Anuluj</button><button class="primary-button" type="button" [disabled]="uploading()" (click)="upload()">{{ uploading() ? 'Przesyłanie…' : 'Zapisz' }}</button></footer>
-  </section></div>
-}

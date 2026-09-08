@@ -50,4 +50,8 @@ export class MriStudyDetailsPage implements OnInit {
   protected date(value: string | null): string {
     return value ? new Intl.DateTimeFormat('pl-PL', { dateStyle: 'long' }).format(new Date(value)) : 'Nie podano';
   }
+
+  protected displayTitle(description: string, modality: string | null): string {
+    return { MR: 'Rezonans magnetyczny', CT: 'Tomografia komputerowa', CR: 'Badanie RTG', DX: 'Badanie RTG', US: 'Badanie USG' }[modality ?? ''] ?? 'Badanie obrazowe';
+  }
 }

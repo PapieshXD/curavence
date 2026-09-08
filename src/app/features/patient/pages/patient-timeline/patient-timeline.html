@@ -1,11 +1,34 @@
-<section class="page-intro"><div><h2>Oś zdrowia</h2><p>Chronologiczna lista badań przechowywanych w PostgreSQL.</p></div>
-  <div class="segmented-control"><button [class.active]="filter() === 'all'" type="button" (click)="filter.set('all')">Wszystko</button>
-    @for (type of workspace.data()?.studyTypes ?? []; track type.code) { <button [class.active]="filter() === type.code" type="button" (click)="filter.set(type.code)">{{ type.name }}</button> }
-  </div></section>
-<section class="work-panel full-timeline">
-  @for (study of studies(); track study.id) {
-    <article class="history-event"><div class="history-icon"><app-icon name="document" [size]="17" /></div><time>{{ date(study.performedAt) }}</time>
-      <div><h4>{{ study.title }}</h4><span>{{ study.typeName }} · {{ study.sourceName || 'Źródło niepodane' }}</span><p>{{ study.description || 'Brak dodatkowego opisu.' }}</p></div>
-      <span>{{ study.clinicalStatus | enumLabel }}</span></article>
-  } @empty { <div class="empty-state"><p>Brak badań dla wybranego filtra.</p></div> }
+<section class="patient-timeline-page patient-surface">
+  <header class="patient-page-heading timeline-heading">
+    <div><h2>Historia Twojego zdrowia</h2><p>Badania, dokumenty i udostępnienia w jednej chronologii.</p></div>
+  </header>
+
+  <div class="timeline-controls">
+    <div class="timeline-filters" role="group" aria-label="Filtr historii zdrowia">
+      <button type="button" [class.active]="filter() === 'all'" (click)="filter.set('all')">Wszystko</button>
+      <button type="button" [class.active]="filter() === 'study'" (click)="filter.set('study')">Badania</button>
+      <button type="button" [class.active]="filter() === 'document'" (click)="filter.set('document')">Dokumenty</button>
+      <button type="button" [class.active]="filter() === 'sharing'" (click)="filter.set('sharing')">Udostępnienia</button>
+    </div>
+    <button class="period-control" type="button"><app-icon name="calendar" [size]="18" />Ostatnie 12 miesięcy<app-icon name="chevron" [size]="15" /></button>
+  </div>
+
+  <section class="health-timeline" aria-label="Chronologia zdrowia">
+    @for (event of events(); track event.id) {
+      <article class="health-event" [class.sharing]="event.kind === 'sharing'" [class.document]="event.kind === 'document'">
+        <time>{{ date(event.date) }}</time>
+        <div class="event-marker"><span><app-icon [name]="event.icon" [size]="25" /></span></div>
+        <div class="event-content">
+          <small>{{ event.category }}</small>
+          <h3>{{ event.title }}</h3>
+          <p class="event-source">{{ event.source }}</p>
+          <p class="event-description">{{ event.description }}</p>
+          @if (event.note) { <p class="event-note"><app-icon name="clock" [size]="15" />{{ event.note }}</p> }
+        </div>
+        <button class="event-action" type="button" (click)="openEvent(event)">{{ event.action }}<app-icon name="chevron" [size]="17" /></button>
+      </article>
+    } @empty {
+      <div class="patient-empty"><app-icon name="timeline" [size]="26" /><h3>Brak zdarzeń</h3><p>W wybranej kategorii nie ma jeszcze wpisów.</p></div>
+    }
+  </section>
 </section>

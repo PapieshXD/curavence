@@ -1,5 +1,5 @@
 /*
- * Med-Node frontend theme
+ * Curavence frontend theme
  * Jedno źródło prawdy dla typografii, kolorów, geometrii i odstępów.
  * Komponenty powinny korzystać wyłącznie z poniższych custom properties.
  */
@@ -7,22 +7,22 @@
   color-scheme: light;
 
   /* Font families */
-  --font-family-ui: 'Segoe UI Variable Text', 'Segoe UI Variable', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-ui: 'Inter', 'Segoe UI Variable Text', 'Segoe UI Variable', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-family-mono: 'Cascadia Mono', 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
 
   /* Type scale */
-  --text-2xs: 0.625rem;      /* 10px — pomocnicze metadane */
-  --text-xs: 0.6875rem;      /* 11px — gęste dane i podpisy */
-  --text-sm: 0.75rem;        /* 12px — etykiety i tabele */
-  --text-md: 0.8125rem;      /* 13px — podstawowy tekst UI */
-  --text-base: 0.875rem;     /* 14px — opis i treść */
-  --text-lg: 0.9375rem;      /* 15px — nawigacja */
-  --text-section: 1.0625rem; /* 17px — nagłówki sekcji */
-  --text-brand: 1.125rem;    /* 18px — marka i wyróżnienia */
-  --text-title: 1.25rem;     /* 20px — tytuły widoków */
+  --text-2xs: 0.6875rem;     /* 11px — pomocnicze metadane */
+  --text-xs: 0.75rem;        /* 12px — gęste dane i podpisy */
+  --text-sm: 0.875rem;       /* 14px — etykiety i tabele */
+  --text-md: 0.9375rem;      /* 15px — podstawowy tekst UI */
+  --text-base: 1rem;         /* 16px — opis i treść */
+  --text-lg: 1rem;           /* 16px — nawigacja */
+  --text-section: 1.125rem;  /* 18px — nagłówki sekcji */
+  --text-brand: 1.25rem;     /* 20px — marka i wyróżnienia */
+  --text-title: 1.375rem;    /* 22px — tytuły widoków */
   --text-metric: 1.5rem;     /* 24px — wartości podsumowań */
-  --text-page: 1.625rem;     /* 26px — główny nagłówek strony */
-  --text-display: 1.875rem;  /* 30px — data/liczba akcentowa */
+  --text-page: 2rem;         /* 32px — główny nagłówek strony */
+  --text-display: 2rem;      /* 32px — data/liczba akcentowa */
 
   /* Font weights */
   --font-weight-regular: 400;
@@ -52,78 +52,82 @@
   --tracking-caps: 0.08em;
 
   /* Core palette */
-  --navy: #12233f;
-  --navy-soft: #1c3458;
-  --ink: #17283f;
-  --ink-soft: #304158;
-  --muted: #66758a;
-  --faint: #8c9aaa;
-  --border: #dce3eb;
-  --border-light: #e8edf2;
+  --navy: #073f46;
+  --navy-soft: #0b5558;
+  --ink: #14343d;
+  --ink-soft: #35545c;
+  --muted: #64777d;
+  --faint: #87999e;
+  --border: #dce6e8;
+  --border-light: #e9eff0;
   --paper: #ffffff;
-  --shell: #f7f9fb;
-  --blue: #2764d8;
-  --blue-strong: #1f55bc;
-  --blue-soft: #edf3ff;
-  --green: #23754d;
-  --green-soft: #edf7f1;
-  --amber: #9b6111;
-  --amber-soft: #fff7e8;
-  --red: #b64545;
+  --shell: #f7fafa;
+  --blue: #168486;
+  --blue-strong: #10686a;
+  --blue-soft: #eaf6f5;
+  --teal: #168486;
+  --teal-strong: #10686a;
+  --teal-soft: #eaf6f5;
+  --teal-border: #a9d7d4;
+  --green: #278b72;
+  --green-soft: #edf8f4;
+  --amber: #c48724;
+  --amber-soft: #fff7e9;
+  --red: #b94b4b;
   --red-soft: #fff0f0;
 
   /* Semantic surfaces and component colors */
   --white: #ffffff;
-  --focus-ring: #7aa7ff;
-  --focus-border: #8fb1f2;
-  --focus-shadow: 0 0 0 3px rgba(39, 100, 216, 0.08);
-  --surface-subtle: #f8fafc;
-  --surface-hover: #fbfcfe;
-  --surface-selected: #f3f7ff;
-  --surface-blue-highlight: #eef4ff;
-  --surface-info: #f4f8ff;
-  --surface-upload: #fafcff;
-  --surface-preview: #f6f8fa;
-  --surface-action-hover: #f7faff;
-  --control-hover: #eef3f8;
-  --control-border: #bdc9d8;
-  --control-border-hover: #8aa9de;
-  --text-placeholder: #9aa7b6;
-  --text-table-heading: #7a899c;
-  --text-status-neutral: #5e7189;
-  --text-info: #52657d;
-  --text-toast: #24405f;
-  --link-hover: #1949a8;
-  --info-border: #ccdafa;
-  --next-step-border: #cbdaf2;
-  --next-step-surface: #f5f8ff;
-  --selection-border: #c2d3f4;
-  --upload-border: #aebdce;
-  --progress-track: #d9e1ea;
-  --progress-value: #3e9a63;
-  --toast-border: #afc4e6;
+  --focus-ring: #48a5a1;
+  --focus-border: #5baaa7;
+  --focus-shadow: 0 0 0 3px rgba(22, 132, 134, 0.12);
+  --surface-subtle: #f7fafa;
+  --surface-hover: #f4f9f8;
+  --surface-selected: #edf8f6;
+  --surface-blue-highlight: #edf8f6;
+  --surface-info: #f1f8f8;
+  --surface-upload: #f8fbfb;
+  --surface-preview: #f3f7f7;
+  --surface-action-hover: #eff8f7;
+  --control-hover: #edf4f4;
+  --control-border: #b9cacc;
+  --control-border-hover: #6baead;
+  --text-placeholder: #8fa1a5;
+  --text-table-heading: #6f8388;
+  --text-status-neutral: #5d7378;
+  --text-info: #45666d;
+  --text-toast: #20484e;
+  --link-hover: #0b5c5e;
+  --info-border: #bedcda;
+  --next-step-border: #b9dcda;
+  --next-step-surface: #f0f8f7;
+  --selection-border: #acd5d2;
+  --upload-border: #a9bdbf;
+  --progress-track: #d8e4e5;
+  --progress-value: #278b72;
+  --toast-border: #a8d0cd;
 
   /* Sidebar */
-  --sidebar-text: #d9e2ef;
-  --sidebar-brand-accent: #82a9f6;
-  --sidebar-label: #8292a9;
-  --sidebar-nav-text: #b9c6d8;
-  --sidebar-active-border: #83a9f7;
-  --sidebar-active-icon: #a9c2ff;
-  --sidebar-icon-muted: #99abc2;
-  --sidebar-user-muted: #8f9eb3;
-  --sidebar-mobile-close: #a7b6ca;
-  --sidebar-divider: rgba(219, 228, 240, 0.14);
+  --sidebar-text: #d9eceb;
+  --sidebar-brand-accent: #66cbc3;
+  --sidebar-label: #94b7b7;
+  --sidebar-nav-text: #c2d8d7;
+  --sidebar-active-border: #71d0c8;
+  --sidebar-active-icon: #9be0da;
+  --sidebar-icon-muted: #96b9b8;
+  --sidebar-user-muted: #9bb9b8;
+  --sidebar-mobile-close: #afd0cf;
+  --sidebar-divider: rgba(219, 239, 237, 0.16);
   --sidebar-hover: rgba(255, 255, 255, 0.055);
-  --sidebar-active: rgba(103, 151, 239, 0.18);
-  --sidebar-scrim: rgba(10, 24, 44, 0.42);
-  --sidebar-mobile-shadow: 10px 0 30px rgba(14, 35, 65, 0.18);
+  --sidebar-active: rgba(76, 191, 181, 0.2);
+  --sidebar-scrim: rgba(5, 42, 47, 0.42);
+  --sidebar-mobile-shadow: 10px 0 30px rgba(5, 42, 47, 0.18);
 
   /* Avatar and modal */
-  --avatar-text: #335b99;
-  --avatar-surface: #e6edf8;
-  --modal-backdrop: rgba(10, 24, 44, 0.52);
-  --modal-shadow: 0 18px 60px rgba(10, 24, 44, 0.2);
+  --avatar-text: #0f6b6d;
+  --avatar-surface: #e2f1ef;
+  --modal-backdrop: rgba(5, 42, 47, 0.52);
+  --modal-shadow: 0 18px 60px rgba(5, 42, 47, 0.18);
 
   /* Geometry */
   --radius-sm: 6px;
@@ -141,7 +145,7 @@
   --space-6: 24px;
 
   /* Elevation and motion */
-  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+  --shadow-sm: 0 1px 3px rgba(20, 52, 61, 0.035);
+  --shadow-md: 0 4px 12px rgba(20, 52, 61, 0.055);
   --motion-fast: 180ms;
 }

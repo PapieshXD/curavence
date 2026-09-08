@@ -95,12 +95,26 @@ export class MriUpload implements OnDestroy {
         this.submitting.set(false);
         this.status.set('FAILED');
         this.progress.set(100);
-        this.error.set(error?.error?.message ?? 'Nie udało się zaimportować badania MRI.');
+        this.error.set(this.workspace.role() === 'patient'
+          ? 'Nie udało się dodać badania. Sprawdź wybrane pliki i spróbuj ponownie.'
+          : error?.error?.message ?? 'Nie udało się zaimportować badania MRI.');
       },
     });
   }
 
   protected statusLabel(): string {
+    if (this.workspace.role() === 'patient') {
+      return {
+        IDLE: 'Gotowe do przesłania',
+        UPLOADING: 'Przesyłanie badania',
+        VALIDATING: 'Sprawdzanie obrazów',
+        STORING: 'Bezpieczne zapisywanie badania',
+        VERIFYING: 'Końcowe sprawdzanie badania',
+        AVAILABLE: 'Badanie jest dostępne',
+        FAILED: 'Nie udało się dodać badania',
+        CANCELLED: 'Dodawanie zostało anulowane',
+      }[this.status()];
+    }
     return {
       IDLE: 'Gotowe do przesłania',
       UPLOADING: 'Przesyłanie plików',
@@ -135,15 +149,21 @@ export class MriUpload implements OnDestroy {
         && !name.endsWith('.nii.gz') && file.type !== 'application/dicom' && hasExtension;
     });
     if (invalid) {
-      this.error.set('Dozwolone są pliki .nii, .nii.gz, pliki DICOM lub archiwum .zip.');
+      this.error.set(this.workspace.role() === 'patient'
+        ? 'Nie rozpoznaliśmy jednego z plików. Wybierz komplet przekazany przez placówkę.'
+        : 'Dozwolone są pliki .nii, .nii.gz, pliki DICOM lub archiwum .zip.');
       return false;
     }
     if (zipCount > 0 && (zipCount !== 1 || files.length !== 1)) {
-      this.error.set('Archiwum ZIP prześlij jako pojedynczy plik.');
+      this.error.set(this.workspace.role() === 'patient'
+        ? 'Archiwum badania wybierz jako jeden plik.'
+        : 'Archiwum ZIP prześlij jako pojedynczy plik.');
       return false;
     }
     if (niftiCount > 0 && (niftiCount !== 1 || files.length !== 1)) {
-      this.error.set('Plik NIfTI prześlij pojedynczo; nie łącz go z DICOM ani ZIP.');
+      this.error.set(this.workspace.role() === 'patient'
+        ? 'Ten rodzaj badania wybierz jako jeden plik.'
+        : 'Plik NIfTI prześlij pojedynczo; nie łącz go z DICOM ani ZIP.');
       return false;
     }
     return true;
@@ -161,14 +181,18 @@ export class MriUpload implements OnDestroy {
           this.progress.set(result.progress);
           if (result.status === 'FAILED' || result.status === 'CANCELLED') {
             this.submitting.set(false);
-            this.error.set(result.errorMessage ?? 'Import zakończył się błędem.');
+            this.error.set(this.workspace.role() === 'patient'
+              ? 'Nie udało się dodać badania. Spróbuj ponownie.'
+              : result.errorMessage ?? 'Import zakończył się błędem.');
           } else if (result.status === 'AVAILABLE') {
             this.finish();
           }
         },
         error: () => {
           this.submitting.set(false);
-          this.error.set('Nie udało się odczytać statusu importu.');
+          this.error.set(this.workspace.role() === 'patient'
+            ? 'Nie udało się sprawdzić postępu. Spróbuj ponownie.'
+            : 'Nie udało się odczytać statusu importu.');
         },
       });
   }

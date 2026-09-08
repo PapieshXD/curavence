@@ -1,18 +1,17 @@
 <main class="login-page">
   <section class="login-card">
     <div class="login-brand">
-      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
-      <div><strong>Med-Node</strong><small>Bezpieczna dokumentacja medyczna</small></div>
+      <span class="login-brand-symbol" aria-hidden="true"></span>
+      <div><strong>curavence</strong><small>Twoja historia zdrowia</small></div>
     </div>
     <div class="login-heading">
-      <span>Środowisko lokalne</span>
-      <h1>Zaloguj się</h1>
-      <p>Użyj jednego z kont opisanych w pliku DANE_LOGOWANIA_TESTOWE.txt.</p>
+      <h1>Witaj ponownie</h1>
+      <p>Zaloguj się, aby bezpiecznie przejść do swoich danych i aktualnych działań.</p>
     </div>
     <form (ngSubmit)="submit()">
       <label>Login
         <input type="email" name="username" autocomplete="username" [ngModel]="username()"
-          (ngModelChange)="username.set($event)" placeholder="użytkownik@med-node.test" />
+          (ngModelChange)="username.set($event)" placeholder="adres e-mail" />
       </label>
       <label>Hasło
         <input type="password" name="password" autocomplete="current-password" [ngModel]="password()"

@@ -86,14 +86,18 @@ export class MriStudyList implements OnInit {
       : 'Brak daty';
   }
 
+  protected displayTitle(study: ImagingStudySummary): string {
+    return { MR: 'Rezonans magnetyczny', CT: 'Tomografia komputerowa', CR: 'Badanie RTG', DX: 'Badanie RTG', US: 'Badanie USG' }[study.modality ?? ''] ?? 'Badanie obrazowe';
+  }
+
   protected statusLabel(status: ImagingStudySummary['status']): string {
     return {
-      UPLOADING: 'Przesyłanie',
-      VALIDATING: 'Walidacja',
-      STORING: 'Zapisywanie',
-      VERIFYING: 'Weryfikacja',
-      AVAILABLE: 'Dostępne',
-      FAILED: 'Błąd',
+      UPLOADING: 'Przetwarzanie',
+      VALIDATING: 'Przetwarzanie',
+      STORING: 'Przetwarzanie',
+      VERIFYING: 'Przetwarzanie',
+      AVAILABLE: 'Obrazy gotowe do otwarcia',
+      FAILED: 'Nie udało się przetworzyć',
       CANCELLED: 'Anulowane',
     }[status];
   }

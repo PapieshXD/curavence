@@ -1,0 +1,6 @@
+{
+  "name": "fs",
+  "version": "0.0.0-browser",
+  "main": "index.js",
+  "private": true
+}

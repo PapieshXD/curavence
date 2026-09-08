@@ -1,17 +1,45 @@
-<app-summary-strip caption="Zakres udostępniony" [items]="summary()" />
-<div class="therapy-layout"><aside class="work-panel schedule-panel"><header class="panel-header"><div><h2>Pacjenci</h2><p>Dostępni na podstawie access_grants</p></div></header><div class="session-list">
-  @for (patient of workspace.data()?.patients ?? []; track patient.id) { <button class="session-row" [class.active]="selected()?.id === patient.id" type="button" (click)="selectedId.set(patient.id)">
-    <span class="avatar tiny">{{ initials(patient.firstName, patient.lastName) }}</span><span><strong>{{ patient.firstName }} {{ patient.lastName }}</strong><small>{{ patient.studyCount }} badań</small></span></button>
-  } @empty { <div class="empty-state compact"><p>Żaden pacjent nie udostępnił danych do terapii.</p></div> }
-</div></aside><section class="work-panel therapy-detail">
-  @if (selected(); as patient) { <header class="panel-header patient-panel-header"><div><span class="subtle-label">Pacjent</span><h2>{{ patient.firstName }} {{ patient.lastName }}</h2></div></header>
-    <div class="therapy-detail-grid"><div class="therapy-main"><section class="detail-section"><h3>Badania w zakresie</h3><div class="metric-list">
-      @for (study of studies(); track study.id) { <div class="metric-row"><span>{{ study.title }}</span><strong>{{ study.typeName }}</strong><small>{{ date(study.performedAt) }}</small></div> }
-      @empty { <p>Brak badań dostępnych w tym zakresie.</p> }
-    </div></section></div><aside class="therapy-side"><section class="scope-panel"><h3>Aktywne zakresy</h3>
-      @for (grant of grants(); track grant.id) { <app-status-text [tone]="grant.status === 'ACTIVE' ? 'success' : 'neutral'">{{ grant.scope | enumLabel }}</app-status-text><p>{{ grant.purpose || 'Bez dodatkowego celu' }} · do {{ date(grant.expiresAt) }}</p> }
-      @empty { <p>Brak zakresu dla tego pacjenta.</p> }
-      <app-status-text tone="neutral" icon="lock">Dane ograniczone</app-status-text><p>Backend odrzuca dostęp do badań poza aktywnym zakresem.</p>
-    </section></aside></div>
-  } @else { <div class="empty-state"><h2>Brak danych</h2><p>Pacjent musi najpierw utworzyć udostępnienie.</p></div> }
-</section></div>
+<section class="care-workspace">
+  <aside class="patient-list" aria-label="Osoby pod opieką">
+    <header><div><h2>Moi pacjenci</h2><p>Najbliższe wizyty i cele</p></div><button type="button" aria-label="Dodaj pacjenta"><app-icon name="plus" [size]="19" /></button></header>
+    <nav aria-label="Filtr pacjentów"><button class="active" type="button">Wszyscy ({{ patients().length }})</button><button type="button">Dziś</button><button type="button">Nadchodzące</button></nav>
+    <label class="patient-search"><app-icon name="search" [size]="16" /><input type="search" placeholder="Szukaj na liście…" [ngModel]="workspace.search()" (ngModelChange)="workspace.search.set($event)" /></label>
+    <div class="patient-rows">
+      @for (patient of patients(); track patient.id) {
+        <button class="patient-row" [class.active]="selected()?.id === patient.id" type="button" (click)="selectPatient(patient)">
+          <span class="avatar">{{ initials(patient.firstName, patient.lastName) }}</span><span><strong>{{ patient.firstName }} {{ patient.lastName }}</strong><small>{{ $index === 0 ? 'Dziś, 10:00' : 'Najbliższy wolny termin' }}</small><em>{{ patient.studyCount }} udostępnionych badań</em></span>@if ($index === 0) { <span class="attention" aria-label="Wymaga uwagi">!</span> }
+        </button>
+      } @empty { <p class="list-empty">Żaden pacjent nie udostępnił jeszcze danych do opieki.</p> }
+    </div>
+  </aside>
+
+  @if (selected(); as patient) {
+    <main class="patient-care">
+      <header class="care-header"><div class="care-identity"><span class="avatar large">{{ initials(patient.firstName, patient.lastName) }}</span><div><h2>{{ patient.firstName }} {{ patient.lastName }}</h2><p>{{ patient.dateOfBirth ? 'Data urodzenia: ' + date(patient.dateOfBirth) : patient.email }}</p></div></div><button class="secondary-button" type="button" (click)="messagePatient()"><app-icon name="document" [size]="17" />Wiadomość do pacjenta</button></header>
+      <div class="scope-banner"><app-icon name="lock" [size]="20" /><span><strong>Widzisz tylko dane udostępnione przez pacjenta</strong><small>Zakres dostępu wynika z aktywnej zgody i celu opieki.</small></span><button type="button" (click)="activeTab.set('shared')">Sprawdź zakres <app-icon name="chevron" [size]="15" /></button></div>
+      <nav class="care-tabs" aria-label="Widok planu opieki"><button type="button" [class.active]="activeTab() === 'overview'" (click)="activeTab.set('overview')">Przegląd</button><button type="button" [class.active]="activeTab() === 'shared'" (click)="activeTab.set('shared')">Udostępnione dane</button><button type="button" [class.active]="activeTab() === 'visits'" (click)="activeTab.set('visits')">Historia wizyt</button><button type="button" [class.active]="activeTab() === 'messages'" (click)="activeTab.set('messages')">Wiadomości</button></nav>
+
+      @if (activeTab() === 'overview') {
+        <section class="today-summary"><header><h3>Najważniejsze na dziś</h3><time>{{ date(studies()[0]?.performedAt ?? null) }}</time></header><div class="today-columns"><div><app-icon name="check" [size]="18" /><span><strong>Cel: {{ patientGoal() }}</strong><small>Plan skupiony na stopniowym, kontrolowanym zwiększaniu obciążenia.</small></span></div><div class="warning"><app-icon name="info" [size]="18" /><span><strong>Ograniczenia do uwzględnienia</strong><small>Unikaj dużych obciążeń osiowych i bólu nasilającego się podczas ćwiczeń.</small></span></div><div><app-icon name="calendar" [size]="18" /><span><strong>Ostatnia konsultacja</strong><small>{{ date(studies()[0]?.performedAt ?? null) }} · dobra tolerancja ćwiczeń.</small></span></div></div></section>
+
+        <section class="care-timeline"><header><h3>Oś czasu opieki</h3><button type="button" (click)="activeTab.set('visits')">Wszystkie aktywności <app-icon name="chevron" [size]="15" /></button></header>
+          @for (study of studies().slice(0, 5); track study.id) { <article><time>{{ date(study.performedAt) }}</time><span class="timeline-dot"><app-icon [name]="study.typeCode === 'LABORATORY' ? 'lab' : 'document'" [size]="19" /></span><div><h4>{{ study.title }}</h4><p>{{ study.typeName }} · dane udostępnione przez pacjenta</p></div><button type="button" (click)="activeTab.set('shared')">Zobacz <app-icon name="arrow" [size]="15" /></button></article> }
+          @if (savedNote()) { <article><time>Dzisiaj</time><span class="timeline-dot"><app-icon name="edit" [size]="19" /></span><div><h4>Notatka z wizyty</h4><p>{{ savedNote() }}</p></div></article> }
+        </section>
+      } @else if (activeTab() === 'shared') {
+        <section class="shared-data-view"><h3>Dane udostępnione w tym celu</h3><p>Zakres: {{ activeGrant()?.scope || 'wybrane dane' }} · ważny do {{ date(activeGrant()?.expiresAt ?? null) }}</p>@for (study of studies(); track study.id) { <article><app-icon name="document" [size]="21" /><div><strong>{{ study.title }}</strong><small>{{ study.typeName }} · {{ date(study.performedAt) }}</small></div></article> }</section>
+      } @else if (activeTab() === 'visits') {
+        <section class="simple-state"><app-icon name="calendar" [size]="26" /><h3>Historia wizyt i postępów</h3><p>W tym miejscu pozostają wszystkie wpisy związane z celem opieki, bez odsłaniania pozostałej historii medycznej.</p></section>
+      } @else {
+        <section class="simple-state"><app-icon name="document" [size]="26" /><h3>Wiadomości z pacjentem</h3><p>Bezpieczny kanał jest gotowy. Nowe wiadomości zostaną powiązane z aktywnym planem opieki.</p></section>
+      }
+    </main>
+
+    <aside class="care-plan" aria-label="Plan opieki">
+      <header><div><h2>Plan opieki</h2><p>Cel i kolejne działania</p></div><button type="button"><app-icon name="edit" [size]="16" />Edytuj plan</button></header>
+      <section class="goal-section"><div><app-icon name="activity" [size]="24" /></div><span><small>Cel współpracy</small><strong>{{ patientGoal() }}</strong></span></section>
+      <section><div class="section-heading"><h3>Zalecenia i ćwiczenia</h3><button type="button">Pełny plan</button></div><div class="exercise-list"><article><app-icon name="activity" [size]="20" /><span><strong>Ćwiczenia stabilizacyjne</strong><small>3 serie × 12 powtórzeń · raz dziennie</small></span></article><article><app-icon name="activity" [size]="20" /><span><strong>Wzmacnianie mięśni</strong><small>3 serie × 15 powtórzeń · raz dziennie</small></span></article><article><app-icon name="activity" [size]="20" /><span><strong>Propriocepcja i równowaga</strong><small>3 serie × 30 sekund · raz dziennie</small></span></article></div></section>
+      <section class="limits"><h3><app-icon name="info" [size]="18" />Ograniczenia do uwzględnienia</h3><ul><li>Unikaj dużych obciążeń osiowych.</li><li>Przerwij ćwiczenie przy nasileniu bólu.</li><li>Uwzględnij aktualny zakres ruchu.</li></ul></section>
+      <section class="note-section"><h3>Notatka do dzisiejszej wizyty</h3><textarea rows="4" maxlength="1000" [ngModel]="note()" (ngModelChange)="note.set($event)" placeholder="Dodaj obserwację lub zmianę w planie"></textarea><div class="note-actions"><button class="primary-button" type="button" (click)="saveNote()">Zapisz notatkę</button><button class="secondary-button" type="button" [disabled]="accessRequested()" (click)="requestAccess()"><app-icon name="lock" [size]="15" />{{ accessRequested() ? 'Prośba wysłana' : 'Poproś o dostęp' }}</button></div></section>
+    </aside>
+  } @else { <div class="care-empty"><h2>Brak pacjentów pod opieką</h2><p>Pacjent musi najpierw udostępnić dane dla konkretnego celu.</p></div> }
+</section>

@@ -1,47 +1,37 @@
 :host { display: block; }
-
-.mri-list-panel { overflow: hidden; }
-.panel-header { min-height: 62px; }
-.panel-header h2 { margin: 0 0 3px; }
-.panel-header p { margin: 0; color: var(--muted); font-size: var(--text-sm); }
-.compact-button { min-height: 32px; padding: 6px 12px; }
-
-.study-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--ink);
-  font: inherit;
-  cursor: pointer;
-}
-.study-link:hover strong { color: var(--blue); }
-td small { display: block; margin: 4px 0 0 25px; color: var(--muted); font-size: var(--text-xs); }
-.open-action { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
-.open-action:disabled { color: var(--faint); cursor: not-allowed; }
-
-.mri-state {
-  min-height: 240px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  color: var(--muted);
-}
-.error-state { flex-direction: column; color: var(--red); }
-.loader {
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--border);
-  border-top-color: var(--blue);
-  border-radius: 50%;
-  animation: spin 700ms linear infinite;
-}
+.imaging-heading { min-height: 138px; border-bottom: 1px solid var(--border); }
+.imaging-list { display: grid; gap: 0; }
+.imaging-study { display: grid; grid-template-columns: 64px minmax(220px, 1.1fr) minmax(170px, 0.7fr) minmax(190px, 0.8fr) auto; gap: 20px; align-items: center; min-height: 150px; padding: 24px 0; border-bottom: 1px solid var(--border); }
+.imaging-study.failed { border-left: 4px solid var(--red); padding-left: 18px; }
+.imaging-icon { display: grid; width: 56px; height: 56px; place-items: center; border-radius: 50%; color: var(--blue); background: var(--blue-soft); }
+.study-heading h3 { margin: 0 0 7px; color: #0b1f3d; font-size: 19px; }
+.study-heading time, .study-heading p { color: var(--muted); font-size: 13px; }
+.study-heading p { margin: 6px 0 0; }
+.study-numbers { display: flex; gap: 28px; }
+.study-numbers strong, .study-numbers span { display: block; }
+.study-numbers strong { color: var(--ink); font-size: 23px; line-height: 1; }
+.study-numbers span { margin-top: 6px; color: var(--muted); font-size: 12px; }
+.study-ready { display: grid; gap: 6px; }
+.study-ready small { color: var(--red); font-size: 11px; line-height: 1.4; }
+.ready-copy { display: inline-flex; align-items: center; gap: 7px; color: var(--green); font-size: 13px; font-weight: 600; }
+.study-actions { display: grid; min-width: 150px; gap: 8px; }
+.study-actions .primary-button, .study-actions .secondary-button { min-height: 38px; }
+.study-actions button:disabled { cursor: not-allowed; opacity: 0.45; }
+.imaging-state { display: grid; min-height: 360px; place-items: center; align-content: center; color: var(--muted); text-align: center; }
+.imaging-state h3 { margin: 12px 0 5px; color: var(--ink); }
+.imaging-state p { max-width: 430px; margin: 0 0 18px; }
+.error-state { color: var(--red); }
+.loader { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin 700ms linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-@media (max-width: 760px) {
-  .mri-list-panel .table-wrap { overflow-x: auto; }
-  table { min-width: 720px; }
+@media (max-width: 1050px) {
+  .imaging-study { grid-template-columns: 58px minmax(220px, 1fr) minmax(150px, 0.6fr) auto; }
+  .study-ready { grid-column: 2 / 4; }
+  .study-actions { grid-column: 4; grid-row: 1 / 3; }
+}
+@media (max-width: 720px) {
+  .imaging-study { grid-template-columns: 52px 1fr; gap: 14px; padding: 20px 0; }
+  .imaging-icon { width: 48px; height: 48px; }
+  .study-numbers, .study-ready, .study-actions { grid-column: 2; grid-row: auto; }
+  .study-actions { grid-template-columns: 1fr 1fr; }
 }

@@ -6,12 +6,11 @@ import { Api } from './api';
 
 const SHARED_DOCUMENTS = { id: 'documents', label: 'Dokumenty', icon: 'document' };
 const SHARED_IMAGING = { id: 'imaging', label: 'Badania obrazowe', icon: 'scan' };
-
 const WORKSPACES: Record<WorkspaceRole, Omit<WorkspaceConfig, 'userName' | 'shortLabel'>> = {
   admin: {
     label: 'Administrator',
-    title: 'Przegląd systemu',
-    subtitle: 'Dane operacyjne, dostęp i audyt',
+    title: 'Kontrola systemu',
+    subtitle: 'Dostęp, bezpieczeństwo i ciągłość działania',
     navigation: [
       { id: 'overview', label: 'Przegląd', icon: 'overview' },
       { id: 'patients', label: 'Pacjenci', icon: 'users' },
@@ -23,24 +22,24 @@ const WORKSPACES: Record<WorkspaceRole, Omit<WorkspaceConfig, 'userName' | 'shor
   },
   patient: {
     label: 'Pacjent',
-    title: 'Twoje dane medyczne',
-    subtitle: 'Badania, dokumenty i udostępnienia',
+    title: 'Moja historia zdrowia',
+    subtitle: 'Badania, wizyty i dokumenty w jednej chronologii',
     navigation: [
-      { id: 'overview', label: 'Strona główna', icon: 'home' },
-      { id: 'timeline', label: 'Oś zdrowia', icon: 'timeline' },
-      SHARED_DOCUMENTS,
+      { id: 'overview', label: 'Moja historia zdrowia', icon: 'timeline' },
       SHARED_IMAGING,
-      { id: 'sharing', label: 'Udostępnienia', icon: 'share' },
-      { id: 'profile', label: 'Moje dane', icon: 'user' },
+      SHARED_DOCUMENTS,
+      { id: 'sharing', label: 'Udostępnianie', icon: 'share' },
+      { id: 'profile', label: 'Ustawienia', icon: 'settings' },
     ],
   },
   doctor: {
     label: 'Lekarz / diagnosta',
-    title: 'Workspace kliniczny',
-    subtitle: 'Udostępnieni pacjenci, badania i opisy kliniczne',
+    title: 'Pracownia przypadku',
+    subtitle: 'Kolejka, obrazowanie i decyzje w jednym kontekście',
     navigation: [
-      { id: 'overview', label: 'Workspace kliniczny', icon: 'clipboard' },
+      { id: 'overview', label: 'Kolejka przypadków', icon: 'clipboard' },
       { id: 'patients', label: 'Moi pacjenci', icon: 'users' },
+      { id: 'sharing', label: 'Połącz z pacjentem', icon: 'share' },
       SHARED_DOCUMENTS,
       SHARED_IMAGING,
       { id: 'audit', label: 'Historia dostępu', icon: 'audit' },
@@ -48,10 +47,10 @@ const WORKSPACES: Record<WorkspaceRole, Omit<WorkspaceConfig, 'userName' | 'shor
   },
   therapy: {
     label: 'Fizjo / trener',
-    title: 'Dane do terapii',
-    subtitle: 'Pacjenci i zakres danych udostępniony do rehabilitacji',
+    title: 'Plan opieki',
+    subtitle: 'Cele, ograniczenia i kolejne działania pacjenta',
     navigation: [
-      { id: 'overview', label: 'Podsumowanie', icon: 'clipboard' },
+      { id: 'overview', label: 'Plan opieki', icon: 'clipboard' },
       { id: 'patients', label: 'Moi pacjenci', icon: 'users' },
       SHARED_DOCUMENTS,
       SHARED_IMAGING,
@@ -81,10 +80,10 @@ export class WorkspaceStore {
   readonly config = computed<WorkspaceConfig>(() => {
     const base = WORKSPACES[this.role()];
     const session = this.data()?.session;
-    const userName = session?.displayName ?? 'Użytkownik Med-Node';
+    const userName = session?.displayName ?? 'Użytkownik Curavence';
     const shortLabel = session
       ? `${session.firstName.charAt(0)}${session.lastName.charAt(0)}`.toUpperCase()
-      : 'MN';
+      : 'CV';
     return { ...base, userName, shortLabel };
   });
 
@@ -146,11 +145,11 @@ export class WorkspaceStore {
     return this.api.uploadStudy(this.role(), form).pipe(tap(() => this.load()));
   }
 
-  createGrant(recipientEmail: string, scope: string, expiresAt: string | null): Observable<unknown> {
+  createGrant(recipientEmail: string, scope: string, expiresAt: string | null, purpose = 'Konsultacja i ciągłość opieki'): Observable<unknown> {
     return this.api.createGrant(this.role(), {
       recipientEmail,
       scope,
-      purpose: 'Udostępnienie utworzone przez użytkownika',
+      purpose,
       expiresAt,
       studyIds: [],
     }).pipe(tap(() => this.load()));
