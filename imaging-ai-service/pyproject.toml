@@ -15,8 +15,8 @@ dependencies = [
   "wfdb>=4.2,<5",
   "pyedflib>=0.1.40,<0.2",
   "defusedxml>=0.7,<1",
-  "neurokit2==0.2.12",
-  "Pillow>=11,<13",
+  "neurokit2==0.3.0",
+  "Pillow>=11,<14",
   "nibabel>=5.3,<6",
   "pydantic-settings>=2.7,<3",
   "pydicom>=3,<4",
@@ -24,13 +24,13 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-ci = ["ruff==0.14.5", "setuptools==80.9.0"]
+ci = ["ruff==0.17.5", "setuptools==84.2.1"]
 segmentation = [
-  "TotalSegmentator==2.17.0",
+  "TotalSegmentator==2.18.0",
 ]
 test = [
-  "pytest>=8,<9",
-  "pytest-cov==6.2.1",
+  "pytest>=8,<10",
+  "pytest-cov==7.1.0",
 ]
 
 [tool.setuptools.packages.find]
