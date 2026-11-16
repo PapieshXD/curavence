@@ -134,7 +134,7 @@ public class OrthancDicomGateway implements DicomStoragePort {
     @Override
     public DicomWebResponse execute(DicomWebRequest source, String enforcedStudyInstanceUid) {
         String path = source.path();
-        if (path.contains("..") || path.contains("\\")) {
+        if (!path.startsWith("/") || path.contains("..") || path.contains("\\") || path.contains("?") || path.contains("#")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nieprawidłowa ścieżka DICOMweb");
         }
         String query = source.queryString();
@@ -144,7 +144,7 @@ public class OrthancDicomGateway implements DicomStoragePort {
                     + URLEncoder.encode(enforcedStudyInstanceUid, StandardCharsets.UTF_8);
             query = query == null || query.isBlank() ? studyFilter : query + "&" + studyFilter;
         }
-        String uri = "/dicom-web" + (path.startsWith("/") ? path : "/" + path)
+        String uri = "/dicom-web" + path
                 + (query == null || query.isBlank() ? "" : "?" + query);
         HttpRequest.Builder builder = baseRequest(uri)
                 .method(source.method().equalsIgnoreCase("HEAD") ? "HEAD" : "GET",
@@ -176,8 +176,25 @@ public class OrthancDicomGateway implements DicomStoragePort {
     }
 
     private HttpRequest.Builder baseRequest(String path) {
-        String base = properties.orthancBaseUrl().replaceAll("/+$", "");
-        return HttpRequest.newBuilder(URI.create(base + path))
+        URI baseUri = URI.create(properties.orthancBaseUrl().replaceAll("/+$", "") + "/");
+        URI resolved = baseUri.resolve(path.startsWith("/") ? path.substring(1) : path);
+
+        int basePort = baseUri.getPort() == -1 ? ("https".equalsIgnoreCase(baseUri.getScheme()) ? 443 : 80) : baseUri.getPort();
+        int resolvedPort = resolved.getPort() == -1 ? ("https".equalsIgnoreCase(resolved.getScheme()) ? 443 : 80) : resolved.getPort();
+
+        if (!baseUri.getScheme().equalsIgnoreCase(resolved.getScheme())
+                || !baseUri.getHost().equalsIgnoreCase(resolved.getHost())
+                || basePort != resolvedPort) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nieprawidłowy adres docelowy DICOMweb");
+        }
+
+        String basePath = baseUri.getPath() == null ? "/" : baseUri.getPath();
+        String resolvedPath = resolved.getPath() == null ? "/" : resolved.getPath();
+        if (!resolvedPath.startsWith(basePath)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nieprawidłowa ścieżka DICOMweb");
+        }
+
+        return HttpRequest.newBuilder(resolved)
                 .timeout(Duration.ofMinutes(2))
                 .header("Authorization", authorization);
     }
