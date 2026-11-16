@@ -32,9 +32,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Component
 public class OrthancDicomGateway implements DicomStoragePort {
+    private static final Pattern DICOMWEB_PATH_PATTERN = Pattern.compile(
+            "^/(|studies(?:/[A-Za-z0-9.\\-]+(?:/(series(?:/[A-Za-z0-9.\\-]+(?:/(instances(?:/[A-Za-z0-9.\\-]+(?:/(metadata|rendered|frames/[0-9,]+)?)?)?)?)?)?)?)?)?)$"
+    );
+    private static final Pattern SAFE_QUERY_PATTERN = Pattern.compile("^[A-Za-z0-9\\-._~%!$&'()*+,;=:@/?]*$");
 
     private static final Set<String> FORWARDED_RESPONSE_HEADERS = Set.of(
             "content-type", "content-length", "content-disposition", "etag", "last-modified",
@@ -133,18 +138,22 @@ public class OrthancDicomGateway implements DicomStoragePort {
 
     @Override
     public DicomWebResponse execute(DicomWebRequest source, String enforcedStudyInstanceUid) {
-        String path = source.path();
-        if (path.contains("..") || path.contains("\\")) {
+        String rawPath = source.path();
+        String path = (rawPath == null || rawPath.isBlank()) ? "/" : (rawPath.startsWith("/") ? rawPath : "/" + rawPath);
+        if (path.contains("..") || path.contains("\\") || !DICOMWEB_PATH_PATTERN.matcher(path).matches()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nieprawidłowa ścieżka DICOMweb");
         }
         String query = source.queryString();
-        String normalizedPath = path.startsWith("/") ? path.substring(1) : path;
+        if (query != null && (!SAFE_QUERY_PATTERN.matcher(query).matches() || query.contains("#") || query.contains("\r") || query.contains("\n"))) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nieprawidłowe parametry zapytania DICOMweb");
+        }
+        String normalizedPath = path.substring(1);
         if ("studies".equals(normalizedPath) && enforcedStudyInstanceUid != null) {
             String studyFilter = "StudyInstanceUID="
                     + URLEncoder.encode(enforcedStudyInstanceUid, StandardCharsets.UTF_8);
             query = query == null || query.isBlank() ? studyFilter : query + "&" + studyFilter;
         }
-        String uri = "/dicom-web" + (path.startsWith("/") ? path : "/" + path)
+        String uri = "/dicom-web" + path
                 + (query == null || query.isBlank() ? "" : "?" + query);
         HttpRequest.Builder builder = baseRequest(uri)
                 .method(source.method().equalsIgnoreCase("HEAD") ? "HEAD" : "GET",
