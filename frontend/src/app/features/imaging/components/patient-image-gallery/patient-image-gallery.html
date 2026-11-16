@@ -1,0 +1,53 @@
+@if (!clinical()) {
+<div class="fusion-toolbar"><div class="fusion-switch" aria-label="Sposób wyświetlania"><button type="button" [class.active]="!originals()" [attr.aria-pressed]="!originals()" (click)="setOriginals(false)">Połączone warstwy</button><button type="button" [class.active]="originals()" [attr.aria-pressed]="originals()" (click)="setOriginals(true)">Oryginały</button></div><p>{{ originals() ? 'Każdy obraz osobno.' : 'Obrazy tego samego przekroju nałożone na siebie.' }}</p></div>
+}
+<section #player class="study-player" [class.clinical]="clinical()" tabindex="-1" aria-label="Przeglądarka obrazów badania" (keydown.arrowleft)="move(selectedIndex() - 1); $event.preventDefault()" (keydown.arrowright)="move(selectedIndex() + 1); $event.preventDefault()">
+  <div class="player-main">
+    <div class="scan-stage">
+      <div class="scan-topline"><span>{{ originals() ? 'Obraz' : 'Warstwa' }} <strong>{{ selectedIndex() + 1 }}</strong> <span class="muted">/ {{ layers().length }}</span></span><button class="icon-button" type="button" (click)="enlarge()" [disabled]="!selected()?.url" aria-label="Powiększ obraz na pełnym ekranie"><app-icon name="maximize" [size]="21" /></button></div>
+      @if (selected()?.url) { <div class="image-stack">@for (url of selected()!.urls; track $index; let index = $index) { <img class="featured-image" [src]="url" [style.opacity]="1 / (index + 1)" [alt]="index === 0 ? 'Warstwa ' + (selectedIndex() + 1) + ' badania' : ''" /> }</div> }
+      @else { <div class="scan-placeholder" role="status"><app-icon name="scan" [size]="40" /><p>{{ selected()?.failed ? 'Nie udało się wczytać obrazu' : loading() ? 'Przygotowujemy Twoje obrazy…' : 'Brak obrazów do wyświetlenia' }}</p></div> }
+    </div>
+    <div class="player-controls">
+      <button class="round-button" type="button" aria-label="Poprzedni obraz" (click)="move(selectedIndex() - 1)" [disabled]="selectedIndex() <= 0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6" /></svg></button>
+      <button class="play-button" type="button" (click)="togglePlayback()" [disabled]="!selected()?.url || layers().length < 2" [attr.aria-pressed]="playing()"><svg viewBox="0 0 24 24" aria-hidden="true">@if (playing()) { <path d="M8 5v14M16 5v14" /> } @else { <path class="play-shape" d="m8 4 12 8-12 8Z" /> }</svg>{{ playing() ? 'Zatrzymaj' : 'Odtwórz badanie' }}</button>
+      <button class="round-button" type="button" aria-label="Następny obraz" (click)="move(selectedIndex() + 1)" [disabled]="selectedIndex() >= layers().length - 1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6" /></svg></button>
+    </div>
+    <input class="study-slider" type="range" min="0" [max]="layers().length - 1" [ngModel]="selectedIndex()" (ngModelChange)="move($event)" aria-label="Obraz w całym badaniu" [style.--position]="(selectedIndex() / (layers().length - 1 || 1) * 100) + '%'" />
+  </div>
+  @if (!clinical()) {
+  <aside class="patient-companion" aria-label="Pomoc w oglądaniu badania">
+    <h2>Spokojnie.<br />Przejdźmy przez to razem.</h2>
+    <p>Przesuwaj suwak, aby przejść przez kolejne obrazy badania.</p><p class="fusion-info">@if (!originals() && selected(); as layer) { {{ layer.sourceCount }} obrazów źródłowych w tej warstwie. Nakładanie zgodnych obrazów; bez korekcji ruchu. } @else { Oglądasz pojedyncze obrazy źródłowe. }</p>
+    <ol class="simple-steps">
+      <li><span>1</span><div><strong>Oglądaj</strong><p>Przeglądaj obrazy, aby zobaczyć całe badanie.</p></div></li>
+      <li><span>2</span><div><button type="button" (click)="enlarge()" [disabled]="!selected()?.url">Powiększ <app-icon name="maximize" [size]="14" /></button><p>Otwórz duży obraz, aby przyjrzeć się szczegółom.</p></div></li>
+      <li><span>3</span><div><button type="button" (click)="readReport.emit()">Sprawdź opis <app-icon name="document" [size]="14" /></button><p>Przeczytaj opis badania w raporcie.</p></div></li>
+    </ol>
+    <div class="ai-explanation"><h3>Wyjaśnienie AI</h3>
+      @if (analysis()?.explanation?.whatWasSeen; as explanation) { <p>{{ explanation }}</p><details><summary>Co to oznacza?</summary><p>{{ analysis()?.explanation?.whatItMayMean }}</p><p>{{ analysis()?.explanation?.whatItDoesNotMean }}</p></details> }
+      @else { <p>{{ analysis()?.status === 'RUNNING' || analysis()?.status === 'QUEUED' ? 'Analiza jest w toku. Wyjaśnienie pojawi się po jej zakończeniu.' : 'Dla tego badania nie ma jeszcze wyniku AI.' }}</p> }
+    </div>
+  </aside>
+  }
+</section>
+<section class="gallery-section" [class.clinical]="clinical()" aria-label="Wszystkie warstwy badania">
+  <header class="gallery-heading"><div><h2>{{ originals() ? 'Obrazy oryginalne' : 'Warstwy badania' }}</h2><p>{{ layers().length }} {{ originals() ? 'obrazów' : 'warstw' }} · kliknij, aby zobaczyć</p></div>
+    <div class="tile-size" aria-label="Rozmiar miniatur"><button type="button" [disabled]="!largeTiles()" (click)="largeTiles.set(false)" aria-label="Mniejsze miniatury"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" /></svg><span>Mniejsze</span></button><button type="button" [disabled]="largeTiles()" (click)="largeTiles.set(true)" aria-label="Większe miniatury"><span>Większe</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14" /></svg></button></div>
+  </header>
+  @if (loading()) { <p class="loading-count" role="status">Wczytano {{ loaded() }} z {{ sourceLayers().length }} obrazów…</p> }
+  @if (failed()) { <p class="error" role="status">Część obrazów nie została wczytana. <button type="button" (click)="revision.set(revision() + 1)">Spróbuj ponownie</button></p> }
+  <div class="all-layers" [class.larger-tiles]="largeTiles()" [attr.aria-busy]="loading()">
+    @for (layer of layers(); track layer.key; let index = $index) {
+      <button class="layer" type="button" [class.selected]="selectedKey() === layer.key" [attr.aria-pressed]="selectedKey() === layer.key" [disabled]="!layer.url" (click)="open(layer.key)" [attr.aria-label]="'Pokaż obraz ' + (index + 1) + ' z ' + layers().length">
+        @if (layer.url) { <div class="image-stack">@for (url of layer.urls; track $index; let index = $index) { <img [src]="url" [style.opacity]="1 / (index + 1)" alt="" /> }</div> } @else { <span class="placeholder">{{ layer.failed ? 'Nie wczytano' : '…' }}</span> }
+        <span class="number">{{ index + 1 }}</span>
+      </button>
+    } @empty { @if (!loading()) { <p>To badanie nie zawiera jeszcze obrazów.</p> } }
+  </div>
+</section>
+<dialog #enlarged aria-label="Powiększony obraz badania" (keydown.arrowleft)="move(selectedIndex() - 1); $event.preventDefault()" (keydown.arrowright)="move(selectedIndex() + 1); $event.preventDefault()">
+  <header><strong>Obraz {{ selectedIndex() + 1 }} z {{ layers().length }}</strong><button type="button" class="dialog-close" (click)="close()">Zamknij <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6" /></svg></button></header>
+  @if (selected(); as layer) { @if (layer.url) { <div class="image-stack large-stack">@for (url of layer.urls; track $index; let index = $index) { <img class="large-image" [src]="url" [style.opacity]="1 / (index + 1)" [alt]="index === 0 ? 'Warstwa ' + (selectedIndex() + 1) : ''" /> }</div> } @else { <p class="large-placeholder">{{ layer.failed ? 'Nie udało się wczytać tego obrazu.' : 'Wczytujemy obraz…' }}</p> } }
+  <footer><button class="round-button" type="button" aria-label="Poprzedni obraz" (click)="move(selectedIndex() - 1)" [disabled]="selectedIndex() <= 0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6" /></svg></button><input class="study-slider" type="range" min="0" [max]="layers().length - 1" [ngModel]="selectedIndex()" (ngModelChange)="move($event)" aria-label="Obraz w całym badaniu" /><button class="round-button" type="button" aria-label="Następny obraz" (click)="move(selectedIndex() + 1)" [disabled]="selectedIndex() >= layers().length - 1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6" /></svg></button></footer>
+</dialog>

@@ -1,0 +1,182 @@
+<section class="results-page patient-surface">
+  <header class="patient-page-heading">
+    <div>
+      @if (workspace.role() === 'patient') { <button class="patient-link" type="button" (click)="workspace.patientResultsMode.set(false)">← Wszystkie badania</button> }
+      <h2>Wyniki badań</h2>
+      <p>Sprawdzaj wyniki i obserwuj, jak zmieniają się w czasie.</p>
+    </div>
+    <button class="primary-button patient-primary" type="button" (click)="addResult()">
+      <app-icon name="plus" [size]="18" />Dodaj wynik badania
+    </button>
+  </header>
+
+  <nav class="patient-tabs" aria-label="Kategorie wyników">
+    @for (filter of filters(); track filter.id) {
+      <button type="button" [class.active]="activeFilter() === filter.id" (click)="setFilter(filter.id)">
+        {{ filter.label }} <span>{{ filter.count }}</span>
+      </button>
+    }
+  </nav>
+
+  <div class="results-layout">
+    <div class="results-list">
+      @for (study of filteredStudies(); track study.id) {
+        <article class="result-exam" [class.selected]="selectedStudyId() === study.id">
+          <button class="exam-select" type="button" (click)="selectStudy(study)">
+            <span class="patient-icon teal"><app-icon name="lab" [size]="24" /></span>
+            <span class="exam-title"><strong>{{ study.name }}</strong><time>{{ date(study.performedAt) }}</time></span>
+            <span class="exam-summary">
+              @if (isReport(study)) {
+                <span>Raport opisowy</span>
+                <span class="normal">{{ study.sections.length }} {{ study.sections.length === 1 ? 'sekcja' : 'sekcji' }}</span>
+              } @else if (study.parameters.length) {
+                <span>{{ study.parameters.length }} parametrów</span>
+                @if (count(study, 'normal')) { <span class="normal">{{ count(study, 'normal') }} w podanym zakresie</span> }
+                @if (count(study, 'attention')) { <span class="attention">{{ count(study, 'attention') }} poza podanym zakresem</span> }
+                @if (count(study, 'unknown')) { <span class="unknown">{{ count(study, 'unknown') }} bez potwierdzonego zakresu</span> }
+              } @else {
+                <span>Brak parametrów do wyświetlenia</span>
+              }
+            </span>
+            <app-icon class="exam-chevron" name="chevron" [size]="20" />
+          </button>
+
+          @if (selectedStudyId() === study.id && study.parameters.length) {
+            <div class="result-parameters" aria-label="Parametry badania">
+              @for (parameter of visibleParameters(study); track parameter.id) {
+                <button type="button" [class.active]="selectedParameterId() === parameter.id" (click)="selectParameter(study, parameter)">
+                  <span>{{ parameter.name }}</span>
+                  <strong [class]="status(parameter)">{{ value(parameter) }}</strong>
+                </button>
+              }
+            </div>
+            @if (study.parameters.length > 5) {
+              <button class="patient-link" type="button" (click)="toggleExpanded(study.id)">
+                {{ expandedStudies().has(study.id) ? 'Pokaż mniej wyników' : 'Pokaż wszystkie wyniki' }}
+                <app-icon name="arrow" [size]="15" />
+              </button>
+            }
+          } @else if (selectedStudyId() === study.id && isReport(study)) {
+            <div class="report-preview">
+              @for (section of study.sections.slice(0, 2); track section.id) {
+                <div><strong>{{ section.title }}</strong><p>{{ section.content }}</p></div>
+              }
+              @if (study.source.primaryAssetId) {
+                <button class="patient-link" type="button" (click)="openSource(study)">Otwórz dokument źródłowy</button>
+              }
+            </div>
+          } @else if (selectedStudyId() === study.id) {
+            <div class="unstructured-note">
+              <span>To badanie nie zawiera jeszcze parametrów w formie strukturalnej.</span>
+              @if (study.source.primaryAssetId) {
+                <button class="patient-link" type="button" (click)="openSource(study)">Otwórz dokument źródłowy</button>
+              }
+            </div>
+          }
+        </article>
+      } @empty {
+        <div class="patient-empty">
+          <app-icon name="lab" [size]="26" />
+          @if (resolvingResults()) {
+            <h3>Rozpoznajemy wyniki</h3>
+            <p>Analizujemy dodane dokumenty i przypisujemy je do właściwych kategorii.</p>
+          } @else {
+            <h3>Brak wyników w tej kategorii</h3>
+            <p>Po dodaniu badania pojawi się tutaj automatycznie.</p>
+          }
+        </div>
+      }
+    </div>
+
+    <aside class="result-detail" aria-label="Szczegóły wybranego wyniku">
+      @if (selectedStudy(); as study) {
+        <span class="detail-context"><app-icon name="chevron" [size]="15" />{{ study.name }}</span>
+        @if (study.parameters.length) {
+          <section class="result-overview" aria-label="Podsumowanie badania">
+            <h3>Krótko o tym wyniku</h3>
+            <p>Masz {{ study.parameters.length }} {{ study.parameters.length === 1 ? 'parametr' : 'parametrów' }}.
+              {{ count(study, 'normal') }} mieści się w zakresach potwierdzonych w dokumencie,
+              {{ count(study, 'attention') }} jest poza nimi.
+              @if (count(study, 'unknown')) { Dla {{ count(study, 'unknown') }} nie potwierdzono zakresu. }
+            </p>
+            <p class="result-caution">Sam zakres nie rozstrzyga, czy wszystko jest w porządku. Lekarz ocenia wynik razem z objawami i innymi badaniami.</p>
+          </section>
+        }
+        @if (selectedParameter(); as parameter) {
+          <div class="parameter-heading"><app-explained-text [heading]="true" [blocks]="explained(parameter.name)" [terms]="terms()" [enabled]="explanationsEnabled()" [showList]="false" (question)="askTerm($event)" /></div>
+          <strong [class]="'detail-value ' + status(parameter)">{{ value(parameter) }}</strong>
+          <p class="reference-copy">Zakres podany na tym wyniku: {{ reference(parameter) }}.</p>
+          <p class="reference-copy">Data badania: {{ date(parameter.observedAt ?? study.performedAt) }}.</p>
+          @if (parameter.referenceSource === 'document') { <app-result-range-chart [parameter]="parameter" /> }
+          <p [class]="'interpretation-copy ' + status(parameter)">{{ statusCopy(parameter) }}</p>
+          @if (parameter.referenceSource === 'catalog') {
+            <p class="result-caution">System ma zakres katalogowy, ale nie potwierdził go w oryginalnym wyniku. Porównaj zakres w PDF.</p>
+          }
+          @if (needsSourceCheck(parameter)) {
+            <div class="source-check"><strong>Sprawdź z oryginałem</strong><p>Odczyt OCR tej wartości jest niepewny.</p>
+              @if (parameter.sourceExcerpt) { <blockquote>{{ parameter.sourceExcerpt }}</blockquote> }
+            </div>
+          }
+          <section class="explanation-section">
+            <h4>Co oznacza ta nazwa?</h4>
+            @if (parameter.description || explanation(parameter)) {
+              <app-explained-text [blocks]="explained(parameter.name + ' — ' + (parameter.description || explanation(parameter)))" [terms]="terms()" [enabled]="explanationsEnabled()" [showList]="false" (question)="askTerm($event)" />
+            } @else {
+              <p>Nie mamy jeszcze sprawdzonego, prostego objaśnienia tej nazwy. Oryginalna nazwa to <strong>{{ parameter.name }}</strong>.</p>
+            }
+          </section>
+
+          <app-reading-guide [documentId]="study.id" [originalAvailable]="!!study.source.primaryAssetId" [fallbackText]="resultText(study)" (explanationsChange)="explanationsEnabled.set($event)" (guideLoaded)="guide.set($event)" (original)="openSource(study)" />
+
+          <section class="trend-section" id="result-history">
+            <h4>Szczegóły i poprzednie wartości</h4>
+            @if (canDrawTrend(parameter)) {
+              <app-result-trend-chart [parameter]="parameter" />
+            } @else {
+              <div class="trend-empty">
+                <app-icon name="chart" [size]="21" />
+                <p>Wykres pojawi się przy co najmniej dwóch pomiarach z potwierdzoną tożsamością parametru, jednostką, metodą i zakresem. Brakujące informacje lub zmiana zakresu mogą ukryć wykres.</p>
+              </div>
+            }
+            @if (rangeChanged(parameter)) { <p class="result-caution">Zakres zmienił się między wynikami. Wartości pokazujemy osobno, bez wspólnej linii odniesienia.</p> }
+            @if (history(parameter).length) {
+              <ul class="history-list" aria-label="Wartości i daty pomiarów">
+                @for (point of history(parameter); track point.observedAt + ':' + point.value) {
+                  <li><time>{{ date(point.observedAt) }}</time><strong>{{ point.value }} {{ point.unit || parameter.unit }}</strong></li>
+                }
+              </ul>
+            } @else { <p class="result-caution">Brak porównywalnych wcześniejszych pomiarów. Starsze wartości mogą mieć inną jednostkę, metodę lub niepotwierdzoną tożsamość parametru.</p> }
+            <dl class="result-metadata">
+              <div><dt>Metoda</dt><dd>{{ parameter.method || 'Nie podano' }}</dd></div>
+              <div><dt>Pochodzenie wartości</dt><dd>{{ provenance(parameter) }}</dd></div>
+              <div><dt>Źródło</dt><dd>{{ study.source.sourceName || study.source.originalFilename || 'Dokument badania' }}</dd></div>
+            </dl>
+            @if (parameter.sourceExcerpt) { <div class="source-excerpt"><h5>Fragment oryginalnego zapisu</h5><blockquote>{{ parameter.sourceExcerpt }}</blockquote></div> }
+            @if (study.comment) { <div class="source-excerpt"><h5>Komentarz z dokumentu</h5><app-explained-text [blocks]="explained(study.comment)" [terms]="terms()" [enabled]="explanationsEnabled()" [showList]="false" (question)="askTerm($event)" /></div> }
+            <div class="result-actions">
+              @if (study.source.primaryAssetId) { <button class="secondary-button" type="button" (click)="openSource(study)">{{ study.source.mimeType === 'application/pdf' ? 'Otwórz oryginalny PDF' : 'Otwórz oryginalny plik' }}</button> }
+              @if (workspace.role() === 'patient') { <button class="secondary-button" type="button" (click)="askDoctor(study, parameter)">Przygotuj pytanie do lekarza</button> }
+            </div>
+          </section>
+        } @else if (isReport(study)) {
+          <app-reading-guide [documentId]="study.id" [originalAvailable]="!!study.source.primaryAssetId" [fallbackText]="resultText(study)" (explanationsChange)="explanationsEnabled.set($event)" (original)="openSource(study)" />
+        } @else {
+          <div class="detail-empty">
+            <app-icon name="document" [size]="24" />
+            <h3>Brak danych strukturalnych</h3>
+            <p>Dokument jest zapisany, ale laboratorium nie przekazało parametrów potrzebnych do wykresów.</p>
+            @if (study.source.primaryAssetId) {
+              <button class="secondary-button" type="button" (click)="openSource(study)">Otwórz dokument</button>
+            }
+          </div>
+        }
+      } @else {
+        <div class="detail-empty">
+          <app-icon name="lab" [size]="24" />
+          <h3>Wybierz badanie</h3>
+          <p>Po wybraniu badania zobaczysz tutaj jego parametry, zakresy i historię.</p>
+        </div>
+      }
+    </aside>
+  </div>
+</section>

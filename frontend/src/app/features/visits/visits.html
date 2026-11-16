@@ -1,0 +1,107 @@
+<section class="visits-page">
+  <header><div><h2>{{ patient() ? 'Wizyty' : 'Wizyty i plan' }}</h2><p>Przyjdź z gotowym kontekstem. Wróć do ustaleń i kolejnych kroków.</p></div>
+    @if (patient()) { <button type="button" class="primary-button" [disabled]="busy()" (click)="edit(null)">Przygotuj wizytę</button> }
+  </header>
+  @if (error()) { <p role="alert" class="error">{{ error() }}</p> }
+  @if (overdue()) { <p class="notice">{{ overdue() }} niewykonanych kroków z terminem na dziś lub wcześniejszym. Sprawdź plan poniżej.</p> }
+  @if (loading()) { <p role="status">Ładowanie wizyt…</p> }
+  <div class="visit-layout">
+    <aside aria-label="Lista wizyt">
+      <button type="button" class="secondary-button" [disabled]="busy() || loading()" (click)="load()">Odśwież</button>
+      @for (v of visits(); track v.id) {
+        <button type="button" class="visit-card" [disabled]="busy()" [class.active]="selected()?.id === v.id" (click)="open(v)">
+          <small>{{ v.visitDate ? (v.visitDate | date:'dd.MM.yyyy') : 'Bez terminu' }} · {{ status(v) }}</small>
+          <strong>{{ v.reason }}</strong>@if (!patient()) { <span>{{ v.patientName }}</span> }
+        </button>
+      } @empty { @if (!loading()) { <p>Nie masz jeszcze pakietów wizyt. {{ patient() ? 'Przygotuj pierwszy pakiet.' : 'Pakiety pojawią się po udostępnieniu przez pacjenta.' }}</p> } }
+    </aside>
+    <main>
+      @if (editing()) {
+        <form (ngSubmit)="save()" class="panel">
+          <h3>Przygotowanie do wizyty</h3><p>Szkic jest widoczny tylko dla Ciebie. Udostępnienie zatwierdzisz w kolejnym kroku.</p>
+          <label>Rodzaj wizyty<select name="previous" [(ngModel)]="previousVisitId" (ngModelChange)="includePreviousPlan=false"><option value="">Nowa sprawa</option>@for (p of previousOptions(); track p.id) { <option [value]="p.id">Kontynuacja: {{ p.reason }} · {{ p.visitDate || 'Bez daty' }}</option> }</select></label>
+          @if (previousVisitId) { <label class="check"><input type="checkbox" name="includePrevious" [(ngModel)]="includePreviousPlan" />Dołącz poprzedni zatwierdzony plan i zgłoszenia realizacji do zakresu tej wizyty. Dokumenty wybierz osobno poniżej.</label> }
+          <label>Powód wizyty<input name="reason" [(ngModel)]="reason" maxlength="240" required /></label>
+          <label>Data wizyty (opcjonalnie)<input name="date" type="date" [(ngModel)]="visitDate" /></label>
+          <label>Objawy i ich przebieg<textarea name="symptoms" rows="4" [(ngModel)]="symptoms" maxlength="10000" placeholder="Co się dzieje, od kiedy, co się zmieniło? Zapisz własnymi słowami."></textarea></label>
+          <label>Pytania do lekarza<textarea name="questions" rows="4" [(ngModel)]="questions" maxlength="10000" placeholder="Każde pytanie możesz wpisać w osobnym wierszu."></textarea></label>
+          <fieldset><legend>Badania i dokumenty potrzebne na wizytę ({{ studyIds.length }})</legend>
+            @for (study of studies(); track study.id) { <label class="check"><input type="checkbox" [checked]="studyIds.includes(study.id)" (change)="toggleStudy(study.id, $any($event.target).checked)" />{{ study.title }} · {{ study.performedAt | date:'dd.MM.yyyy' }}</label> }
+            @if (!studies().length) { <p>Możesz przygotować pakiet bez dokumentów.</p> }
+          </fieldset>
+          <div class="buttons"><button class="primary-button" [disabled]="busy() || !reason.trim()">Zapisz i sprawdź pakiet</button><button type="button" class="secondary-button" (click)="editing.set(false)">Anuluj</button></div>
+        </form>
+      } @else if (selected(); as v) {
+        <app-knowledge-panel [visitId]="v.id" />
+        <article class="panel">
+          <small>{{ status(v) }} · {{ v.patientName }} · utworzono {{ v.createdAt | date:'dd.MM.yyyy HH:mm' }}</small><h3>{{ v.reason }}</h3>
+          <p>Termin: {{ v.visitDate ? (v.visitDate | date:'dd.MM.yyyy') : 'Nie ustalono' }}</p>
+          <h4>Objawy i kontekst — opis pacjenta</h4><p class="pre">{{ v.symptoms || 'Nie dodano opisu.' }}</p>
+          <h4>Pytania pacjenta</h4><p class="pre">{{ v.questions || 'Nie dodano pytań.' }}</p>
+          <h4>Wybrane dokumenty ({{ v.studyIds.length }})</h4>
+          @for (study of selectedStudies(); track study.id) {
+            <a class="source" [routerLink]="study.imagingStudyId ? ['/imaging-studies', study.imagingStudyId] : ['/documents', study.id]">{{ study.title }} · {{ study.performedAt | date:'dd.MM.yyyy' }} ↗</a>
+            @if (study.primaryAssetId) { <button type="button" class="secondary-button" (click)="downloadStudy(study)">Otwórz oryginał</button> }
+            @if (newSincePrevious(v, study.id)) { <small>Nowy względem wskazanej poprzedniej wizyty</small> }
+          }
+          @if (!v.studyIds.length) { <p>Pakiet bez załączonych badań.</p> }
+          @if (patient() && !v.grantId) {
+            <button type="button" class="secondary-button" (click)="edit(v)">Edytuj szkic</button>
+            <form (ngSubmit)="share()" class="sharing">
+              <h4>Zatwierdź zakres udostępnienia</h4>
+              <p>Lekarz otrzyma powód wizyty, termin, opis objawów, pytania i dokładnie {{ v.studyIds.length }} wybranych dokumentów wymienionych powyżej. {{ v.includePreviousPlan ? 'Zakres obejmuje także pokazany poniżej poprzedni plan i zgłoszenia realizacji.' : 'Poprzedni plan nie zostanie udostępniony.' }} Inne aktywne zgody zachowują swój zakres.</p>
+              <label>E-mail lekarza z kontem Curavence<input name="email" type="email" [(ngModel)]="email" required list="visit-doctors" /></label>
+              <datalist id="visit-doctors">@for (r of workspace.data()?.recipients ?? []; track r.id) { <option [value]="r.email">{{ r.name }}</option> }</datalist>
+              <label>Dostęp ważny do<input name="expires" type="datetime-local" [(ngModel)]="expires" required /></label>
+              <label class="check"><input name="confirmed" type="checkbox" [(ngModel)]="confirmed" required />Zatwierdzam wskazanego odbiorcę, termin i dokładny zakres pakietu.</label>
+              <button class="primary-button" [disabled]="busy() || !confirmed">Udostępnij zatwierdzony pakiet</button>
+            </form>
+          }
+          @if (v.grantId) { <p>Odbiorca: {{ v.recipientEmail }} · dostęp do {{ v.expiresAt | date:'dd.MM.yyyy HH:mm' }} · {{ v.accessStatus === 'ACTIVE' ? 'aktywny' : 'nieaktywny' }}</p>
+            @if (patient() && v.accessStatus === 'ACTIVE') { <button type="button" class="secondary-button" [disabled]="busy()" (click)="revoke()">Cofnij dostęp do pakietu</button> }
+          }
+        </article>
+        @if (patient()) { @defer (on immediate) { <app-export-panel [visit]="v" [studyIds]="v.studyIds" /> } }
+        @if (v.previousPlan; as previous) {
+          <section class="panel"><h3>Od ostatniej wizyty</h3>
+            <p>Poprzedni plan zatwierdził(a): {{ previous.approvedBy }} · {{ previous.approvedAt | date:'dd.MM.yyyy HH:mm' }}</p>
+            <p class="pre">{{ previous.summary }}</p>
+            <p>Nowe dokumenty w tym pakiecie: {{ v.newStudyIds.length }}.</p>
+            <p>Zmiany i pytania pacjenta znajdują się w opisie pakietu powyżej. Dokumenty są dostępne wyłącznie w wybranym zakresie zgody.</p>
+            @for (a of previous.actions; track a.id) {
+              @if (!a.completed && a.dueDate < today()) { <p class="notice">Krok po terminie: {{ a.description }}</p> }
+              <app-visit-action [action]="a" (original)="downloadStudy($event)" [patient]="patient()" [canDiscuss]="canApprove() && v.accessStatus === 'ACTIVE'" [busy]="busy()" [studies]="studies()" (progress)="progress(previous.id,a,$event)" (discussion)="discuss(a,$event)" />
+            } @empty { <p>Poprzedni plan nie zawiera dodatkowych kroków.</p> }
+          </section>
+        } @else { <section class="panel"><h3>Od ostatniej wizyty</h3><p>Brak poprzedniego planu w zakresie tego pakietu. Nie oznacza to braku wcześniejszego leczenia.</p></section> }
+        @if (patient() && v.accessStatus === 'ACTIVE') {
+          <form class="panel" (ngSubmit)="extendScope()"><h3>Dodaj wyniki do zakresu pakietu</h3><p>Wybrane dokumenty staną się dostępne dla {{ v.recipientEmail }} do {{ v.expiresAt | date:'dd.MM.yyyy HH:mm' }}. Dodanie pliku nie oznacza omówienia go przez lekarza.</p>
+            @for (s of studies(); track s.id) { @if (!v.studyIds.includes(s.id)) { <label class="check"><input type="checkbox" [checked]="scopeStudyIds.includes(s.id)" (change)="toggleScope(s.id,$any($event.target).checked)" />{{ s.title }}</label> } }
+            <label class="check"><input type="checkbox" name="scopeConfirmed" [(ngModel)]="scopeConfirmed" />Potwierdzam rozszerzenie zakresu o {{ scopeStudyIds.length }} zaznaczonych dokumentów.</label>
+            <button class="primary-button" [disabled]="busy() || !scopeConfirmed || !scopeStudyIds.length">Udostępnij wybrane wyniki</button>
+          </form>
+        }
+        @if (v.approvedAt) {
+          <section class="panel"><h3>Ustalenia i kolejne kroki</h3><p>Zatwierdził(a): {{ v.approvedBy }} · {{ v.approvedAt | date:'dd.MM.yyyy HH:mm' }}</p><p class="pre">{{ v.summary }}</p>
+            @for (action of v.actions; track action.id) {
+              <app-visit-action [action]="action" (original)="downloadStudy($event)" [patient]="patient()" [canDiscuss]="canApprove() && v.accessStatus === 'ACTIVE'" [busy]="busy()" [studies]="studies()" (progress)="progress(v.id,action,$event)" (discussion)="discuss(action,$event)" />
+            } @empty { <p>Lekarz nie wskazał dodatkowych zadań.</p> }
+          </section>
+        } @else if (canApprove() && v.accessStatus === 'ACTIVE') {
+          <form class="panel" (ngSubmit)="savePlan(true)"><h3>Zamknij wizytę</h3><p>Robocze ustalenia pozostają niewidoczne dla pacjenta do zatwierdzenia przez lekarza.</p>
+            <label>Ustalenia wizyty<textarea name="summary" [(ngModel)]="summary" (ngModelChange)="planDirty.set(true)" rows="5" maxlength="10000" required></textarea></label>
+            @for (action of actions; track $index; let i = $index) { <fieldset><legend>Krok {{ i + 1 }}</legend>
+              <label>Co zrobić<input [name]="'description'+i" [(ngModel)]="action.description" (ngModelChange)="planDirty.set(true)" maxlength="1000" required /></label>
+              <label>Do kiedy<input type="date" [name]="'due'+i" [(ngModel)]="action.dueDate" (ngModelChange)="planDirty.set(true)" required /></label>
+              <label>Kto odpowiada<input [name]="'responsible'+i" [(ngModel)]="action.responsible" (ngModelChange)="planDirty.set(true)" maxlength="120" required /></label>
+              <button type="button" class="secondary-button" (click)="actions.splice(i,1); planDirty.set(true)">Usuń krok</button>
+            </fieldset> }
+            <button type="button" class="secondary-button" [disabled]="actions.length >= 50" (click)="actions.push({description:'', dueDate:'', responsible:'Pacjent'}); planDirty.set(true)">Dodaj krok</button>
+            <label class="check"><input type="checkbox" name="approve" [(ngModel)]="approveConfirmed" />Zatwierdzam treść medyczną i udostępniam plan pacjentowi. Po zatwierdzeniu plan jest zamknięty.</label>
+            <div class="buttons"><button type="button" class="secondary-button" [disabled]="busy()" (click)="savePlan(false)">Zapisz roboczo</button><button class="primary-button" [disabled]="busy() || !approveConfirmed">Zatwierdź plan</button></div>
+          </form>
+        } @else { <section class="panel"><h3>Plan po wizycie</h3><p>Nie ma jeszcze planu zatwierdzonego przez lekarza.</p></section> }
+      } @else { <section class="panel"><h3>Gotowy kontekst, jasne kolejne kroki</h3><p>Wybierz wizytę z listy{{ patient() ? ' lub przygotuj nowy pakiet' : '' }}.</p></section> }
+    </main>
+  </div>
+</section>

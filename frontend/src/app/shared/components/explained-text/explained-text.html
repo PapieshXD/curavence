@@ -1,0 +1,20 @@
+<div class="reading-text" [attr.role]="heading() ? 'heading' : null" [attr.aria-level]="heading() ? 3 : null">
+  @for (block of rendered(); track block.id) {
+    <p [attr.data-block-id]="block.id">@for (segment of block.segments; track $index) {@if (enabled() && segment.termId) {<button type="button" class="term" [class.selected]="active()?.id === segment.termId" [attr.aria-expanded]="active()?.id === segment.termId" aria-haspopup="dialog" [attr.aria-controls]="active()?.id === segment.termId ? panelId : null" (click)="open(segment.termId, $event, block.text)">{{ segment.text }}</button>} @else {<span>{{ segment.text }}</span>}}</p>
+  }
+</div>
+@if (showList() && enabled() && terms().length) {
+  <details class="term-list"><summary>Pojęcia w tym wyniku · {{ terms().length }}</summary>
+    <div>@for (term of terms(); track term.id) { <button type="button" (click)="open(term.id, $event, listQuote(term.id))">{{ term.name }}</button> }</div>
+  </details>
+}
+@if (active(); as term) {
+  <div class="term-backdrop" (click)="close()" aria-hidden="true"></div>
+  <section class="term-dialog" role="dialog" aria-modal="true" [id]="panelId" [attr.aria-labelledby]="panelId + '-title'" [style.left.px]="left()" [style.top.px]="top()" (keydown)="trap($event)">
+    <button type="button" class="term-close" aria-label="Zamknij objaśnienie" (click)="close()">×</button>
+    <small>OBJAŚNIENIE POJĘCIA</small><h4 [id]="panelId + '-title'">{{ term.name }}</h4>
+    <p>{{ term.definition }}</p><p class="term-context">To znaczenie pojęcia. Jego znaczenie w Twoim wyniku omów z lekarzem.</p>
+    <div class="term-sources">Źródła: @for (source of term.sources; track source.url) { <a [href]="source.url" target="_blank" rel="noopener noreferrer">{{ source.title }}</a> }</div>
+    <button type="button" class="secondary-button" (click)="ask()">Dodaj pytanie do wizyty</button>
+  </section>
+}

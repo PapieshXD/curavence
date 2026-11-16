@@ -1,0 +1,3951 @@
+{
+  "version": 1,
+  "sourcePages": 120,
+  "exams": [
+    {
+      "page": 1,
+      "title": "Morfologia krwi obwodowej z płytkami",
+      "category": "blood",
+      "categoryLabel": "Hematologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "WBC",
+          "code": "wbc",
+          "unit": "10^9/L",
+          "reference": "4,0-10,0"
+        },
+        {
+          "name": "RBC",
+          "code": "rbc",
+          "unit": "10^12/L",
+          "reference": "4,20-5,70"
+        },
+        {
+          "name": "HGB",
+          "code": "hgb",
+          "unit": "g/dL",
+          "reference": "13,5-17,5"
+        },
+        {
+          "name": "HCT",
+          "code": "hct",
+          "unit": "%",
+          "reference": "40,0-51,0"
+        },
+        {
+          "name": "MCV",
+          "code": "mcv",
+          "unit": "fL",
+          "reference": "80,0-96,0"
+        },
+        {
+          "name": "MCH",
+          "code": "mch",
+          "unit": "pg",
+          "reference": "27,0-33,0"
+        },
+        {
+          "name": "MCHC",
+          "code": "mchc",
+          "unit": "g/dL",
+          "reference": "32,0-36,0"
+        },
+        {
+          "name": "PLT",
+          "code": "plt",
+          "unit": "10^9/L",
+          "reference": "150-400"
+        },
+        {
+          "name": "RDW-CV",
+          "code": "rdw-cv",
+          "unit": "A %",
+          "reference": "11,5-14,5"
+        },
+        {
+          "name": "MPV",
+          "code": "mpv",
+          "unit": "fL",
+          "reference": "7,0-12,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 2,
+      "title": "Rozmaz krwi obwodowej - ocena mikroskopowa",
+      "category": "blood",
+      "categoryLabel": "Hematologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Neutrofile segmentowane",
+          "code": "neutrofile-segmentowane",
+          "unit": "%",
+          "reference": "40-70"
+        },
+        {
+          "name": "Neutrofile pałeczkowate",
+          "code": "neutrofile-paeczkowate",
+          "unit": "%",
+          "reference": "0-5"
+        },
+        {
+          "name": "Limfocyty",
+          "code": "limfocyty",
+          "unit": "%",
+          "reference": "20-45"
+        },
+        {
+          "name": "Monocyty",
+          "code": "monocyty",
+          "unit": "%",
+          "reference": "2-10"
+        },
+        {
+          "name": "Eozynofile",
+          "code": "eozynofile",
+          "unit": "%",
+          "reference": "0-5"
+        },
+        {
+          "name": "Bazofile",
+          "code": "bazofile",
+          "unit": "%",
+          "reference": "0-1"
+        },
+        {
+          "name": "Erytroblasty",
+          "code": "erytroblasty",
+          "unit": "/100 WBC",
+          "reference": "0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 3,
+      "title": "Retikulocyty i parametry odnowy erytropoezy",
+      "category": "blood",
+      "categoryLabel": "Hematologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Retikulocyty",
+          "code": "retikulocyty",
+          "unit": "%",
+          "reference": "0,5-2,0"
+        },
+        {
+          "name": "RET#",
+          "code": "ret",
+          "unit": "10^12/L",
+          "reference": "0,025-0,100"
+        },
+        {
+          "name": "IRF",
+          "code": "irf",
+          "unit": "%",
+          "reference": "3,0-15,0"
+        },
+        {
+          "name": "RET-He",
+          "code": "ret-he",
+          "unit": "pg",
+          "reference": "28,0-35,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 4,
+      "title": "Odczyn Biernackiego (OB)",
+      "category": "blood",
+      "categoryLabel": "Hematologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "OB po 1 h",
+          "code": "ob-po-1-h",
+          "unit": "mm/h",
+          "reference": "0-15"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 5,
+      "title": "Koagulogram podstawowy",
+      "category": "blood",
+      "categoryLabel": "Hematologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "PT",
+          "code": "pt",
+          "unit": "s",
+          "reference": "10,0-13,0"
+        },
+        {
+          "name": "INR",
+          "code": "inr",
+          "unit": null,
+          "reference": "0,80-1,20"
+        },
+        {
+          "name": "APTT",
+          "code": "aptt",
+          "unit": "s",
+          "reference": "25,0-36,0"
+        },
+        {
+          "name": "TT",
+          "code": "tt",
+          "unit": "s",
+          "reference": "14,0-21,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 6,
+      "title": "Fibrynogen i D-dimer",
+      "category": "blood",
+      "categoryLabel": "Hematologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Fibrynogen",
+          "code": "fibrynogen",
+          "unit": "g/L",
+          "reference": "2,0-4,0"
+        },
+        {
+          "name": "D-dimer",
+          "code": "d-dimer",
+          "unit": "ng/mL FEU",
+          "reference": "< 500"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 7,
+      "title": "Grupa krwi i przegląd przeciwciał",
+      "category": "blood",
+      "categoryLabel": "Hematologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Układ ABO",
+          "code": "ukad-abo",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Antygen D (Rh)",
+          "code": "antygen-d-rh",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Przeciwciała odpornościowe",
+          "code": "przeciwciaa-odpornosciowe",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 8,
+      "title": "Elektrolity surowicy",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Sód",
+          "code": "sod",
+          "unit": "mmol/L",
+          "reference": "136-145"
+        },
+        {
+          "name": "Potas",
+          "code": "potas",
+          "unit": "mmol/L",
+          "reference": "3,5-5,1"
+        },
+        {
+          "name": "Chlorki",
+          "code": "chlorki",
+          "unit": "mmol/L",
+          "reference": "98-107"
+        },
+        {
+          "name": "Magnez",
+          "code": "magnez",
+          "unit": "mmol/L",
+          "reference": "0,66-1,07"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 9,
+      "title": "Panel nerkowy",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Kreatynina",
+          "code": "kreatynina",
+          "unit": "mg/dL",
+          "reference": "0,70-1,20"
+        },
+        {
+          "name": "eGFR CKD-EPI",
+          "code": "egfr-ckd-epi",
+          "unit": "mL/min/1,73m2",
+          "reference": ">= 90"
+        },
+        {
+          "name": "Mocznik",
+          "code": "mocznik",
+          "unit": "mg/dL",
+          "reference": "17-43"
+        },
+        {
+          "name": "Kwas moczowy",
+          "code": "kwas-moczowy",
+          "unit": "mg/dL",
+          "reference": "3,4-7,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 10,
+      "title": "Panel wątrobowy",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "ALT",
+          "code": "alt",
+          "unit": "U/L",
+          "reference": "< 45"
+        },
+        {
+          "name": "AST",
+          "code": "ast",
+          "unit": "U/L",
+          "reference": "< 40"
+        },
+        {
+          "name": "ALP",
+          "code": "alp",
+          "unit": "U/L",
+          "reference": "40-130"
+        },
+        {
+          "name": "GGTP",
+          "code": "ggtp",
+          "unit": "U/L",
+          "reference": "< 60"
+        },
+        {
+          "name": "Bilirubina całkowita",
+          "code": "bilirubina-cakowita",
+          "unit": "mg/dL",
+          "reference": "0,2-1,2"
+        },
+        {
+          "name": "Albumina",
+          "code": "albumina",
+          "unit": "g/dL",
+          "reference": "3,5-5,2"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 11,
+      "title": "Lipidogram",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Cholesterol całkowity",
+          "code": "cholesterol-cakowity",
+          "unit": "mg/dL",
+          "reference": "< 190"
+        },
+        {
+          "name": "HDL",
+          "code": "hdl",
+          "unit": "mg/dL",
+          "reference": "> 40"
+        },
+        {
+          "name": "LDL wyliczany",
+          "code": "ldl-wyliczany",
+          "unit": "mg/dL",
+          "reference": "< 115"
+        },
+        {
+          "name": "Triglicerydy",
+          "code": "triglicerydy",
+          "unit": "mg/dL",
+          "reference": "< 150"
+        },
+        {
+          "name": "non-HDL",
+          "code": "non-hdl",
+          "unit": "mg/dL",
+          "reference": "< 145"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 12,
+      "title": "Glukoza na czczo",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Glukoza",
+          "code": "glukoza",
+          "unit": "mg/dL",
+          "reference": "70-99"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 13,
+      "title": "Doustny test tolerancji glukozy 75 g (OGTT)",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Glukoza 0 min",
+          "code": "glukoza-0-min",
+          "unit": "mg/dL",
+          "reference": "70-99"
+        },
+        {
+          "name": "Glukoza 60 min",
+          "code": "glukoza-60-min",
+          "unit": "mg/dL",
+          "reference": "wartość informacyjna"
+        },
+        {
+          "name": "Glukoza 120 min",
+          "code": "glukoza-120-min",
+          "unit": "mg/dL",
+          "reference": "< 140"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 14,
+      "title": "Hemoglobina glikowana HbA1c",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "HbA1c (NGSP)",
+          "code": "hba1c-ngsp",
+          "unit": "%",
+          "reference": "4,0-5,6"
+        },
+        {
+          "name": "HbA1c (IFCC)",
+          "code": "hba1c-ifcc",
+          "unit": "mmol/mol",
+          "reference": "20-38"
+        },
+        {
+          "name": "eAG",
+          "code": "eag",
+          "unit": "mg/dL",
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 15,
+      "title": "Gospodarka żelazowa",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Żelazo",
+          "code": "zelazo",
+          "unit": "µg/dL",
+          "reference": "59-158"
+        },
+        {
+          "name": "Ferrytyna",
+          "code": "ferrytyna",
+          "unit": "ng/mL",
+          "reference": "30-400"
+        },
+        {
+          "name": "Transferryna",
+          "code": "transferryna",
+          "unit": "mg/dL",
+          "reference": "200-360"
+        },
+        {
+          "name": "TIBC",
+          "code": "tibc",
+          "unit": "µg/dL",
+          "reference": "250-450"
+        },
+        {
+          "name": "Wysycenie transferryny",
+          "code": "wysycenie-transferryny",
+          "unit": "%",
+          "reference": "20-45"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 16,
+      "title": "Witamina B12 i kwas foliowy",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Witamina B12",
+          "code": "witamina-b12",
+          "unit": "pg/mL",
+          "reference": "197-771"
+        },
+        {
+          "name": "Kwas foliowy",
+          "code": "kwas-foliowy",
+          "unit": "ng/mL",
+          "reference": "4,6-18,7"
+        },
+        {
+          "name": "Homocysteina",
+          "code": "homocysteina",
+          "unit": "µmol/L",
+          "reference": "5,0-15,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 17,
+      "title": "Witamina D i gospodarka mineralna",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "25(OH)D",
+          "code": "25-oh-d",
+          "unit": "ng/mL",
+          "reference": "30-50"
+        },
+        {
+          "name": "Wapń całkowity",
+          "code": "wapn-cakowity",
+          "unit": "mg/dL",
+          "reference": "8,6-10,2"
+        },
+        {
+          "name": "Fosforany",
+          "code": "fosforany",
+          "unit": "mg/dL",
+          "reference": "2,5-4,5"
+        },
+        {
+          "name": "Magnez",
+          "code": "magnez",
+          "unit": "mmol/L",
+          "reference": "0,66-1,07"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 18,
+      "title": "Enzymy trzustkowe",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Amylaza",
+          "code": "amylaza",
+          "unit": "U/L",
+          "reference": "28-100"
+        },
+        {
+          "name": "Lipaza",
+          "code": "lipaza",
+          "unit": "U/L",
+          "reference": "13-60"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 19,
+      "title": "Markery uszkodzenia mięśnia sercowego",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Troponina T hs",
+          "code": "troponina-t-hs",
+          "unit": "ng/L",
+          "reference": "< 14"
+        },
+        {
+          "name": "CK-MB mass",
+          "code": "ck-mb-mass",
+          "unit": "ng/mL",
+          "reference": "< 4,9"
+        },
+        {
+          "name": "NT-proBNP",
+          "code": "nt-probnp",
+          "unit": "pg/mL",
+          "reference": "< 125"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 20,
+      "title": "Markery stanu zapalnego",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "CRP",
+          "code": "crp",
+          "unit": "mg/L",
+          "reference": "< 5,0"
+        },
+        {
+          "name": "Prokalcytonina",
+          "code": "prokalcytonina",
+          "unit": "ng/mL",
+          "reference": "< 0,05"
+        },
+        {
+          "name": "Ferrytyna",
+          "code": "ferrytyna",
+          "unit": "ng/mL",
+          "reference": "30-400"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 21,
+      "title": "Elektroforeza białek surowicy",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Białko całkowite",
+          "code": "biako-cakowite",
+          "unit": "g/dL",
+          "reference": "6,4-8,3"
+        },
+        {
+          "name": "Albumina",
+          "code": "albumina",
+          "unit": "%",
+          "reference": "55,8-66,1"
+        },
+        {
+          "name": "Alfa-1",
+          "code": "alfa-1",
+          "unit": "%",
+          "reference": "2,9-4,9"
+        },
+        {
+          "name": "Alfa-2",
+          "code": "alfa-2",
+          "unit": "%",
+          "reference": "7,1-11,8"
+        },
+        {
+          "name": "Beta-1",
+          "code": "beta-1",
+          "unit": "%",
+          "reference": "4,7-7,2"
+        },
+        {
+          "name": "Beta-2",
+          "code": "beta-2",
+          "unit": "%",
+          "reference": "3,2-6,5"
+        },
+        {
+          "name": "Gamma",
+          "code": "gamma",
+          "unit": "%",
+          "reference": "11,1-18,8"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 22,
+      "title": "Kwas moczowy",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Kwas moczowy",
+          "code": "kwas-moczowy",
+          "unit": "mg/dL",
+          "reference": "3,4-7,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 23,
+      "title": "Enzymy mięśniowe",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "CK",
+          "code": "ck",
+          "unit": "U/L",
+          "reference": "39-308"
+        },
+        {
+          "name": "LDH",
+          "code": "ldh",
+          "unit": "U/L",
+          "reference": "135-225"
+        },
+        {
+          "name": "AST",
+          "code": "ast",
+          "unit": "U/L",
+          "reference": "< 40"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 24,
+      "title": "Osmolalność surowicy",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Osmolalność zmierzona",
+          "code": "osmolalnosc-zmierzona",
+          "unit": "mOsm/kg",
+          "reference": "275-295"
+        },
+        {
+          "name": "Osmolalność wyliczona",
+          "code": "osmolalnosc-wyliczona",
+          "unit": "mOsm/kg",
+          "reference": null
+        },
+        {
+          "name": "Luka osmolalna",
+          "code": "luka-osmolalna",
+          "unit": "mOsm/kg",
+          "reference": "< 10"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 25,
+      "title": "Mleczany",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Mleczany",
+          "code": "mleczany",
+          "unit": "mmol/L",
+          "reference": "0,5-2,2"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 26,
+      "title": "Gazometria krwi tętniczej",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "pH",
+          "code": "ph",
+          "unit": null,
+          "reference": "7,35-7,45"
+        },
+        {
+          "name": "pCO2",
+          "code": "pco2",
+          "unit": "mmHg",
+          "reference": "35-45"
+        },
+        {
+          "name": "pO2",
+          "code": "po2",
+          "unit": "mmHg",
+          "reference": "80-100"
+        },
+        {
+          "name": "HCO3-",
+          "code": "hco3",
+          "unit": "mmol/L",
+          "reference": "22-26"
+        },
+        {
+          "name": "BE",
+          "code": "be",
+          "unit": "mmol/L",
+          "reference": "-2,0 do +2,0"
+        },
+        {
+          "name": "sO2",
+          "code": "so2",
+          "unit": "%",
+          "reference": "95-99"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 27,
+      "title": "Gazometria krwi żylnej",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "pH",
+          "code": "ph",
+          "unit": null,
+          "reference": "7,32-7,43"
+        },
+        {
+          "name": "pCO2",
+          "code": "pco2",
+          "unit": "mmHg",
+          "reference": "41-51"
+        },
+        {
+          "name": "pO2",
+          "code": "po2",
+          "unit": "mmHg",
+          "reference": "25-40"
+        },
+        {
+          "name": "HCO3-",
+          "code": "hco3",
+          "unit": "mmol/L",
+          "reference": "22-29"
+        },
+        {
+          "name": "BE",
+          "code": "be",
+          "unit": "mmol/L",
+          "reference": "-2,0 do +3,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 28,
+      "title": "Panel markerów nowotworowych",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "CEA",
+          "code": "cea",
+          "unit": "ng/mL",
+          "reference": "< 5,0"
+        },
+        {
+          "name": "CA 19-9",
+          "code": "ca-19-9",
+          "unit": "U/mL",
+          "reference": "< 37"
+        },
+        {
+          "name": "CA 125",
+          "code": "ca-125",
+          "unit": "U/mL",
+          "reference": "< 35"
+        },
+        {
+          "name": "AFP",
+          "code": "afp",
+          "unit": "ng/mL",
+          "reference": "< 7,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 29,
+      "title": "PSA całkowity i wolny",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "PSA całkowity",
+          "code": "psa-cakowity",
+          "unit": "ng/mL",
+          "reference": "< 4,0"
+        },
+        {
+          "name": "PSA wolny",
+          "code": "psa-wolny",
+          "unit": "ng/mL",
+          "reference": null
+        },
+        {
+          "name": "fPSA/PSA",
+          "code": "fpsa-psa",
+          "unit": "%",
+          "reference": "> 25"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 30,
+      "title": "β-hCG ilościowo",
+      "category": "biochemistry",
+      "categoryLabel": "Biochemia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "β-hCG",
+          "code": "hcg",
+          "unit": "mIU/mL",
+          "reference": "< 5 (nieciężarne)"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 31,
+      "title": "Panel tarczycowy",
+      "category": "hormones",
+      "categoryLabel": "Hormony",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "TSH",
+          "code": "tsh",
+          "unit": "µIU/mL",
+          "reference": "0,27-4,20"
+        },
+        {
+          "name": "fT4",
+          "code": "ft4",
+          "unit": "ng/dL",
+          "reference": "0,93-1,70"
+        },
+        {
+          "name": "fT3",
+          "code": "ft3",
+          "unit": "pg/mL",
+          "reference": "2,0-4,4"
+        },
+        {
+          "name": "anty-TPO",
+          "code": "anty-tpo",
+          "unit": "IU/mL",
+          "reference": "< 34"
+        },
+        {
+          "name": "anty-TG",
+          "code": "anty-tg",
+          "unit": "IU/mL",
+          "reference": "< 115"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 32,
+      "title": "Hormony płciowe - faza folikularna",
+      "category": "hormones",
+      "categoryLabel": "Hormony",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "FSH",
+          "code": "fsh",
+          "unit": "mIU/mL",
+          "reference": "3,5-12,5"
+        },
+        {
+          "name": "LH",
+          "code": "lh",
+          "unit": "mIU/mL",
+          "reference": "2,4-12,6"
+        },
+        {
+          "name": "Estradiol",
+          "code": "estradiol",
+          "unit": "pg/mL",
+          "reference": "12,5-166"
+        },
+        {
+          "name": "Progesteron",
+          "code": "progesteron",
+          "unit": "ng/mL",
+          "reference": "0,2-1,5"
+        },
+        {
+          "name": "AMH",
+          "code": "amh",
+          "unit": "ng/mL",
+          "reference": "0,5-7,5"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 33,
+      "title": "Hormony płciowe - faza lutealna",
+      "category": "hormones",
+      "categoryLabel": "Hormony",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "FSH",
+          "code": "fsh",
+          "unit": "mIU/mL",
+          "reference": "1,7-7,7"
+        },
+        {
+          "name": "LH",
+          "code": "lh",
+          "unit": "mIU/mL",
+          "reference": "1,0-11,4"
+        },
+        {
+          "name": "Estradiol",
+          "code": "estradiol",
+          "unit": "pg/mL",
+          "reference": "43,8-211"
+        },
+        {
+          "name": "Progesteron",
+          "code": "progesteron",
+          "unit": "ng/mL",
+          "reference": "1,7-27,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 34,
+      "title": "Panel androgenowy",
+      "category": "hormones",
+      "categoryLabel": "Hormony",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Testosteron całkowity",
+          "code": "testosteron-cakowity",
+          "unit": "ng/mL",
+          "reference": "2,49-8,36"
+        },
+        {
+          "name": "SHBG",
+          "code": "shbg",
+          "unit": "nmol/L",
+          "reference": "18,3-54,1"
+        },
+        {
+          "name": "Testosteron wolny wyliczony",
+          "code": "testosteron-wolny-wyliczony",
+          "unit": "pg/mL",
+          "reference": "47-244"
+        },
+        {
+          "name": "DHEA-S",
+          "code": "dhea-s",
+          "unit": "µg/dL",
+          "reference": "80-560"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 35,
+      "title": "Prolaktyna i test z metoklopramidem",
+      "category": "hormones",
+      "categoryLabel": "Hormony",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Prolaktyna 0 min",
+          "code": "prolaktyna-0-min",
+          "unit": "ng/mL",
+          "reference": "4,0-15,2"
+        },
+        {
+          "name": "Prolaktyna 60 min",
+          "code": "prolaktyna-60-min",
+          "unit": "ng/mL",
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 36,
+      "title": "Panel nadnerczowy",
+      "category": "hormones",
+      "categoryLabel": "Hormony",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Kortyzol 08:00",
+          "code": "kortyzol-08-00",
+          "unit": "µg/dL",
+          "reference": "6,2-19,4"
+        },
+        {
+          "name": "ACTH",
+          "code": "acth",
+          "unit": "pg/mL",
+          "reference": "7,2-63,3"
+        },
+        {
+          "name": "Aldosteron",
+          "code": "aldosteron",
+          "unit": "ng/dL",
+          "reference": "3,7-31,0"
+        },
+        {
+          "name": "Renina bezpośrednia",
+          "code": "renina-bezposrednia",
+          "unit": "mIU/L",
+          "reference": "4,4-46,1"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 37,
+      "title": "Insulina, C-peptyd i HOMA-IR",
+      "category": "hormones",
+      "categoryLabel": "Hormony",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Glukoza na czczo",
+          "code": "glukoza-na-czczo",
+          "unit": "mg/dL",
+          "reference": "70-99"
+        },
+        {
+          "name": "Insulina",
+          "code": "insulina",
+          "unit": "µIU/mL",
+          "reference": "2,6-24,9"
+        },
+        {
+          "name": "C-peptyd",
+          "code": "c-peptyd",
+          "unit": "ng/mL",
+          "reference": "1,1-4,4"
+        },
+        {
+          "name": "HOMA-IR",
+          "code": "homa-ir",
+          "unit": null,
+          "reference": "< 2,5"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 38,
+      "title": "PTH i wapń zjonizowany",
+      "category": "hormones",
+      "categoryLabel": "Hormony",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "PTH intact",
+          "code": "pth-intact",
+          "unit": "pg/mL",
+          "reference": "15-65"
+        },
+        {
+          "name": "Wapń zjonizowany",
+          "code": "wapn-zjonizowany",
+          "unit": "mmol/L",
+          "reference": "1,15-1,33"
+        },
+        {
+          "name": "Fosforany",
+          "code": "fosforany",
+          "unit": "mg/dL",
+          "reference": "2,5-4,5"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 39,
+      "title": "Oś GH/IGF-1",
+      "category": "hormones",
+      "categoryLabel": "Hormony",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "IGF-1",
+          "code": "igf-1",
+          "unit": "ng/mL",
+          "reference": "127-330"
+        },
+        {
+          "name": "GH losowe",
+          "code": "gh-losowe",
+          "unit": "ng/mL",
+          "reference": "0,03-2,47"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 40,
+      "title": "Badanie prenatalne - I trymestr (biochemia)",
+      "category": "hormones",
+      "categoryLabel": "Hormony",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "PAPP-A",
+          "code": "papp-a",
+          "unit": "MoM",
+          "reference": "0,5-2,0"
+        },
+        {
+          "name": "wolna β-hCG",
+          "code": "wolna-hcg",
+          "unit": "MoM",
+          "reference": "0,5-2,0"
+        },
+        {
+          "name": "Ryzyko T21",
+          "code": "ryzyko-t21",
+          "unit": null,
+          "reference": "niższe niż 1:300"
+        },
+        {
+          "name": "Ryzyko T18",
+          "code": "ryzyko-t18",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 41,
+      "title": "Test potrójny - II trymestr",
+      "category": "hormones",
+      "categoryLabel": "Hormony",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "AFP",
+          "code": "afp",
+          "unit": "MoM",
+          "reference": "0,5-2,5"
+        },
+        {
+          "name": "hCG",
+          "code": "hcg",
+          "unit": "MoM",
+          "reference": "0,5-2,0"
+        },
+        {
+          "name": "uE3",
+          "code": "ue3",
+          "unit": "MoM",
+          "reference": "0,5-2,0"
+        },
+        {
+          "name": "Ryzyko T21",
+          "code": "ryzyko-t21",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 42,
+      "title": "ANA metodą IIF",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "ANA",
+          "code": "ana",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Miano",
+          "code": "miano",
+          "unit": null,
+          "reference": "< 1:160"
+        },
+        {
+          "name": "Typ świecenia",
+          "code": "typ-swiecenia",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 43,
+      "title": "Panel ENA",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "anty-SSA/Ro",
+          "code": "anty-ssa-ro",
+          "unit": "U/mL",
+          "reference": "< 10"
+        },
+        {
+          "name": "anty-SSB/La",
+          "code": "anty-ssb-la",
+          "unit": "U/mL",
+          "reference": "< 10"
+        },
+        {
+          "name": "anty-Sm",
+          "code": "anty-sm",
+          "unit": "U/mL",
+          "reference": "< 10"
+        },
+        {
+          "name": "anty-RNP",
+          "code": "anty-rnp",
+          "unit": "U/mL",
+          "reference": "< 10"
+        },
+        {
+          "name": "anty-Scl-70",
+          "code": "anty-scl-70",
+          "unit": "U/mL",
+          "reference": "< 10"
+        },
+        {
+          "name": "anty-Jo-1",
+          "code": "anty-jo-1",
+          "unit": "U/mL",
+          "reference": "< 10"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 44,
+      "title": "Diagnostyka reumatologiczna",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "RF",
+          "code": "rf",
+          "unit": "IU/mL",
+          "reference": "< 14"
+        },
+        {
+          "name": "anty-CCP",
+          "code": "anty-ccp",
+          "unit": "U/mL",
+          "reference": "< 17"
+        },
+        {
+          "name": "CRP",
+          "code": "crp",
+          "unit": "mg/L",
+          "reference": "< 5"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 45,
+      "title": "Serologia celiakii",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "anty-tTG IgA",
+          "code": "anty-ttg-iga",
+          "unit": "U/mL",
+          "reference": "< 10"
+        },
+        {
+          "name": "anty-EMA IgA",
+          "code": "anty-ema-iga",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "IgA całkowite",
+          "code": "iga-cakowite",
+          "unit": "g/L",
+          "reference": "0,70-4,00"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 46,
+      "title": "Immunoglobuliny",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "IgG",
+          "code": "igg",
+          "unit": "g/L",
+          "reference": "7,0-16,0"
+        },
+        {
+          "name": "IgA",
+          "code": "iga",
+          "unit": "g/L",
+          "reference": "0,70-4,00"
+        },
+        {
+          "name": "IgM",
+          "code": "igm",
+          "unit": "g/L",
+          "reference": "0,40-2,30"
+        },
+        {
+          "name": "IgE całkowite",
+          "code": "ige-cakowite",
+          "unit": "IU/mL",
+          "reference": "< 100"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 47,
+      "title": "Składowe dopełniacza",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "C3",
+          "code": "c3",
+          "unit": "g/L",
+          "reference": "0,90-1,80"
+        },
+        {
+          "name": "C4",
+          "code": "c4",
+          "unit": "g/L",
+          "reference": "0,10-0,40"
+        },
+        {
+          "name": "CH50",
+          "code": "ch50",
+          "unit": "U/mL",
+          "reference": "31-60"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 48,
+      "title": "Panel alergii wziewnych - sIgE",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Roztocze D. pteronyssinus",
+          "code": "roztocze-d-pteronyssinus",
+          "unit": "kUA/L",
+          "reference": "< 0,35"
+        },
+        {
+          "name": "Brzoza",
+          "code": "brzoza",
+          "unit": "kUA/L",
+          "reference": "< 0,35"
+        },
+        {
+          "name": "Tymotka łąkowa",
+          "code": "tymotka-akowa",
+          "unit": "kUA/L",
+          "reference": "< 0,35"
+        },
+        {
+          "name": "Sierść kota",
+          "code": "siersc-kota",
+          "unit": "kUA/L",
+          "reference": "< 0,35"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 49,
+      "title": "Panel alergii pokarmowych - sIgE",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Białko jaja",
+          "code": "biako-jaja",
+          "unit": "kUA/L",
+          "reference": "< 0,35"
+        },
+        {
+          "name": "Mleko krowie",
+          "code": "mleko-krowie",
+          "unit": "kUA/L",
+          "reference": "< 0,35"
+        },
+        {
+          "name": "Orzech ziemny",
+          "code": "orzech-ziemny",
+          "unit": "kUA/L",
+          "reference": "< 0,35"
+        },
+        {
+          "name": "Pszenica",
+          "code": "pszenica",
+          "unit": "kUA/L",
+          "reference": "< 0,35"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 50,
+      "title": "Badania przesiewowe HIV, HBV i HCV",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "HIV Ag/Ab Combo",
+          "code": "hiv-ag-ab-combo",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "HBsAg",
+          "code": "hbsag",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "anty-HBc total",
+          "code": "anty-hbc-total",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "anty-HBs",
+          "code": "anty-hbs",
+          "unit": "mIU/mL",
+          "reference": ">= 10"
+        },
+        {
+          "name": "anty-HCV",
+          "code": "anty-hcv",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 51,
+      "title": "Serologia EBV i CMV",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "EBV VCA IgM",
+          "code": "ebv-vca-igm",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "EBV VCA IgG",
+          "code": "ebv-vca-igg",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "EBNA IgG",
+          "code": "ebna-igg",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "CMV IgM",
+          "code": "cmv-igm",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "CMV IgG",
+          "code": "cmv-igg",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 52,
+      "title": "Toksoplazmoza i różyczka - serologia",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Toxoplasma IgM",
+          "code": "toxoplasma-igm",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Toxoplasma IgG",
+          "code": "toxoplasma-igg",
+          "unit": "IU/mL",
+          "reference": "< 7,2 ujemny"
+        },
+        {
+          "name": "Rubella IgM",
+          "code": "rubella-igm",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Rubella IgG",
+          "code": "rubella-igg",
+          "unit": "IU/mL",
+          "reference": ">= 10 odporność"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 53,
+      "title": "Borelioza - test dwustopniowy",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Borrelia IgM ELISA",
+          "code": "borrelia-igm-elisa",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Borrelia IgG ELISA",
+          "code": "borrelia-igg-elisa",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Immunoblot IgM",
+          "code": "immunoblot-igm",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Immunoblot IgG",
+          "code": "immunoblot-igg",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 54,
+      "title": "Kiła - serologia",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "VDRL",
+          "code": "vdrl",
+          "unit": null,
+          "reference": "niereaktywny"
+        },
+        {
+          "name": "TPHA",
+          "code": "tpha",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 55,
+      "title": "IGRA - test uwalniania interferonu gamma",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Nil",
+          "code": "nil",
+          "unit": "IU/mL",
+          "reference": null
+        },
+        {
+          "name": "TB1-Nil",
+          "code": "tb1-nil",
+          "unit": "IU/mL",
+          "reference": "< 0,35"
+        },
+        {
+          "name": "TB2-Nil",
+          "code": "tb2-nil",
+          "unit": "IU/mL",
+          "reference": "< 0,35"
+        },
+        {
+          "name": "Mitogen-Nil",
+          "code": "mitogen-nil",
+          "unit": "IU/mL",
+          "reference": ">= 0,50"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 56,
+      "title": "Przeciwciała w cukrzycy autoimmunologicznej",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "anty-GAD",
+          "code": "anty-gad",
+          "unit": "IU/mL",
+          "reference": "< 10"
+        },
+        {
+          "name": "IA-2",
+          "code": "ia-2",
+          "unit": "U/mL",
+          "reference": "< 7,5"
+        },
+        {
+          "name": "ZnT8",
+          "code": "znt8",
+          "unit": "U/mL",
+          "reference": "< 15"
+        },
+        {
+          "name": "ICA",
+          "code": "ica",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 57,
+      "title": "Panel antyfosfolipidowy",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Antykoagulant toczniowy",
+          "code": "antykoagulant-toczniowy",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "aCL IgG",
+          "code": "acl-igg",
+          "unit": "GPL U/mL",
+          "reference": "< 20"
+        },
+        {
+          "name": "aCL IgM",
+          "code": "acl-igm",
+          "unit": "MPL U/mL",
+          "reference": "< 20"
+        },
+        {
+          "name": "β2GPI IgG",
+          "code": "2gpi-igg",
+          "unit": "U/mL",
+          "reference": "< 20"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 58,
+      "title": "Ocena odporności poszczepiennej",
+      "category": "immunology",
+      "categoryLabel": "Immunologia i serologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "anty-HBs",
+          "code": "anty-hbs",
+          "unit": "mIU/mL",
+          "reference": ">= 10"
+        },
+        {
+          "name": "Przeciwciała p/odrze IgG",
+          "code": "przeciwciaa-p-odrze-igg",
+          "unit": null,
+          "reference": "dodatni = odporność"
+        },
+        {
+          "name": "Przeciwciała p/ospie IgG",
+          "code": "przeciwciaa-p-ospie-igg",
+          "unit": null,
+          "reference": "dodatni = odporność"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 59,
+      "title": "Badanie ogólne moczu",
+      "category": "urine",
+      "categoryLabel": "Badania moczu",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Barwa",
+          "code": "barwa",
+          "unit": null,
+          "reference": "słomkowa-żółta"
+        },
+        {
+          "name": "Przejrzystość",
+          "code": "przejrzystosc",
+          "unit": null,
+          "reference": "przejrzysty"
+        },
+        {
+          "name": "Ciężar właściwy",
+          "code": "ciezar-wasciwy",
+          "unit": null,
+          "reference": "1,005-1,030"
+        },
+        {
+          "name": "pH",
+          "code": "ph",
+          "unit": null,
+          "reference": "5,0-7,5"
+        },
+        {
+          "name": "Białko",
+          "code": "biako",
+          "unit": "mg/dL",
+          "reference": "ujemne"
+        },
+        {
+          "name": "Glukoza",
+          "code": "glukoza",
+          "unit": null,
+          "reference": "ujemna"
+        },
+        {
+          "name": "Ketony",
+          "code": "ketony",
+          "unit": "mg/dL",
+          "reference": "ujemne"
+        },
+        {
+          "name": "Azotyny",
+          "code": "azotyny",
+          "unit": null,
+          "reference": "ujemne"
+        },
+        {
+          "name": "Leukocyty",
+          "code": "leukocyty",
+          "unit": "A Leu/µL",
+          "reference": "ujemne"
+        },
+        {
+          "name": "Krew",
+          "code": "krew",
+          "unit": "Ery/µL",
+          "reference": "ujemne"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 60,
+      "title": "Osad moczu - mikroskopia",
+      "category": "urine",
+      "categoryLabel": "Badania moczu",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Leukocyty",
+          "code": "leukocyty",
+          "unit": "w p.w.",
+          "reference": "0-5"
+        },
+        {
+          "name": "Erytrocyty świeże",
+          "code": "erytrocyty-swieze",
+          "unit": "w p.w.",
+          "reference": "0-3"
+        },
+        {
+          "name": "Nabłonki płaskie",
+          "code": "nabonki-paskie",
+          "unit": "w p.w.",
+          "reference": "pojedyncze"
+        },
+        {
+          "name": "Bakterie",
+          "code": "bakterie",
+          "unit": "w p.w.",
+          "reference": "nieobecne"
+        },
+        {
+          "name": "Wałeczki szkliste",
+          "code": "waeczki-szkliste",
+          "unit": "w p.w.",
+          "reference": "0-1"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 61,
+      "title": "Albumina i białko w moczu - wskaźniki",
+      "category": "urine",
+      "categoryLabel": "Badania moczu",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Albumina",
+          "code": "albumina",
+          "unit": "mg/L",
+          "reference": "< 30"
+        },
+        {
+          "name": "Kreatynina w moczu",
+          "code": "kreatynina-w-moczu",
+          "unit": "mg/dL",
+          "reference": null
+        },
+        {
+          "name": "ACR",
+          "code": "acr",
+          "unit": "mg/g",
+          "reference": "< 30"
+        },
+        {
+          "name": "PCR",
+          "code": "pcr",
+          "unit": "g/g",
+          "reference": "< 0,15"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 62,
+      "title": "Dobowa zbiórka moczu",
+      "category": "urine",
+      "categoryLabel": "Badania moczu",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Objętość dobowa",
+          "code": "objetosc-dobowa",
+          "unit": "mL/24 h",
+          "reference": "800-2000"
+        },
+        {
+          "name": "Białko",
+          "code": "biako",
+          "unit": "mg/24 h",
+          "reference": "< 150"
+        },
+        {
+          "name": "Kreatynina",
+          "code": "kreatynina",
+          "unit": "g/24 h",
+          "reference": "0,8-2,0"
+        },
+        {
+          "name": "Sód",
+          "code": "sod",
+          "unit": "mmol/24 h",
+          "reference": "40-220"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 63,
+      "title": "Posiew moczu z antybiogramem",
+      "category": "urine",
+      "categoryLabel": "Badania moczu",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Wzrost",
+          "code": "wzrost",
+          "unit": null,
+          "reference": "brak wzrostu"
+        },
+        {
+          "name": "Liczba kolonii",
+          "code": "liczba-kolonii",
+          "unit": "CFU/mL",
+          "reference": "< 10^3"
+        },
+        {
+          "name": "Ampicylina",
+          "code": "ampicylina",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Amoksycylina/kw. klawulanowy",
+          "code": "amoksycylina-kw-klawulanowy",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Cefuroksym",
+          "code": "cefuroksym",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Ciprofloksacyna",
+          "code": "ciprofloksacyna",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Nitrofurantoina",
+          "code": "nitrofurantoina",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 64,
+      "title": "Test ciążowy z moczu",
+      "category": "urine",
+      "categoryLabel": "Badania moczu",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "hCG jakościowo",
+          "code": "hcg-jakosciowo",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 65,
+      "title": "Panel toksykologiczny w moczu",
+      "category": "urine",
+      "categoryLabel": "Badania moczu",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Amfetaminy",
+          "code": "amfetaminy",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Kokaina",
+          "code": "kokaina",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Kannabinoidy",
+          "code": "kannabinoidy",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Opiaty",
+          "code": "opiaty",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Benzodiazepiny",
+          "code": "benzodiazepiny",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Metadon",
+          "code": "metadon",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 66,
+      "title": "Badanie ogólne kału",
+      "category": "stool",
+      "categoryLabel": "Badania kału",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Konsystencja",
+          "code": "konsystencja",
+          "unit": null,
+          "reference": "uformowana"
+        },
+        {
+          "name": "Barwa",
+          "code": "barwa",
+          "unit": null,
+          "reference": "brązowa"
+        },
+        {
+          "name": "Śluz",
+          "code": "sluz",
+          "unit": null,
+          "reference": "nieobecny"
+        },
+        {
+          "name": "Krew widoczna",
+          "code": "krew-widoczna",
+          "unit": null,
+          "reference": "nieobecna"
+        },
+        {
+          "name": "Resztki pokarmowe",
+          "code": "resztki-pokarmowe",
+          "unit": null,
+          "reference": "nieliczne"
+        },
+        {
+          "name": "pH",
+          "code": "ph",
+          "unit": null,
+          "reference": "6,5-7,5"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 67,
+      "title": "Krew utajona w kale - FIT",
+      "category": "stool",
+      "categoryLabel": "Badania kału",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Hemoglobina w kale",
+          "code": "hemoglobina-w-kale",
+          "unit": "µg Hb/g",
+          "reference": "< 10"
+        },
+        {
+          "name": "Wynik jakościowy",
+          "code": "wynik-jakosciowy",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 68,
+      "title": "Kalprotektyna w kale",
+      "category": "stool",
+      "categoryLabel": "Badania kału",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Kalprotektyna",
+          "code": "kalprotektyna",
+          "unit": "µg/g",
+          "reference": "< 50"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 69,
+      "title": "Badanie parazytologiczne kału",
+      "category": "stool",
+      "categoryLabel": "Badania kału",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Jaja pasożytów",
+          "code": "jaja-pasozytow",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Cysty Giardia intestinalis",
+          "code": "cysty-giardia-intestinalis",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Antygen Cryptosporidium",
+          "code": "antygen-cryptosporidium",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 70,
+      "title": "Posiew kału",
+      "category": "stool",
+      "categoryLabel": "Badania kału",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Salmonella spp.",
+          "code": "salmonella-spp",
+          "unit": null,
+          "reference": "nie wyhodowano"
+        },
+        {
+          "name": "Shigella spp.",
+          "code": "shigella-spp",
+          "unit": null,
+          "reference": "nie wyhodowano"
+        },
+        {
+          "name": "Campylobacter jejuni",
+          "code": "campylobacter-jejuni",
+          "unit": null,
+          "reference": "nie wyhodowano"
+        },
+        {
+          "name": "Yersinia enterocolitica",
+          "code": "yersinia-enterocolitica",
+          "unit": null,
+          "reference": "nie wyhodowano"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 71,
+      "title": "Elastaza trzustkowa w kale",
+      "category": "stool",
+      "categoryLabel": "Badania kału",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Elastaza-1",
+          "code": "elastaza-1",
+          "unit": "µg/g",
+          "reference": "> 200"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 72,
+      "title": "Antygen Helicobacter pylori w kale",
+      "category": "stool",
+      "categoryLabel": "Badania kału",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Antygen H. pylori",
+          "code": "antygen-h-pylori",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 73,
+      "title": "Clostridioides difficile - toksyny i GDH",
+      "category": "stool",
+      "categoryLabel": "Badania kału",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "GDH",
+          "code": "gdh",
+          "unit": null,
+          "reference": "ujemny"
+        },
+        {
+          "name": "Toksyna A/B",
+          "code": "toksyna-a-b",
+          "unit": null,
+          "reference": "ujemna"
+        },
+        {
+          "name": "PCR genu toksyny B",
+          "code": "pcr-genu-toksyny-b",
+          "unit": null,
+          "reference": "ujemny"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 74,
+      "title": "Tłuszcz w kale - oznaczenie ilościowe",
+      "category": "stool",
+      "categoryLabel": "Badania kału",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Masa kału",
+          "code": "masa-kau",
+          "unit": "g/72 h",
+          "reference": null
+        },
+        {
+          "name": "Wydalanie tłuszczu",
+          "code": "wydalanie-tuszczu",
+          "unit": "g/24 h",
+          "reference": "< 7,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 75,
+      "title": "Wymaz z gardła - posiew",
+      "category": "microbiology",
+      "categoryLabel": "Mikrobiologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Streptococcus pyogenes",
+          "code": "streptococcus-pyogenes",
+          "unit": null,
+          "reference": "nie wyhodowano"
+        },
+        {
+          "name": "Wzrost",
+          "code": "wzrost",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Penicylina",
+          "code": "penicylina",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Erytromycyna",
+          "code": "erytromycyna",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Klindamycyna",
+          "code": "klindamycyna",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 76,
+      "title": "Wymaz z nosa - nosicielstwo",
+      "category": "microbiology",
+      "categoryLabel": "Mikrobiologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Staphylococcus aureus",
+          "code": "staphylococcus-aureus",
+          "unit": null,
+          "reference": "nie wyhodowano"
+        },
+        {
+          "name": "MRSA",
+          "code": "mrsa",
+          "unit": null,
+          "reference": "nie wykryto"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 77,
+      "title": "Wymaz z rany - posiew i antybiogram",
+      "category": "microbiology",
+      "categoryLabel": "Mikrobiologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Drobnoustrój",
+          "code": "drobnoustroj",
+          "unit": null,
+          "reference": "brak wzrostu"
+        },
+        {
+          "name": "Wzrost",
+          "code": "wzrost",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Piperacylina/tazobaktam",
+          "code": "piperacylina-tazobaktam",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Ceftazydym",
+          "code": "ceftazydym",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Meropenem",
+          "code": "meropenem",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Ciprofloksacyna",
+          "code": "ciprofloksacyna",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 78,
+      "title": "Posiew krwi",
+      "category": "microbiology",
+      "categoryLabel": "Mikrobiologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Butelka tlenowa 1",
+          "code": "butelka-tlenowa-1",
+          "unit": null,
+          "reference": "ujemna"
+        },
+        {
+          "name": "Butelka beztlenowa 1",
+          "code": "butelka-beztlenowa-1",
+          "unit": null,
+          "reference": "ujemna"
+        },
+        {
+          "name": "Identyfikacja",
+          "code": "identyfikacja",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "mecA/mecC",
+          "code": "meca-mecc",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Oksacylina",
+          "code": "oksacylina",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Wankomycyna",
+          "code": "wankomycyna",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 79,
+      "title": "Posiew plwociny",
+      "category": "microbiology",
+      "categoryLabel": "Mikrobiologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Jakość próbki",
+          "code": "jakosc-probki",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Neutrofile",
+          "code": "neutrofile",
+          "unit": "w polu widzenia",
+          "reference": null
+        },
+        {
+          "name": "Nabłonki płaskie",
+          "code": "nabonki-paskie",
+          "unit": "w polu widzenia",
+          "reference": null
+        },
+        {
+          "name": "Haemophilus influenzae",
+          "code": "haemophilus-influenzae",
+          "unit": null,
+          "reference": "brak wzrostu"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 80,
+      "title": "Wymaz z pochwy - posiew",
+      "category": "microbiology",
+      "categoryLabel": "Mikrobiologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Lactobacillus spp.",
+          "code": "lactobacillus-spp",
+          "unit": null,
+          "reference": "liczne"
+        },
+        {
+          "name": "Candida albicans",
+          "code": "candida-albicans",
+          "unit": null,
+          "reference": "brak wzrostu"
+        },
+        {
+          "name": "Gardnerella vaginalis",
+          "code": "gardnerella-vaginalis",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 81,
+      "title": "HPV wysokiego ryzyka - PCR",
+      "category": "microbiology",
+      "categoryLabel": "Mikrobiologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "HPV 16",
+          "code": "hpv-16",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "HPV 18",
+          "code": "hpv-18",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Inne HR-HPV",
+          "code": "inne-hr-hpv",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Kontrola materiału",
+          "code": "kontrola-materiau",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 82,
+      "title": "Panel STI metodą PCR",
+      "category": "microbiology",
+      "categoryLabel": "Mikrobiologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Chlamydia trachomatis",
+          "code": "chlamydia-trachomatis",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Neisseria gonorrhoeae",
+          "code": "neisseria-gonorrhoeae",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Mycoplasma genitalium",
+          "code": "mycoplasma-genitalium",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Trichomonas vaginalis",
+          "code": "trichomonas-vaginalis",
+          "unit": null,
+          "reference": "nie wykryto"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 83,
+      "title": "Panel oddechowy PCR",
+      "category": "microbiology",
+      "categoryLabel": "Mikrobiologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "SARS-CoV-2",
+          "code": "sars-cov-2",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Influenza A",
+          "code": "influenza-a",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Influenza B",
+          "code": "influenza-b",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "RSV",
+          "code": "rsv",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Kontrola wewnętrzna",
+          "code": "kontrola-wewnetrzna",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 84,
+      "title": "Badanie mykologiczne paznokcia",
+      "category": "microbiology",
+      "categoryLabel": "Mikrobiologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Preparat bezpośredni",
+          "code": "preparat-bezposredni",
+          "unit": null,
+          "reference": "nieobecne"
+        },
+        {
+          "name": "Hodowla",
+          "code": "hodowla",
+          "unit": null,
+          "reference": "brak wzrostu"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 85,
+      "title": "Screening MRSA",
+      "category": "microbiology",
+      "categoryLabel": "Mikrobiologia",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "MRSA PCR",
+          "code": "mrsa-pcr",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Kontrola amplifikacji",
+          "code": "kontrola-amplifikacji",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 86,
+      "title": "Cytologia szyjki macicy - system Bethesda",
+      "category": "pathology",
+      "categoryLabel": "Patomorfologia, cytologia i genetyka",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Adekwatność materiału",
+        "Rozpoznanie",
+        "Mikroorganizmy",
+        "Zalecenia"
+      ]
+    },
+    {
+      "page": 87,
+      "title": "Badanie histopatologiczne - biopsja żołądka",
+      "category": "pathology",
+      "categoryLabel": "Patomorfologia, cytologia i genetyka",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Opis makroskopowy",
+        "Opis mikroskopowy",
+        "Barwienia dodatkowe",
+        "Rozpoznanie końcowe"
+      ]
+    },
+    {
+      "page": 88,
+      "title": "Badanie histopatologiczne - wycinek skóry",
+      "category": "pathology",
+      "categoryLabel": "Patomorfologia, cytologia i genetyka",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Materiał",
+        "Mikroskopia",
+        "Rozpoznanie"
+      ]
+    },
+    {
+      "page": 89,
+      "title": "Mielogram - ocena szpiku kostnego",
+      "category": "pathology",
+      "categoryLabel": "Patomorfologia, cytologia i genetyka",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Komórkowość",
+          "code": "komorkowosc",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "M:E",
+          "code": "m-e",
+          "unit": null,
+          "reference": "2:1-4:1"
+        },
+        {
+          "name": "Blasty",
+          "code": "blasty",
+          "unit": "%",
+          "reference": "< 5"
+        },
+        {
+          "name": "Linia granulocytarna",
+          "code": "linia-granulocytarna",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Linia erytroidalna",
+          "code": "linia-erytroidalna",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Megakariocyty",
+          "code": "megakariocyty",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 90,
+      "title": "Cytometria przepływowa krwi obwodowej",
+      "category": "pathology",
+      "categoryLabel": "Patomorfologia, cytologia i genetyka",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Limfocyty B CD19+",
+          "code": "limfocyty-b-cd19",
+          "unit": "% limfocytów",
+          "reference": "5-20"
+        },
+        {
+          "name": "Limfocyty T CD3+",
+          "code": "limfocyty-t-cd3",
+          "unit": "% limfocytów",
+          "reference": "60-85"
+        },
+        {
+          "name": "CD4/CD8",
+          "code": "cd4-cd8",
+          "unit": null,
+          "reference": "1,0-3,5"
+        },
+        {
+          "name": "Kappa/Lambda",
+          "code": "kappa-lambda",
+          "unit": null,
+          "reference": "0,5-3,0"
+        },
+        {
+          "name": "Populacja aberrantna",
+          "code": "populacja-aberrantna",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 91,
+      "title": "Kariotyp klasyczny",
+      "category": "pathology",
+      "categoryLabel": "Patomorfologia, cytologia i genetyka",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Liczba analizowanych metafaz",
+          "code": "liczba-analizowanych-metafaz",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Rozdzielczość",
+          "code": "rozdzielczosc",
+          "unit": "prążków",
+          "reference": null
+        },
+        {
+          "name": "Wynik",
+          "code": "wynik",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 92,
+      "title": "Panel genetyczny trombofilii",
+      "category": "pathology",
+      "categoryLabel": "Patomorfologia, cytologia i genetyka",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "F5 Leiden c.1601G>A",
+          "code": "f5-leiden-c-1601g-a",
+          "unit": null,
+          "reference": "brak wariantu"
+        },
+        {
+          "name": "F2 c.*97G>A",
+          "code": "f2-c-97g-a",
+          "unit": null,
+          "reference": "brak wariantu"
+        },
+        {
+          "name": "MTHFR c.665C>T",
+          "code": "mthfr-c-665c-t",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 93,
+      "title": "Panel farmakogenetyczny",
+      "category": "pathology",
+      "categoryLabel": "Patomorfologia, cytologia i genetyka",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "CYP2C19",
+          "code": "cyp2c19",
+          "unit": null,
+          "reference": "pośredni metabolizer"
+        },
+        {
+          "name": "CYP2D6",
+          "code": "cyp2d6",
+          "unit": null,
+          "reference": "pośredni metabolizer"
+        },
+        {
+          "name": "SLCO1B1 c.521T>C",
+          "code": "slco1b1-c-521t-c",
+          "unit": null,
+          "reference": "zwiększone ryzyko miopatii"
+        },
+        {
+          "name": "VKORC1 -1639G>A",
+          "code": "vkorc1-1639g-a",
+          "unit": null,
+          "reference": "pośrednia wrażliwość"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 94,
+      "title": "Elektrokardiogram spoczynkowy",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Rytm",
+          "code": "rytm",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Częstość",
+          "code": "czestosc",
+          "unit": "/min",
+          "reference": "60-100"
+        },
+        {
+          "name": "PQ",
+          "code": "pq",
+          "unit": "ms",
+          "reference": "120-200"
+        },
+        {
+          "name": "QRS",
+          "code": "qrs",
+          "unit": "ms",
+          "reference": "< 120"
+        },
+        {
+          "name": "QTc Bazett",
+          "code": "qtc-bazett",
+          "unit": "ms",
+          "reference": "< 450"
+        },
+        {
+          "name": "Oś QRS",
+          "code": "os-qrs",
+          "unit": "°",
+          "reference": "-30 do +90"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 95,
+      "title": "Holter EKG 24 h",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Czas analizy",
+          "code": "czas-analizy",
+          "unit": "h:min",
+          "reference": null
+        },
+        {
+          "name": "Średnia HR",
+          "code": "srednia-hr",
+          "unit": "/min",
+          "reference": null
+        },
+        {
+          "name": "Min HR",
+          "code": "min-hr",
+          "unit": "/min",
+          "reference": null
+        },
+        {
+          "name": "Max HR",
+          "code": "max-hr",
+          "unit": "/min",
+          "reference": null
+        },
+        {
+          "name": "Pobudzenia komorowe",
+          "code": "pobudzenia-komorowe",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Pobudzenia nadkomorowe",
+          "code": "pobudzenia-nadkomorowe",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Najdłuższa pauza",
+          "code": "najduzsza-pauza",
+          "unit": "s",
+          "reference": "< 2,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 96,
+      "title": "Całodobowe monitorowanie ciśnienia tętniczego (ABPM)",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Średnie 24 h",
+          "code": "srednie-24-h",
+          "unit": "mmHg",
+          "reference": "< 130/80"
+        },
+        {
+          "name": "Średnie dzień",
+          "code": "srednie-dzien",
+          "unit": "mmHg",
+          "reference": "< 135/85"
+        },
+        {
+          "name": "Średnie noc",
+          "code": "srednie-noc",
+          "unit": "mmHg",
+          "reference": "< 120/70"
+        },
+        {
+          "name": "Spadek nocny SBP",
+          "code": "spadek-nocny-sbp",
+          "unit": "%",
+          "reference": "10-20"
+        },
+        {
+          "name": "Profil",
+          "code": "profil",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 97,
+      "title": "Spirometria z próbą rozkurczową",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "FVC przed",
+          "code": "fvc-przed",
+          "unit": "L / 84% należnej",
+          "reference": ">= 80%"
+        },
+        {
+          "name": "FEV1 przed",
+          "code": "fev1-przed",
+          "unit": "L / 64% należnej",
+          "reference": ">= 80%"
+        },
+        {
+          "name": "FEV1/FVC",
+          "code": "fev1-fvc",
+          "unit": "%",
+          "reference": ">= 70%"
+        },
+        {
+          "name": "FEV1 po leku",
+          "code": "fev1-po-leku",
+          "unit": "L",
+          "reference": null
+        },
+        {
+          "name": "Zmiana FEV1",
+          "code": "zmiana-fev1",
+          "unit": "%",
+          "reference": ">= 12% i 200 mL"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 98,
+      "title": "Bodypletyzmografia",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "TLC",
+          "code": "tlc",
+          "unit": "L / 112% należnej",
+          "reference": "80-120%"
+        },
+        {
+          "name": "RV",
+          "code": "rv",
+          "unit": "L / 148% należnej",
+          "reference": "80-120%"
+        },
+        {
+          "name": "RV/TLC",
+          "code": "rv-tlc",
+          "unit": "%",
+          "reference": "< 40%"
+        },
+        {
+          "name": "Raw",
+          "code": "raw",
+          "unit": "kPa*s/L",
+          "reference": "0,20-0,30"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 99,
+      "title": "Polisomnografia nocna",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Czas snu",
+          "code": "czas-snu",
+          "unit": "min",
+          "reference": null
+        },
+        {
+          "name": "AHI",
+          "code": "ahi",
+          "unit": "/h",
+          "reference": "< 5"
+        },
+        {
+          "name": "ODI",
+          "code": "odi",
+          "unit": "/h",
+          "reference": "< 5"
+        },
+        {
+          "name": "SpO2 średnia",
+          "code": "spo2-srednia",
+          "unit": "%",
+          "reference": ">= 94"
+        },
+        {
+          "name": "SpO2 minimalna",
+          "code": "spo2-minimalna",
+          "unit": "%",
+          "reference": ">= 90"
+        },
+        {
+          "name": "Czas SpO2 < 90%",
+          "code": "czas-spo2-90",
+          "unit": "min",
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 100,
+      "title": "Audiometria tonalna",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Ucho prawe PTA",
+          "code": "ucho-prawe-pta",
+          "unit": "dB HL",
+          "reference": "<= 20"
+        },
+        {
+          "name": "Ucho lewe PTA",
+          "code": "ucho-lewe-pta",
+          "unit": "dB HL",
+          "reference": "<= 20"
+        },
+        {
+          "name": "Przewodnictwo kostne lewe",
+          "code": "przewodnictwo-kostne-lewe",
+          "unit": "dB HL",
+          "reference": null
+        },
+        {
+          "name": "Rozumienie mowy lewe",
+          "code": "rozumienie-mowy-lewe",
+          "unit": "%",
+          "reference": ">= 90"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 101,
+      "title": "OCT plamki i tarczy nerwu wzrokowego",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "RNFL średnie OD",
+          "code": "rnfl-srednie-od",
+          "unit": "µm",
+          "reference": "82-110"
+        },
+        {
+          "name": "RNFL średnie OS",
+          "code": "rnfl-srednie-os",
+          "unit": "µm",
+          "reference": "82-110"
+        },
+        {
+          "name": "GCC OS",
+          "code": "gcc-os",
+          "unit": "µm",
+          "reference": "> 75"
+        },
+        {
+          "name": "Grubość centralna plamki OD",
+          "code": "grubosc-centralna-plamki-od",
+          "unit": "µm",
+          "reference": "220-280"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 102,
+      "title": "USG jamy brzusznej",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Wątroba",
+        "Pęcherzyk żółciowy",
+        "Trzustka",
+        "Nerki",
+        "Wnioski"
+      ]
+    },
+    {
+      "page": 103,
+      "title": "USG tarczycy",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Tarczyca",
+        "Zmiany ogniskowe",
+        "Węzły chłonne",
+        "Wnioski"
+      ]
+    },
+    {
+      "page": 104,
+      "title": "Echokardiografia przezklatkowa",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "LVEF Simpson",
+          "code": "lvef-simpson",
+          "unit": "%",
+          "reference": "55-70"
+        },
+        {
+          "name": "LVEDD",
+          "code": "lvedd",
+          "unit": "mm",
+          "reference": "42-58"
+        },
+        {
+          "name": "IVS",
+          "code": "ivs",
+          "unit": "mm",
+          "reference": "6-11"
+        },
+        {
+          "name": "LA volume index",
+          "code": "la-volume-index",
+          "unit": "mL/m2",
+          "reference": "< 34"
+        },
+        {
+          "name": "E/e'",
+          "code": "e-e",
+          "unit": null,
+          "reference": "< 14"
+        },
+        {
+          "name": "Niedomykalność mitralna",
+          "code": "niedomykalnosc-mitralna",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 105,
+      "title": "RTG klatki piersiowej PA i boczne",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Opis",
+        "Wnioski"
+      ]
+    },
+    {
+      "page": 106,
+      "title": "TK klatki piersiowej z kontrastem",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Technika",
+        "Płuca",
+        "Śródpiersie",
+        "Inne",
+        "Wnioski"
+      ]
+    },
+    {
+      "page": 107,
+      "title": "MR mózgowia bez i z kontrastem",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Sekwencje",
+        "Opis",
+        "Po kontraście",
+        "Wnioski"
+      ]
+    },
+    {
+      "page": 108,
+      "title": "Densytometria DXA",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Kręgosłup L1-L4 BMD",
+          "code": "kregosup-l1-l4-bmd",
+          "unit": "g/cm2",
+          "reference": null
+        },
+        {
+          "name": "T-score L1-L4",
+          "code": "t-score-l1-l4",
+          "unit": "SD",
+          "reference": ">= -1,0"
+        },
+        {
+          "name": "Szyjka kości udowej BMD",
+          "code": "szyjka-kosci-udowej-bmd",
+          "unit": "g/cm2",
+          "reference": null
+        },
+        {
+          "name": "T-score szyjka",
+          "code": "t-score-szyjka",
+          "unit": "SD",
+          "reference": ">= -1,0"
+        },
+        {
+          "name": "FRAX major",
+          "code": "frax-major",
+          "unit": "%",
+          "reference": null
+        },
+        {
+          "name": "FRAX hip",
+          "code": "frax-hip",
+          "unit": "%",
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 109,
+      "title": "Mammografia obu piersi",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Gęstość",
+        "Opis",
+        "Ocena",
+        "Zalecenie"
+      ]
+    },
+    {
+      "page": 110,
+      "title": "EEG spoczynkowe",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Warunki",
+        "Opis",
+        "Wnioski"
+      ]
+    },
+    {
+      "page": 111,
+      "title": "EMG/ENG kończyn dolnych",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "n. strzałkowy prawy MCV",
+          "code": "n-strzakowy-prawy-mcv",
+          "unit": "m/s",
+          "reference": "> 41"
+        },
+        {
+          "name": "n. piszczelowy prawy MCV",
+          "code": "n-piszczelowy-prawy-mcv",
+          "unit": "m/s",
+          "reference": "> 41"
+        },
+        {
+          "name": "n. łydkowy SNAP",
+          "code": "n-ydkowy-snap",
+          "unit": "µV",
+          "reference": "> 6"
+        },
+        {
+          "name": "Fala F n. piszczelowy",
+          "code": "fala-f-n-piszczelowy",
+          "unit": "ms",
+          "reference": "< 56"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 112,
+      "title": "Gastroskopia - opis badania",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Przełyk",
+        "Żołądek",
+        "Dwunastnica",
+        "Rozpoznanie"
+      ]
+    },
+    {
+      "page": 113,
+      "title": "Kolonoskopia - opis badania",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "report",
+      "material": null,
+      "parameters": [],
+      "sections": [
+        "Zakres badania",
+        "Opis",
+        "Rozpoznanie"
+      ]
+    },
+    {
+      "page": 114,
+      "title": "Dermatoskopia zmian barwnikowych",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Zmiana 1 - plecy",
+          "code": "zmiana-1-plecy",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Średnica",
+          "code": "srednica",
+          "unit": "mm",
+          "reference": null
+        },
+        {
+          "name": "Kolory",
+          "code": "kolory",
+          "unit": null,
+          "reference": null
+        },
+        {
+          "name": "Ocena",
+          "code": "ocena",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 115,
+      "title": "Pole widzenia i tonometria",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Ciśnienie OD",
+          "code": "cisnienie-od",
+          "unit": "mmHg",
+          "reference": "10-21"
+        },
+        {
+          "name": "Ciśnienie OS",
+          "code": "cisnienie-os",
+          "unit": "mmHg",
+          "reference": "10-21"
+        },
+        {
+          "name": "MD OD",
+          "code": "md-od",
+          "unit": "dB",
+          "reference": "> -2"
+        },
+        {
+          "name": "MD OS",
+          "code": "md-os",
+          "unit": "dB",
+          "reference": "> -2"
+        },
+        {
+          "name": "PSD OS",
+          "code": "psd-os",
+          "unit": "dB",
+          "reference": "< 2,5"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 116,
+      "title": "Seminogram - badanie nasienia",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Objętość",
+          "code": "objetosc",
+          "unit": "mL",
+          "reference": ">= 1,4"
+        },
+        {
+          "name": "Koncentracja",
+          "code": "koncentracja",
+          "unit": "mln/mL",
+          "reference": ">= 16"
+        },
+        {
+          "name": "Liczba całkowita",
+          "code": "liczba-cakowita",
+          "unit": "mln",
+          "reference": ">= 39"
+        },
+        {
+          "name": "Ruch postępowy",
+          "code": "ruch-postepowy",
+          "unit": "%",
+          "reference": ">= 30"
+        },
+        {
+          "name": "Ruch całkowity",
+          "code": "ruch-cakowity",
+          "unit": "%",
+          "reference": ">= 42"
+        },
+        {
+          "name": "Prawidłowa morfologia",
+          "code": "prawidowa-morfologia",
+          "unit": "%",
+          "reference": ">= 4"
+        },
+        {
+          "name": "Leukocyty",
+          "code": "leukocyty",
+          "unit": "mln/mL",
+          "reference": "< 1,0"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 117,
+      "title": "Badanie przesiewowe noworodka - panel podstawowy",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "TSH",
+          "code": "tsh",
+          "unit": "mIU/L",
+          "reference": "< 15"
+        },
+        {
+          "name": "17-OHP",
+          "code": "17-ohp",
+          "unit": "nmol/L",
+          "reference": "< 30"
+        },
+        {
+          "name": "IRT",
+          "code": "irt",
+          "unit": "ng/mL",
+          "reference": "< 65"
+        },
+        {
+          "name": "Fenyloalanina",
+          "code": "fenyloalanina",
+          "unit": "mg/dL",
+          "reference": "< 2,0"
+        },
+        {
+          "name": "Wynik panelu",
+          "code": "wynik-panelu",
+          "unit": null,
+          "reference": null
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 118,
+      "title": "Spektrometria tandemowa - panel metaboliczny",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "C3 propionylo-karnityna",
+          "code": "c3-propionylo-karnityna",
+          "unit": "µmol/L",
+          "reference": "< 4,5"
+        },
+        {
+          "name": "C3/C2",
+          "code": "c3-c2",
+          "unit": null,
+          "reference": "< 0,25"
+        },
+        {
+          "name": "C5DC glutarylo-karnityna",
+          "code": "c5dc-glutarylo-karnityna",
+          "unit": "µmol/L",
+          "reference": "< 0,30"
+        },
+        {
+          "name": "Metionina",
+          "code": "metionina",
+          "unit": "µmol/L",
+          "reference": "8-45"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 119,
+      "title": "Terapeutyczne monitorowanie leków",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Wankomycyna - stężenie minimalne",
+          "code": "wankomycyna-stezenie-minimalne",
+          "unit": "mg/L",
+          "reference": "10-20"
+        },
+        {
+          "name": "Digoksyna",
+          "code": "digoksyna",
+          "unit": "ng/mL",
+          "reference": "0,5-0,9"
+        },
+        {
+          "name": "Kwas walproinowy",
+          "code": "kwas-walproinowy",
+          "unit": "µg/mL",
+          "reference": "50-100"
+        }
+      ],
+      "sections": []
+    },
+    {
+      "page": 120,
+      "title": "Toksykologia - etanol i alkohole toksyczne",
+      "category": "diagnostics",
+      "categoryLabel": "Badania czynnościowe, obrazowe i inne",
+      "presentation": "parameters",
+      "material": null,
+      "parameters": [
+        {
+          "name": "Etanol",
+          "code": "etanol",
+          "unit": "g/L",
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Metanol",
+          "code": "metanol",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Glikol etylenowy",
+          "code": "glikol-etylenowy",
+          "unit": null,
+          "reference": "nie wykryto"
+        },
+        {
+          "name": "Izopropanol",
+          "code": "izopropanol",
+          "unit": null,
+          "reference": "nie wykryto"
+        }
+      ],
+      "sections": []
+    }
+  ]
+}

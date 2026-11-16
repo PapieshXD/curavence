@@ -1,0 +1,11 @@
+<section class="page-intro"><div><h2>{{ workspace.role() === 'admin' ? 'Pacjenci' : 'Moi pacjenci' }}</h2><p>Lista jest filtrowana po aktywnych udostępnieniach.</p></div></section>
+<div class="patient-record-layout"><aside class="work-panel patient-directory"><div class="directory-heading">Pacjenci ({{ patients().length }})</div>
+  @for (patient of patients(); track patient.id) { <button class="directory-row" [class.active]="selected()?.id === patient.id" type="button" (click)="selectedId.set(patient.id)">
+    <span class="avatar tiny">{{ initials(patient.firstName, patient.lastName) }}</span><span><strong>{{ patient.firstName }} {{ patient.lastName }}</strong><small>{{ patient.email }}</small></span><app-status-text tone="neutral">{{ patient.studyCount }} badań</app-status-text></button>
+  } @empty { <div class="empty-state compact"><p>Brak dostępnych pacjentów.</p></div> }
+</aside><section class="work-panel record-panel">
+  @if (selected(); as patient) { <header class="record-hero"><span class="avatar record-avatar">{{ initials(patient.firstName, patient.lastName) }}</span><div><h2>{{ patient.firstName }} {{ patient.lastName }}</h2><p>ID pacjenta {{ patient.id }}</p></div></header>
+    <div class="record-content"><section><h3>Dane w udostępnionym zakresie</h3><dl class="clinical-definition-list"><div><dt>Data urodzenia</dt><dd>{{ date(patient.dateOfBirth) }}</dd></div><div><dt>Płeć biologiczna</dt><dd>{{ (patient.biologicalSex | enumLabel) || 'Nie podano' }}</dd></div><div><dt>Kontakt</dt><dd>{{ patient.phone || 'Nie podano' }}</dd></div></dl></section>
+      <section><h3>Badania ({{ studies().length }})</h3><div class="patient-studies">@for (study of studies(); track study.id) { <button class="patient-study" type="button" (click)="openStudy(study.id)"><span class="study-copy"><strong>{{ study.title }}</strong><small>{{ study.typeName }} · {{ date(study.performedAt) }}</small></span><app-status-text tone="neutral">{{ study.clinicalStatus | enumLabel }}</app-status-text><span aria-hidden="true">→</span></button> } @empty { <p>Brak badań w tym zakresie.</p> }</div></section></div>
+  } @else { <div class="empty-state"><p>Wybierz pacjenta.</p></div> }
+</section></div>

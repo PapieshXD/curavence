@@ -1,0 +1,56 @@
+<section class="patient-start patient-surface">
+  <header class="start-heading"><h1>Start</h1><p>Najważniejsze informacje i Twoja historia badań.</p></header>
+
+  <div class="start-highlights" aria-label="Najważniejsze informacje">
+    <section class="highlight-card latest-card">
+      <h2>Ostatni wynik</h2>
+      @if (latestStudy(); as study) {
+        <strong>{{ title(study) }}</strong>
+        <p>{{ date(study.performedAt) }} · {{ study.sourceName || 'Dodano samodzielnie' }}</p>
+        <span class="study-state">{{ status(study) }}</span>
+        <button class="primary-button" type="button" (click)="openStudy(study)">Otwórz badanie <app-icon name="arrow" [size]="16" /></button>
+      } @else {
+        <strong>Nie masz jeszcze badań</strong><p>Dodane wyniki pojawią się tutaj.</p>
+        <button class="primary-button" type="button" (click)="selectView('results')">Przejdź do badań</button>
+      }
+    </section>
+
+    <section class="highlight-card">
+      <h2>Najbliższe działanie</h2>
+      @if (showReminderFirst()) {
+        <strong>{{ nextReminder()?.description }}</strong><p>Twoje osobiste przypomnienie · {{ date(nextReminder()?.dueDate ?? null) }}</p>
+        <button class="secondary-button" type="button" (click)="openReminder()">Otwórz przypomnienie</button>
+      } @else if (nearestAction(); as action) {
+        <strong>{{ action.description }}</strong><p>Do {{ date(action.dueDate) }}</p>
+      } @else if (nextVisit(); as visit) {
+        <strong>{{ visit.reason }}</strong><p>Wizyta: {{ date(visit.visitDate) }}</p>
+      } @else {
+        <strong>Brak zaplanowanego działania</strong><p>Ustalenia z wizyt pojawią się tutaj.</p>
+      }
+      <button class="secondary-button" type="button" (click)="selectView('visits')">Otwórz wizyty <app-icon name="arrow" [size]="16" /></button>
+      @if (reminderError()) { <p role="status">{{ reminderError() }}</p> }
+    </section>
+
+    <section class="highlight-card">
+      <h2>Aktywne udostępnienia</h2>
+      <strong>{{ activeGrants().length }}</strong>
+      <p>{{ activeGrants().length ? 'Sprawdź, kto ma teraz dostęp do Twoich danych.' : 'Nikt nie ma obecnie aktywnego dostępu.' }}</p>
+      <button class="secondary-button" type="button" (click)="selectView('sharing')">Zobacz udostępnienia <app-icon name="arrow" [size]="16" /></button>
+    </section>
+  </div>
+
+  <section class="start-chronology" aria-labelledby="chronology-title">
+    <header><div><h2 id="chronology-title">Chronologia badań</h2><p>Najnowsze badania są na górze.</p></div><button class="text-button" type="button" (click)="selectView('results')">Wszystkie badania <app-icon name="arrow" [size]="16" /></button></header>
+    @for (month of months(); track month.label) {
+      <section class="month-group"><h3>{{ month.label }}</h3>
+        @for (study of month.studies; track study.id) {
+          <article class="chronology-row">
+            <div><strong>{{ title(study) }}</strong><p>{{ date(study.performedAt) }} · {{ study.sourceName || 'Dodano samodzielnie' }}</p><small>{{ status(study) }}</small></div>
+            <button class="secondary-button" type="button" (click)="openStudy(study)">Otwórz badanie</button>
+          </article>
+        }
+      </section>
+    } @empty { <p class="chronology-empty">Twoje badania pojawią się tutaj po dodaniu pierwszego pliku.</p> }
+    @if (hasOlderEvents()) { <button class="older-events" type="button" (click)="showOlderEvents()">Pokaż starsze badania</button> }
+  </section>
+</section>

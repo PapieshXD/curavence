@@ -1,0 +1,136 @@
+<div class="app-shell" [class.patient-mode]="workspace.role() === 'patient'" [class.doctor-mode]="workspace.role() === 'doctor'">
+  @if (workspace.role() !== 'patient') {
+  <aside class="sidebar" [class.mobile-open]="workspace.mobileNavigationOpen()">
+    <div class="brand-row">
+      <span class="brand-symbol" aria-hidden="true"></span>
+      <span class="brand-name">curavence</span>
+      <button class="icon-button sidebar-close" type="button" aria-label="Zamknij menu"
+        (click)="workspace.mobileNavigationOpen.set(false)"><app-icon name="close" [size]="19" /></button>
+    </div>
+    <div class="workspace-context"><span class="context-label">Przestrzeń robocza</span><strong>{{ workspace.config().label }}</strong></div>
+    <nav class="primary-nav" aria-label="Główna nawigacja">
+      <span class="nav-heading">Nawigacja</span>
+      @for (item of workspace.config().navigation; track item.id) {
+        <button class="nav-item" [class.active]="isNavigationActive(item.id)" type="button"
+          (click)="selectNavigation(item.id)">
+          <app-icon [name]="item.icon" [size]="17" /><span>{{ item.label }}</span>
+        </button>
+      }
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="privacy-note"><app-icon name="lock" [size]="15" /><span>Dostęp do danych jest kontrolowany i zapisywany w historii.</span></div>
+      <button class="sidebar-user" type="button" (click)="logout()"
+        [attr.aria-label]="'Wyloguj użytkownika ' + workspace.config().userName" title="Wyloguj">
+        <span class="avatar small">{{ workspace.config().shortLabel }}</span>
+        <span><strong>{{ workspace.config().userName }}</strong><small>{{ workspace.role() === 'patient' ? 'Wyloguj się' : workspace.config().label }}</small></span>
+        <app-icon [name]="workspace.role() === 'patient' ? 'logout' : 'arrow'" [size]="16" />
+      </button>
+    </div>
+  </aside>
+  }
+
+  <div class="app-main">
+    <header class="topbar">
+      @if (workspace.role() === 'patient') {
+        <div class="patient-topbar-main">
+          <button class="patient-wordmark" type="button" (click)="selectNavigation('overview')" aria-label="Curavence — historia zdrowia">curavence</button>
+          <nav class="patient-desktop-nav" aria-label="Nawigacja pacjenta">
+            @for (item of workspace.config().navigation; track item.id) {
+              <button type="button" [class.active]="isNavigationActive(item.id)" (click)="selectNavigation(item.id)">
+                <app-icon [name]="item.icon" [size]="18" /><span>{{ item.label }}</span>
+              </button>
+            }
+          </nav>
+        </div>
+      } @else {
+        <div class="topbar-title">
+          <button class="icon-button menu-button" type="button" aria-label="Otwórz menu"
+            (click)="workspace.mobileNavigationOpen.set(true)"><app-icon name="menu" [size]="21" /></button>
+          <div><h1>{{ workspace.config().title }}</h1><p>{{ workspace.config().subtitle }}</p></div>
+        </div>
+      }
+      <div class="topbar-actions">
+        @if (workspace.role() !== 'patient') {
+          <label class="search-field"><app-icon name="search" [size]="17" />
+            <input type="search" [ngModel]="workspace.search()" (ngModelChange)="updateSearch($event)"
+              placeholder="Szukaj pacjenta, badania…" aria-label="Szukaj w przestrzeni roboczej" />
+          </label>
+
+        } @else {
+          <button class="topbar-user" type="button" (click)="openProfile()">
+            <span class="avatar small">{{ workspace.config().shortLabel }}</span>
+            <strong>{{ workspace.config().userName }}</strong>
+            <app-icon name="chevron" [size]="15" />
+          </button>
+        }
+        <app-visit-notifications />
+        @if (workspace.canSwitchViews()) {
+          <label class="role-select-label"><span>Widok superusera</span>
+            <select [ngModel]="workspace.role()" (change)="changeRole($event)" aria-label="Wybierz widok roli">
+              @for (role of workspace.availableViews(); track role) { <option [value]="role">{{ roleLabel(role) }}</option> }
+            </select>
+          </label>
+        }
+      </div>
+    </header>
+
+    <main class="main-content">
+      @if (!workspace.data() && !workspace.error()) {
+        <section class="work-panel empty-state"><h2>Ładowanie danych…</h2><p>Curavence porządkuje Twoje informacje.</p></section>
+      } @else if (workspace.error()) {
+        <section class="work-panel empty-state"><h2>Nie udało się pobrać danych</h2><p>{{ workspace.error() }}</p>
+          <button class="primary-button" type="button" (click)="workspace.load()">Spróbuj ponownie</button></section>
+      } @else {
+        @if (routePath() === '/documents/upload') {
+          <app-document-upload />
+        } @else if (documentId()) {
+          <app-document-details [documentId]="documentId()" />
+        } @else if (routePath().endsWith('/mri/upload') || routePath().endsWith('/imaging/upload')) {
+          <app-mri-upload />
+        } @else if (routePath().includes('/patients/') && (routePath().endsWith('/mri') || routePath().endsWith('/imaging'))) {
+          <app-mri-study-list />
+        } @else if (routePath().endsWith('/viewer') && routePath().includes('/imaging-studies/')) {
+          <app-mri-viewer />
+        } @else if (routePath().includes('/imaging-studies/')) {
+          <app-mri-study-details />
+        } @else { @switch (workspace.activeView()) {
+          @case ('overview') {
+            @switch (workspace.role()) {
+              @case ('admin') { <app-admin-dashboard /> }
+              @case ('patient') { <app-patient-dashboard /> }
+              @case ('doctor') { <app-doctor-dashboard /> }
+              @case ('therapy') { <app-therapy-dashboard /> }
+            }
+          }
+          @case ('visits') { @defer (on immediate) { <app-visits /> } @placeholder { <p role="status">Ładowanie wizyt…</p> } }
+          @case ('timeline') { <app-patient-timeline /> }
+          @case ('results') { @if (workspace.role() === 'patient' && !workspace.patientResultsMode()) { <app-document-list /> } @else { <app-patient-results /> } }
+          @case ('documents') { <app-document-list /> }
+          @case ('sharing') { <app-consent-list /> }
+          @case ('audit') { <app-access-history /> }
+          @case ('profile') { <app-patient-profile /> }
+          @case ('patients') { <app-patient-details /> }
+          @default { <app-patient-profile /> }
+        } }
+      }
+    </main>
+  </div>
+
+  @if (workspace.role() === 'patient') {
+    <nav class="patient-bottom-nav" aria-label="Nawigacja mobilna pacjenta">
+      <button type="button" [class.active]="isNavigationActive('overview')" (click)="selectNavigation('overview')"><app-icon name="overview" [size]="21" /><span>Start</span></button>
+      <button type="button" [class.active]="isNavigationActive('results')" (click)="selectNavigation('results')"><app-icon name="lab" [size]="21" /><span>Badania</span></button>
+      <button type="button" [class.active]="isNavigationActive('visits')" (click)="selectNavigation('visits')"><app-icon name="calendar" [size]="21" /><span>Wizyty</span></button>
+      <button type="button" [class.active]="isNavigationActive('sharing')" (click)="selectNavigation('sharing')"><app-icon name="share" [size]="21" /><span>Udostępnianie</span></button>
+      <button type="button" [class.active]="isNavigationActive('profile')" (click)="selectNavigation('profile')"><app-icon name="settings" [size]="21" /><span>Konto</span></button>
+    </nav>
+  }
+
+  @if (workspace.mobileNavigationOpen()) {
+    <button class="sidebar-scrim" type="button" aria-label="Zamknij menu" (click)="workspace.mobileNavigationOpen.set(false)"></button>
+  }
+  <div class="live-region" role="status" aria-live="polite" aria-atomic="true">
+    @if (workspace.notificationVisible()) { <div class="toast"><app-icon name="check" [size]="16" />{{ workspace.notification() }}</div> }
+  </div>
+</div>
+

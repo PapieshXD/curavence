@@ -1,0 +1,54 @@
+@if (loading()) {
+  <section class="work-panel details-state"><span class="loader"></span><p>Ładowanie badania…</p></section>
+} @else if (error()) {
+  <section class="work-panel details-state error-state"><app-icon name="info" [size]="20" /><p>{{ error() }}</p><div><button class="secondary-button" type="button" (click)="back()">Wróć</button><button class="text-button" type="button" (click)="load()">Spróbuj ponownie</button></div></section>
+} @else if (details(); as result) {
+  @if (workspace.role() === 'patient') {
+    <section class="patient-imaging-detail patient-surface">
+      <header class="patient-page-heading detail-heading">
+        <div><button class="back-link" type="button" (click)="back()"><app-icon name="chevron" [size]="15" />{{ patientBackLabel() }}</button><h2>{{ displayTitle(result.study.description, result.study.modality) }}</h2><p>{{ date(result.study.performedAt) }}{{ result.study.bodyPart ? ' · ' + result.study.bodyPart : '' }}</p></div>
+        <button class="primary-button patient-primary" type="button" (click)="open()" [disabled]="result.study.status !== 'AVAILABLE'"><app-icon name="scan" [size]="17" />Otwórz obrazy</button>
+      </header>
+
+      <section class="imaging-summary" aria-label="Podsumowanie badania">
+        <div><strong>{{ result.study.instanceCount }}</strong><span>obrazów</span></div><div><strong>{{ result.study.seriesCount }}</strong><span>{{ result.study.seriesCount === 1 ? 'seria' : 'serii' }}</span></div><div><strong>{{ result.study.modality || '—' }}</strong><span>rodzaj badania</span></div><div><strong>{{ result.study.bodyPart || 'Nie opisano' }}</strong><span>obszar</span></div>
+      </section>
+
+      <div class="patient-detail-grid">
+        <section class="report-section">
+          <h3>Opis badania</h3>
+          @if (reportLoading()) { <p role="status">Sprawdzanie opisu badania…</p> }
+          @if (reportError()) { <p role="alert">{{ reportError() }}</p> }
+          @if (report()?.documentId; as documentId) {
+            <p>Powiązany dokument: {{ report()?.title }}</p>
+            <app-reading-guide [documentId]="documentId" (original)="openReport()" />
+          } @else if (!reportLoading() && !reportError()) {
+            <div class="report-empty"><span><app-icon name="document" [size]="21" /></span><div><strong>Nie powiązano dokumentu z opisem</strong><p>Wybierz dodany dokument, który zawiera opis tego badania.</p></div></div>
+          }
+          @if (reportEnabled()) {
+            <form class="report-link-form" (ngSubmit)="linkReport()"><label>Dokument z opisem<select name="reportDocument" [(ngModel)]="selectedReport" [disabled]="linking()"><option value="">Bez powiązanego dokumentu</option>@for (document of reportCandidates(); track document.id) { <option [value]="document.id">{{ document.title }}</option> }</select></label><button type="submit" class="secondary-button" [disabled]="linking() || reportLoading()">{{ linking() ? 'Zapisywanie…' : 'Zapisz powiązanie' }}</button></form>
+          }
+        </section>
+
+        <section class="series-section">
+          <h3>Serie obrazów</h3>
+          <div class="patient-series-list">
+            @for (series of result.series; track series.id; let index = $index) {
+              <article><span class="series-number">{{ series.seriesNumber ?? index + 1 }}</span><div><strong>Seria {{ index + 1 }}</strong><p>{{ series.imageCount }} obrazów{{ series.rows && series.columns ? ' · ' + series.columns + ' × ' + series.rows + ' px' : '' }}</p></div><span class="series-ready"><app-icon name="check" [size]="14" />Gotowa</span></article>
+            } @empty { <div class="report-empty"><p>Nie znaleziono serii obrazów.</p></div> }
+          </div>
+        </section>
+      </div>
+
+      <details class="technical-disclosure">
+        <summary>Informacje techniczne <app-icon name="chevron" [size]="15" /></summary>
+        <dl><div><dt>Format źródłowy</dt><dd>{{ result.study.sourceFormat || 'DICOM' }}</dd></div><div><dt>Modalność</dt><dd>{{ result.study.modality || 'Nie podano' }}</dd></div><div><dt>Identyfikator badania</dt><dd>{{ result.study.studyInstanceUid || 'Nie podano' }}</dd></div><div><dt>Źródło przechowywania</dt><dd>{{ result.study.storageProvider === 'GOOGLE_HEALTHCARE' ? 'Google Healthcare' : 'Lokalne archiwum medyczne' }}</dd></div></dl>
+      </details>
+    </section>
+  } @else {
+    <section class="page-intro details-intro"><div><button class="back-link" type="button" (click)="back()"><app-icon name="chevron" [size]="15" />Lista badań obrazowych</button><h2>{{ result.study.description }}</h2><p>{{ result.study.patientName }} · {{ date(result.study.performedAt) }}</p></div><button class="primary-button" type="button" (click)="open()" [disabled]="result.study.status !== 'AVAILABLE'"><app-icon name="scan" [size]="16" />Otwórz badanie</button></section>
+    <div class="details-layout"><section class="work-panel series-panel"><header class="panel-header"><div><h2>Serie obrazów</h2><p>{{ result.series.length }} serii · {{ result.study.instanceCount }} obrazów</p></div></header><div class="table-wrap"><table><thead><tr><th>Nr</th><th>Opis serii</th><th>Wymiary</th><th>Geometria</th><th>Obrazy</th></tr></thead><tbody>@for (series of result.series; track series.id) { <tr><td class="muted-cell">{{ series.seriesNumber ?? '—' }}</td><td><strong>{{ series.description || 'Seria bez opisu' }}</strong><small>{{ series.seriesInstanceUid }}</small></td><td>{{ series.rows && series.columns ? series.columns + ' × ' + series.rows : '—' }}</td><td><strong>{{ series.mprEligible ? 'MPR dostępne' : 'Tylko stos' }}</strong>@if (series.eligibilityReason) { <small>{{ series.eligibilityReason }}</small> }</td><td>{{ series.imageCount }}</td></tr> } @empty { <tr><td colspan="5" class="empty-row">Brak zindeksowanych serii.</td></tr> }</tbody></table></div></section>
+      <aside class="work-panel technical-panel"><header><span class="study-symbol"><app-icon name="scan" [size]="22" /></span><div><h2>Dane techniczne</h2><app-status-text tone="success">Dostępne</app-status-text></div></header><dl><div><dt>Modalność</dt><dd>{{ result.study.modality || '—' }}</dd></div><div><dt>Obszar</dt><dd>{{ result.study.bodyPart || 'Nie podano' }}</dd></div><div><dt>Liczba serii</dt><dd>{{ result.study.seriesCount }}</dd></div><div><dt>Liczba obrazów</dt><dd>{{ result.study.instanceCount }}</dd></div><div class="uid-row"><dt>StudyInstanceUID</dt><dd>{{ result.study.studyInstanceUid }}</dd></div><div><dt>Magazyn</dt><dd>{{ result.study.storageProvider === 'GOOGLE_HEALTHCARE' ? 'Google Healthcare' : 'Orthanc' }}</dd></div></dl></aside>
+    </div>
+  }
+}

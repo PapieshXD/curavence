@@ -1,0 +1,45 @@
+<section class="profile-page patient-surface">
+  <header class="patient-page-heading profile-heading">
+    <div><h2>Konto</h2><p>Twoje dane kontaktowe, bezpieczeństwo i ustawienia konta.</p></div>
+  </header>
+
+  @if (workspace.data()?.profile; as profile) {
+    <section class="profile-identity">
+      <span class="profile-avatar">{{ profile.firstName[0] }}{{ profile.lastName[0] }}</span>
+      <div><h3>{{ profile.firstName }} {{ profile.lastName }}</h3><p>{{ profile.email }}</p><p>{{ profile.phone || 'Nie dodano numeru telefonu' }}</p></div>
+      <button class="secondary-button" type="button" (click)="toggleEdit()"><app-icon name="edit" [size]="16" />{{ editing() ? 'Anuluj' : 'Edytuj dane' }}</button>
+    </section>
+
+    @if (editing()) {
+      <section class="profile-edit" aria-label="Edycja danych kontaktowych">
+        <label>Numer telefonu<input type="tel" [value]="phone()" (input)="phone.set($any($event.target).value)" /></label>
+        <button class="primary-button" type="button" [disabled]="saving()" (click)="save()">{{ saving() ? 'Zapisywanie…' : 'Zapisz zmiany' }}</button>
+      </section>
+    }
+
+    <div class="profile-sections">
+      <section class="profile-section">
+        <h3>Dane podstawowe</h3>
+        <dl><div><dt>Data urodzenia</dt><dd>{{ date(profile.dateOfBirth) }}</dd></div><div><dt>Płeć</dt><dd>{{ (profile.biologicalSex | enumLabel) || 'Nie podano' }}</dd></div><div><dt>Adres e-mail</dt><dd>{{ profile.email }}</dd></div></dl>
+      </section>
+
+      <section class="profile-section security-section">
+        <h3>Bezpieczeństwo</h3>
+        <dl><div><dt>Hasło</dt><dd>••••••••••••</dd></div><div><dt>Logowanie dwuetapowe</dt><dd>Sprawdź w ustawieniach konta</dd></div><div><dt>Urządzenia</dt><dd>Informacja niedostępna</dd></div></dl>
+        @if (securityError()) { <p role="alert">{{securityError()}}</p> }
+        <p>Zmianę hasła i ustawienia logowania otworzymy w osobnej karcie dostawcy logowania.</p>
+        <button class="secondary-button" type="button" [disabled]="securityBusy()" (click)="manageSecurity()">{{securityBusy()?'Sprawdzanie dostępności…':'Zarządzaj bezpieczeństwem ↗'}}</button>
+        <button class="secondary-button" type="button" (click)="logout()">Wyloguj się</button>
+      </section>
+
+      <section class="profile-section data-section">
+        <h3>Twoje dane</h3>
+        <div class="data-action"><span class="profile-action-icon"><app-icon name="download" [size]="20" /></span><div><strong>Pobierz swoje dane</strong><p>Wybierz dokumenty i przygotuj skrót PDF lub ZIP z oryginałami.</p></div><button class="secondary-button" type="button" [disabled]="!readiness.config().exportsEnabled" (click)="downloadArchive()">Pobierz wybrane dane</button></div>
+        <div class="data-action danger"><span class="profile-action-icon"><app-icon name="info" [size]="20" /></span><div><strong>Usuń konto</strong><p>Trwałe usuwanie konta nie jest obecnie obsługiwane.</p></div><button class="delete-account" type="button" disabled title="Funkcja niedostępna">Usuwanie niedostępne</button></div>
+      </section>
+    </div>
+  } @else {
+    <section class="patient-empty"><h2>Brak profilu</h2><p>Nie udało się odczytać danych Twojego profilu.</p></section>
+  }
+</section>
+

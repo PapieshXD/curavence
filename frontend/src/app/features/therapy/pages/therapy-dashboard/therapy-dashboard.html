@@ -1,0 +1,21 @@
+<section class="care-workspace">
+  <aside class="patient-list" aria-label="Osoby pod opieką">
+    <header><h2>Moi pacjenci</h2></header>
+    <label class="patient-search">Szukaj pacjenta<input type="search" [ngModel]="workspace.search()" (ngModelChange)="workspace.search.set($event)" /></label>
+    @for (patient of patients(); track patient.id) {
+      <button class="patient-row" [class.active]="selected()?.id === patient.id" type="button" (click)="selectPatient(patient)">
+        <span class="avatar">{{ initials(patient.firstName, patient.lastName) }}</span><span><strong>{{ patient.firstName }} {{ patient.lastName }}</strong><small>{{ patient.studyCount }} udostępnionych badań</small></span>
+      </button>
+    } @empty { <p>Brak pacjentów z udostępnionymi danymi.</p> }
+  </aside>
+  @if (selected(); as patient) {
+    <main class="patient-care">
+      <header class="care-header"><h2>{{ patient.firstName }} {{ patient.lastName }}</h2></header>
+      <div class="scope-banner"><app-icon name="lock" [size]="20" /><p>Widzisz dane w zakresie aktywnych zgód pacjenta.</p></div>
+      <section class="shared-data-view"><h3>Udostępnione badania</h3>
+        @for (study of studies(); track study.id) { <article><app-icon name="document" [size]="21" /><div><strong>{{ study.title }}</strong><small>{{ study.typeName }} · {{ date(study.performedAt) }}</small></div></article> }
+      </section>
+    </main>
+    <aside class="care-plan"><h2>Plan opieki — w przygotowaniu</h2><p>Ten widok nie zawiera jeszcze zatwierdzonego planu fizjoterapii. Cele, ćwiczenia, wiadomości i notatki z wizyt nie są tutaj obsługiwane.</p></aside>
+  }
+</section>

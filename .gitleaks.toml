@@ -1,0 +1,4 @@
+title = "Curavence secret detection"
+[extend]
+useDefault = true
+# No secret baseline or broad path exemptions. Reports must use --redact.

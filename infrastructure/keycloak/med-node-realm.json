@@ -1,0 +1,88 @@
+{
+  "realm": "med-node",
+  "enabled": true,
+  "displayName": "Curavence",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "roles": {
+    "realm": [
+      { "name": "PATIENT" },
+      { "name": "DOCTOR" },
+      { "name": "DIAGNOSTICIAN" },
+      { "name": "PHYSIOTHERAPIST" },
+      { "name": "TRAINER" },
+      { "name": "ADMINISTRATOR" },
+      { "name": "SUPERUSER" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "med-node-frontend",
+      "name": "Curavence Web",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "redirectUris": ["http://localhost:4200/*", "http://localhost:4202/*", "http://127.0.0.1:4202/*"],
+      "webOrigins": ["http://localhost:4200", "http://localhost:4202", "http://127.0.0.1:4202"]
+    }
+  ],
+  "users": [
+    {
+      "id": "10000000-0000-0000-0000-000000000001",
+      "username": "admin@med-node.test",
+      "email": "admin@med-node.test",
+      "firstName": "Alicja",
+      "lastName": "Administrator",
+      "enabled": true,
+      "emailVerified": true,
+      "realmRoles": ["ADMINISTRATOR"],
+      "credentials": [{ "type": "password", "value": "Test123!", "temporary": false }]
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000002",
+      "username": "pacjent@med-node.test",
+      "email": "pacjent@med-node.test",
+      "firstName": "Anna",
+      "lastName": "Kowalska",
+      "enabled": true,
+      "emailVerified": true,
+      "realmRoles": ["PATIENT"],
+      "credentials": [{ "type": "password", "value": "Test123!", "temporary": false }]
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000003",
+      "username": "lekarz@med-node.test",
+      "email": "lekarz@med-node.test",
+      "firstName": "Piotr",
+      "lastName": "Wójcik",
+      "enabled": true,
+      "emailVerified": true,
+      "realmRoles": ["DOCTOR"],
+      "credentials": [{ "type": "password", "value": "Test123!", "temporary": false }]
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000004",
+      "username": "fizjo@med-node.test",
+      "email": "fizjo@med-node.test",
+      "firstName": "Marta",
+      "lastName": "Zielińska",
+      "enabled": true,
+      "emailVerified": true,
+      "realmRoles": ["PHYSIOTHERAPIST"],
+      "credentials": [{ "type": "password", "value": "Test123!", "temporary": false }]
+    },
+    {
+      "id": "10000000-0000-0000-0000-000000000005",
+      "username": "superuser@med-node.test",
+      "email": "superuser@med-node.test",
+      "firstName": "Super",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "realmRoles": ["SUPERUSER", "ADMINISTRATOR", "PATIENT", "DOCTOR", "PHYSIOTHERAPIST", "TRAINER"],
+      "credentials": [{ "type": "password", "value": "Test123!", "temporary": false }]
+    }
+  ]
+}

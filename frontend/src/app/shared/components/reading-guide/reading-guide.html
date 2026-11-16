@@ -1,0 +1,88 @@
+@if (visible()) {
+  <section class="reading-guide" aria-label="Zrozum wynik">
+    <header class="guide-heading"><div><span class="eyebrow">TWÓJ WYNIK, PROŚCIEJ</span><h3>Zrozum wynik</h3><p>Czytaj opis i sprawdzaj znaczenie podkreślonych pojęć.</p></div>
+      <label class="glossary-toggle"><input type="checkbox" [checked]="enabled()" (change)="toggleExplanations($any($event.target).checked)" />Objaśnienia pojęć</label>
+    </header>
+    @if (loading()) { <p role="status">Wczytywanie tekstu badania…</p> }
+    @if (error()) { <p role="status" class="guide-notice">{{ error() }}</p><button type="button" class="secondary-button" [disabled]="!originalAvailable()" (click)="original.emit()">Otwórz oryginał</button> }
+    @if (guide(); as data) {
+      <section class="assistant-overview" aria-label="Podsumowanie AI">
+        <div class="section-heading"><h4>Krótko o tym wyniku</h4><span class="ai-label">AI · wybór fragmentów</span></div>
+        @if (summary(); as result) {
+          @if (result.contextTruncated) { <p class="guide-notice">Przeanalizowano {{ result.analyzedCharacters }} z {{ result.totalCharacters }} znaków. Podsumowanie dotyczy tylko tego fragmentu.</p> }
+          @for (point of result.points; track point.id) { <article class="summary-point"><p>{{ point.text }}</p><button type="button" class="source-link" (click)="showSource(point)">Pokaż fragment w opisie ↓</button></article> }
+          @if (!result.points.length) { <p>Nie wybrano fragmentów do podsumowania. Przeczytaj pełny opis poniżej.</p> }
+        } @else { <p>Przygotuj krótki wybór najważniejszych zapisów. Każdy fragment sprawdzisz w opisie.</p> }
+        <button type="button" class="secondary-button" [disabled]="generating()" (click)="generate()">{{ generating() ? 'Przygotowywanie…' : summary() ? 'Przygotuj ponownie' : 'Przygotuj podsumowanie' }}</button>
+        @if (summaryError()) { <p role="alert" class="guide-error">{{ summaryError() }}</p> }
+      </section>
+      <section class="source-reading" aria-label="Odczytany tekst dokumentu">
+        <div class="source-toolbar">
+          <div class="source-title"><span class="document-icon" aria-hidden="true">≡</span><div><span class="eyebrow">TEKST ŹRÓDŁOWY</span><h4>Opis z dokumentu</h4></div></div>
+          <button type="button" class="secondary-button" [disabled]="!originalAvailable()" (click)="original.emit()">Otwórz oryginał ↗</button>
+        </div>
+        <div class="source-canvas">
+          <div class="source-paper" [class.spacious]="spacious()">
+            <div class="paper-toolbar"><span>Odczyt z PDF</span><button type="button" class="reading-density" [attr.aria-pressed]="spacious()" (click)="spacious.set(!spacious())">{{ spacious() ? 'Zwarty tekst' : 'Większe odstępy' }}</button></div>
+            <p class="source-disclaimer">Treść odczytana z pliku. Układ i brzmienie sprawdzisz w oryginale.</p>
+            @if (workspace.role() === 'patient') {
+              <p class="selection-hint">Kliknij tekst, aby dodać go do pytania do lekarza.</p>
+            }
+            @for (block of data.blocks; track block.id) {
+              <div class="source-block" [class.source-section]="isSectionHeading(block.text)" [class.selectable-row]="workspace.role() === 'patient'" [class.row-selected]="selectedBlocks().has(block.id)" tabindex="-1" [id]="sourceId(block.id)" (click)="workspace.role() === 'patient' && selectRow($event, block.id)">
+                @if (workspace.role() === 'patient') {
+                  <button class="fragment-toggle" type="button" [attr.aria-pressed]="selectedBlocks().has(block.id)" [attr.aria-label]="(selectedBlocks().has(block.id) ? 'Odznacz fragment: ' : 'Wybierz fragment: ') + block.text" (click)="$event.stopPropagation(); toggleBlock(block.id)"><span aria-hidden="true">{{ selectedBlocks().has(block.id) ? '✓' : '+' }}</span></button>
+                }
+                <app-explained-text [blocks]="[block]" [terms]="data.terms" [enabled]="enabled()" [showList]="false" [heading]="isSectionHeading(block.text)" (question)="askTerm($event)" /></div>
+              @if (workspace.role() === 'patient' && lastSelectedBlock() === block.id) {
+                <div class="selection-actions" role="region" aria-label="Wybrane fragmenty">
+                  <span aria-live="polite">{{ selectedBlocks().size === 1 ? 'Wybrany fragment' : 'Wybrane fragmenty: ' + selectedBlocks().size }}</span>
+                  <div class="selection-buttons"><button type="button" class="primary-button" (click)="askSelected()">Dodaj do pytania ↗</button><button type="button" class="secondary-button" aria-label="Wyczyść wybór" (click)="clearSelection()">Anuluj</button></div>
+                </div>
+              }
+            }
+            <div class="paper-end"><span aria-hidden="true"></span>Koniec odczytanego tekstu<span aria-hidden="true"></span></div>
+          </div>
+        </div>
+        <app-explained-text [blocks]="[]" [listBlocks]="data.blocks" [terms]="data.terms" [enabled]="enabled()" (question)="askTerm($event)" />
+        @if (!data.terms.length) { <p class="caption">Dla tego tekstu nie ma jeszcze dostępnych zatwierdzonych objaśnień.</p> }
+      </section>
+      @if (summary(); as result) {
+        <section class="recommendations"><h4>Zalecenia z dokumentu</h4>
+          @for (item of result.recommendations; track item.id) {
+            <article class="recommendation"><small>ZAPISANO W DOKUMENCIE</small><blockquote>{{ item.source.quote }}</blockquote>
+              @if (item.deadlineText) { <p>Termin zapisany w źródle: <strong>{{ item.deadlineText }}</strong></p> }
+              <div class="guide-actions"><button type="button" class="source-link" (click)="showSource(item)">Pokaż źródło</button>
+                @if (workspace.role() === 'patient') { <button type="button" class="secondary-button" (click)="startReminder(item)">Ustaw przypomnienie</button> }
+              </div>
+            </article>
+          } @empty { <p>Nie wykryto zaleceń w przeanalizowanym tekście.</p> }
+        </section>
+        @if (workspace.role() === 'patient') {
+          <section><h4>Pytania do lekarza</h4><p class="caption">Propozycje AI. Możesz je zmienić przed zapisaniem do wizyty.</p>
+            @for (item of result.questions; track item.id) { <article class="question-item"><p>{{ item.text }}</p><button type="button" class="source-link" (click)="showSource(item)">Pokaż źródło</button><button type="button" class="secondary-button" (click)="ask(item.text, item.source.quote)">Dodaj pytanie do wizyty</button></article> }
+            @if (!result.questions.length) { <button type="button" class="secondary-button" (click)="ask('Co jest najważniejsze w tym wyniku?', '')">Przygotuj własne pytanie</button> }
+          </section>
+        }
+      }
+    }
+    @if (workspace.role() === 'patient' && (ownReminders().length || editingReminder() || reminderTarget())) {
+      <section class="personal-reminders"><h4>Twoje osobiste przypomnienia</h4><p class="caption">Zapisane przez Ciebie. Nie zmieniają zaleceń ani planu lekarza.</p>
+        @for (reminder of ownReminders(); track reminder.id) { <article class="saved-reminder"><div><strong>{{ reminder.description }}</strong><p>{{ reminder.dueDate }} · {{ reminder.completed ? 'Wykonane' : 'Do wykonania' }}</p></div><button type="button" class="source-link" (click)="editReminder(reminder)">Edytuj</button></article> }
+        @if (editingReminder() || reminderTarget()) {
+          <form (ngSubmit)="saveReminder()" class="reminder-form"><h5>{{ editingReminder() ? 'Edytuj przypomnienie' : 'Ustaw przypomnienie' }}</h5>
+            <blockquote>{{ editingReminder()?.sourceQuote ?? reminderTarget()?.source?.quote }}</blockquote>
+            <label>Treść przypomnienia<textarea name="description" maxlength="1000" rows="3" required [(ngModel)]="description"></textarea></label>
+            <label>Wybrana przez Ciebie data<input name="dueDate" type="date" required [(ngModel)]="dueDate" /></label><p class="caption">Ustal konkretną datę. Nie przeliczamy automatycznie terminów względnych z opisu.</p>
+            @if (editingReminder()) { <label class="check"><input name="completed" type="checkbox" [(ngModel)]="completed" />Wykonane</label> }
+            <div class="guide-actions"><button type="submit" class="primary-button" [disabled]="saving() || !description.trim() || !dueDate">{{ saving() ? 'Zapisywanie…' : 'Zapisz przypomnienie' }}</button><button type="button" class="secondary-button" [disabled]="saving()" (click)="cancelReminder()">Anuluj</button></div>
+          </form>
+        }
+      </section>
+    }
+    @if (reminderError()) { <p class="guide-error" role="alert">{{ reminderError() }}</p> }
+    @if (guide()) { <footer class="original-action"><p>{{ originalAvailable() ? 'Dokument źródłowy jest dostępny.' : 'Nie dołączono oryginalnego pliku.' }}</p><button type="button" class="secondary-button" [disabled]="!originalAvailable()" (click)="original.emit()">Otwórz oryginał</button></footer> }
+  </section>
+} @else if (fallbackText()) {
+  <section class="reading-guide"><h4>Odczytane dane</h4><p class="fallback-text">{{ fallbackText() }}</p></section>
+}

@@ -1,0 +1,76 @@
+rules:
+  - id: python-shell-execution
+    languages: [python]
+    severity: ERROR
+    message: Avoid shell=True; pass an argument list to subprocess.
+    patterns:
+      - pattern-either:
+          - pattern: subprocess.run(..., shell=True, ...)
+          - pattern: subprocess.Popen(..., shell=True, ...)
+          - pattern: subprocess.call(..., shell=True, ...)
+  - id: python-unsafe-pickle
+    languages: [python]
+    severity: ERROR
+    message: Pickle deserialization must not process untrusted data.
+    pattern-either:
+      - pattern: pickle.loads(...)
+      - pattern: pickle.load(...)
+  - id: java-disabled-tls-verification
+    languages: [java]
+    severity: ERROR
+    message: Do not disable TLS hostname verification.
+    pattern: new NoopHostnameVerifier(...)
+  - id: typescript-eval
+    languages: [typescript, javascript]
+    severity: ERROR
+    message: Avoid dynamic code execution with eval.
+    pattern: eval(...)
+  - id: angular-trust-html
+    languages: [typescript]
+    severity: WARNING
+    message: Review provenance and sanitization before trusting HTML.
+    pattern: $SANITIZER.bypassSecurityTrustHtml(...)
+  - id: java-command-shell
+    languages: [java]
+    severity: ERROR
+    message: Avoid executing a command through a shell.
+    pattern-either:
+      - pattern: new ProcessBuilder("sh", "-c", ...)
+      - pattern: new ProcessBuilder("bash", "-c", ...)
+  - id: python-disabled-tls
+    languages: [python]
+    severity: ERROR
+    message: TLS certificate verification must remain enabled.
+    pattern-either:
+      - pattern: requests.$METHOD(..., verify=False, ...)
+      - pattern: httpx.$METHOD(..., verify=False, ...)
+      - pattern: httpx.Client(..., verify=False, ...)
+  - id: python-unsafe-yaml
+    languages: [python]
+    severity: ERROR
+    message: Use yaml.safe_load for untrusted YAML.
+    pattern-either:
+      - pattern: yaml.unsafe_load(...)
+      - pattern: yaml.load($DATA)
+  - id: java-weak-password-hash
+    languages: [java]
+    severity: ERROR
+    message: Do not use MD5 or SHA-1 for security-sensitive hashing.
+    pattern-either:
+      - pattern: MessageDigest.getInstance("MD5")
+      - pattern: MessageDigest.getInstance("SHA-1")
+  - id: python-debug-web-server
+    languages: [python]
+    severity: ERROR
+    message: Do not enable debug mode in application startup.
+    pattern: $APP.run(..., debug=True, ...)
+  - id: typescript-disabled-tls
+    languages: [typescript, javascript]
+    severity: ERROR
+    message: Do not bypass Node TLS verification.
+    pattern: process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+  - id: java-permissive-cors
+    languages: [java]
+    severity: WARNING
+    message: Review wildcard CORS origins against authenticated API requirements.
+    pattern: $CONFIG.setAllowedOrigins(List.of("*"))

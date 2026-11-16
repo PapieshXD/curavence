@@ -1,0 +1,34 @@
+name: CodeQL (public repositories)
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron: '43 5 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  analyze:
+    if: github.event.repository.private == false && (github.event_name != 'push' || github.ref_name == github.event.repository.default_branch)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [java-kotlin, javascript-typescript, python]
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5.1.0
+        if: matrix.language == 'java-kotlin'
+        with: {distribution: temurin, java-version: '21'}
+      - uses: github/codeql-action/init@9c4840c028605570a7b5023740fdfcf9a8f745e7 # v4.31.8
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: none
+      - uses: github/codeql-action/analyze@9c4840c028605570a7b5023740fdfcf9a8f745e7 # v4.31.8
+        with:
+          category: /language:${{ matrix.language }}

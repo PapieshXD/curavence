@@ -1,0 +1,105 @@
+<section class="clinical-workspace">
+  <aside class="case-queue" aria-label="Kolejka przypadków">
+    <div class="queue-toolbar">
+      <header><div><h2>Kolejka przypadków</h2><p>Badania udostępnione do oceny</p></div></header>
+      <nav class="queue-tabs" aria-label="Filtr kolejki">
+        <button type="button" [class.active]="queueFilter() === 'all'" (click)="queueFilter.set('all')">Wszystkie <span>{{ studies().length }}</span></button>
+        <button type="button" [class.active]="queueFilter() === 'review'" (click)="queueFilter.set('review')">Do oceny <span>{{ needsReview().length }}</span></button>
+        <button type="button" [class.active]="queueFilter() === 'signed'" (click)="queueFilter.set('signed')">Podpisane <span>{{ signedStudies().length }}</span></button>
+      </nav>
+    </div>
+    <section class="queue-group">
+      @for (study of filteredStudies(); track study.id) {
+        <button class="case-row" [class.active]="selected()?.id === study.id" [class.recent]="study.clinicalStatus === 'SIGNED'" type="button" (click)="selectStudy(study)">
+          <span class="case-row-copy"><span class="case-row-heading"><strong>{{ study.patientName }}</strong><time>{{ date(study.performedAt) }}</time></span><span class="case-study-title">{{ study.title }}</span><span class="case-row-type">{{ study.typeName }}</span><span class="case-row-status"><span class="priority-dot" aria-hidden="true"></span>{{ queueReason(study) }}</span></span><app-icon name="chevron" [size]="16" />
+        </button>
+      } @empty { <p class="queue-empty">Brak badań dla wybranego filtra.</p> }
+    </section>
+  </aside>
+  @if (selected(); as study) {
+    <main class="active-case">
+      <header class="case-header"><div class="patient-title"><span class="avatar">{{ initials(study.patientName) }}</span><div><h2>{{ study.patientName }}</h2><p>{{ study.title }}</p><p>{{ study.typeName }} · {{ date(study.performedAt) }}</p></div></div><button class="secondary-button" type="button" (click)="openPatient()">Karta pacjenta</button></header>
+      @if (activeGrant(); as grant) {
+        <div class="access-banner"><app-icon name="shield" [size]="19" /><span><strong>Aktywne udostępnienie pacjenta</strong><small>{{ grant.purpose || (grant.scope | enumLabel) }} · {{ grant.expiresAt ? 'Ważne do ' + date(grant.expiresAt) : 'Bez daty wygaśnięcia' }}</small></span></div>
+      }
+      <nav class="case-tabs" aria-label="Sekcje przypadku">
+        <button type="button" [class.active]="caseTab() === 'overview'" (click)="caseTab.set('overview')">Przegląd</button>
+        <button type="button" [class.active]="caseTab() === 'images'" (click)="caseTab.set('images')">Obrazy</button>
+        <button type="button" [class.active]="caseTab() === 'documents'" (click)="caseTab.set('documents')">Opis i dokumenty</button>
+        <button type="button" [class.active]="caseTab() === 'history'" (click)="caseTab.set('history')">Historia</button>
+      </nav>
+      @if (caseTab() === 'overview') {
+        <section class="case-content study-overview">@if (study.description && study.description !== study.title) { <p>{{ study.description }}</p> }
+          <dl><div><dt>Status kliniczny</dt><dd>{{ study.clinicalStatus | enumLabel }}</dd></div><div><dt>Źródło</dt><dd>{{ study.sourceName || 'Nie podano' }}</dd></div><div><dt>Plik źródłowy</dt><dd>{{ study.originalFilename || 'Brak pliku źródłowego' }}</dd></div></dl>
+          @if (study.primaryAssetId && !study.imagingStudyId) { <button class="secondary-button" type="button" (click)="caseTab.set('documents')">Otwórz dokument źródłowy</button> }
+        </section>
+      }
+      @if (caseTab() === 'overview' || caseTab() === 'images') {
+        @if (imagingLoading()) { <p class="case-content" role="status">Wczytywanie obrazów badania…</p> }
+        @else if (imagingError()) { <div class="case-content" role="alert"><p>{{ imagingError() }}</p><button class="secondary-button" type="button" (click)="reload.update(increment)">Spróbuj ponownie</button></div> }
+        @else if (imaging(); as details) {
+          <section class="case-content"><header class="section-heading"><div><h3>Obrazy badania</h3><p>{{ details.study.modality }} · {{ details.series.length }} serii · {{ details.study.instanceCount }} obrazów</p></div><button class="secondary-button" type="button" (click)="openViewer()">Otwórz viewer</button></header>
+            @if (details.series.length) { <app-patient-image-gallery [clinical]="true" [studyId]="details.study.id" [series]="details.series" (readReport)="caseTab.set('documents')" /> }
+            @else { <p>Brak dostępnych serii. Status badania: {{ details.study.status | enumLabel }}.</p> }
+          </section>
+        } @else if (caseTab() === 'images') { <div class="case-content empty-state"><h3>Brak obrazów DICOM / NIfTI</h3><p>Do tego przypadku nie przypisano badania obrazowego.</p>@if (study.primaryAssetId) { <button class="secondary-button" type="button" (click)="caseTab.set('documents')">Zobacz dokument źródłowy</button> }</div> }
+      }
+      @if (caseTab() === 'documents') {
+        @if (study.primaryAssetId && !study.imagingStudyId) { <section class="case-content source-document"><app-document-details [documentId]="study.id" /></section> }
+        @else { <p class="case-content">{{ study.description || 'Brak dodatkowego dokumentu źródłowego.' }}</p> }
+      }
+      @if (caseTab() === 'overview' || caseTab() === 'documents') {
+        @if (study.resultSet; as results) {
+          <section class="case-content"><h3>{{ results.name || 'Wyniki badania' }}</h3>
+            @if (results.material) { <p>Materiał: {{ results.material }}</p> }
+            @for (parameter of results.parameters; track parameter.id) {
+              <div class="result-row"><strong>{{ parameter.name }}</strong><span>{{ parameter.value ?? 'Brak wartości' }} {{ parameter.unit }}</span><span>{{ parameter.referenceRange?.label || '' }}</span></div>
+            }
+            @for (section of results.sections ?? []; track section.id) { <h4>{{ section.title }}</h4><p>{{ section.content }}</p> }
+            @if (results.comment) { <p>{{ results.comment }}</p> }
+          </section>
+        }
+        <section class="case-content saved-reviews"><h3>Zapisane opisy ({{ reviews().length }})</h3>
+          @for (review of reviews(); track review.id) { <article><header><strong>{{ review.reviewerName }}</strong><span>{{ review.status | enumLabel }} · {{ date(review.updatedAt) }}</span></header>@if (review.summaryHtml) { <div class="review-rich" [innerHTML]="review.summaryHtml"></div> } @else { <p>{{ review.summary }}</p> }@if (review.conclusionHtml) { <strong>Wniosek i zalecenie:</strong><div class="review-rich" [innerHTML]="review.conclusionHtml"></div> } @else if (review.conclusion) { <p><strong>Wniosek i zalecenie:</strong> {{ review.conclusion }}</p> }</article> }
+          @empty { <p>Nie zapisano jeszcze opisu tego badania.</p> }
+        </section>
+        <section class="report-editor" id="clinical-review">
+          <header><div><h3>Nowy opis badania</h3><p>Opis zostanie przypisany do: {{ study.title }}</p></div><span>Zapis ręczny</span></header>
+          <div class="editor-field"><strong>Podsumowanie</strong><app-rich-review-editor label="Podsumowanie" placeholder="Opisz obserwacje w kontekście klinicznym" [value]="summaryHtml()" (valueChange)="updateSummary($event)" /></div>
+          <div class="editor-field"><strong>Wniosek i zalecenie</strong><app-rich-review-editor label="Wniosek i zalecenie" placeholder="Dodaj wniosek lub dalsze zalecenie" [value]="conclusionHtml()" (valueChange)="updateConclusion($event)" /></div>
+          <div class="rewrite-tools"><button class="secondary-button" type="button" [disabled]="rewriting() || saving() || (!summaryText().trim() && !conclusion().trim())" (click)="rewriteReview()">{{ rewriting() ? 'Poprawianie tekstu…' : 'Uprofesjonalnij tekst z AI' }}</button><span>Propozycja wymaga sprawdzenia przez lekarza.</span></div>
+          @if (rewriteError()) { <p class="rewrite-error" role="alert">{{ rewriteError() }}</p> }
+          @if (rewriteSuggestion(); as suggestion) {
+            <div class="rewrite-preview" aria-live="polite"><h4>Propozycja poprawionego opisu</h4>
+              @if (suggestion.summary) { <p><strong>Podsumowanie</strong><span>{{ suggestion.summary }}</span></p> }
+              @if (suggestion.conclusion) { <p><strong>Wniosek i zalecenie</strong><span>{{ suggestion.conclusion }}</span></p> }
+              <div class="rewrite-preview-actions"><button class="primary-button" type="button" (click)="applyRewrite()">Wstaw do opisu</button><button class="secondary-button" type="button" (click)="rewriteSuggestion.set(null)">Odrzuć</button></div>
+            </div>
+          }
+          <footer><button class="secondary-button" type="button" [disabled]="saving() || rewriting() || !summaryText().trim()" (click)="saveReview(false)">Zapisz szkic</button><button class="primary-button" type="button" [disabled]="saving() || rewriting() || !summaryText().trim()" (click)="saveReview(true)"><app-icon name="check" [size]="16" />Podpisz opis</button></footer>
+        </section>
+      }
+      @if (caseTab() === 'history') {
+        <section class="case-content saved-reviews"><h3>Historia tego badania</h3>
+          @for (event of audit(); track event.id) { <article><strong>{{ event.action | enumLabel }}</strong><p>{{ event.actorName }} · {{ date(event.createdAt) }}</p><p>{{ event.success ? 'Operacja zakończona powodzeniem' : event.denialReason || 'Operacja odrzucona' }}</p></article> }
+          @empty { <p>Brak dostępnych zdarzeń dla tego badania.</p> }
+        </section>
+      }
+    </main>
+    <aside class="decision-panel" aria-label="Panel decyzji">
+      <section><header><h2>Analiza badania</h2></header>
+        @if (analysisLoading()) { <p class="panel-message" role="status">Wczytywanie analizy…</p> }
+        @else if (analysisError()) { <p class="panel-message" role="alert">{{ analysisError() }}</p><button class="secondary-button" type="button" (click)="reload.update(increment)">Spróbuj ponownie</button> }
+        @else if (analysis(); as result) {
+          <p class="panel-message">Status: {{ result.status | enumLabel }}</p>
+          <p class="panel-message">{{ result.summary || result.errorMessage || 'Brak podsumowania analizy.' }}</p>
+          @for (finding of result.candidateFindings; track $index) { <article class="verification-item"><h3>{{ finding.type | enumLabel }}</h3><p>{{ finding.region || 'Lokalizacja niepodana' }}</p>@if (finding.volumeMl != null) { <p>Objętość: {{ finding.volumeMl }} ml</p> }</article> }
+          @for (warning of result.warnings; track $index) { <p class="panel-message">{{ warning }}</p> }
+          @if (result.disclaimer) { <div class="ai-note"><app-icon name="info" [size]="18" /><p>{{ result.disclaimer }}</p></div> }
+        } @else { <p class="panel-message">{{ study.imagingStudyId ? 'Nie ma zapisanej analizy dla tego badania.' : 'Ten przypadek nie ma powiązanej analizy obrazowej.' }}</p> }
+      </section>
+      <section class="case-actions"><h2>Twoje działania</h2><button class="primary-button" type="button" (click)="startReview()"><app-icon name="document" [size]="17" />Dodaj opis</button>@if (study.imagingStudyId) { <button class="secondary-button" type="button" (click)="openViewer()">Otwórz badanie obrazowe</button> }@if (study.primaryAssetId && !study.imagingStudyId) { <button class="secondary-button" type="button" (click)="openDocument()">Otwórz dokument</button> }</section>
+      <section class="audit-context"><h2>Kontekst i audyt</h2>@if (audit()[0]; as event) { <p>Ostatnie zdarzenie: {{ date(event.createdAt) }} · {{ event.actorName }}</p> } @else { <p>Brak dostępnych zdarzeń dla tego badania.</p> }<button type="button" (click)="caseTab.set('history')">Historia badania <app-icon name="chevron" [size]="15" /></button></section>
+    </aside>
+  } @else { <div class="workspace-empty"><h2>Brak przypadków</h2><p>Zmień filtr lub wyszukiwanie. Badania pojawiają się po udostępnieniu danych przez pacjenta.</p></div> }
+</section>

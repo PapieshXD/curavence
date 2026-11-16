@@ -1,0 +1,20 @@
+:host { display: block; }
+.reading-text { max-width: 72ch; color: var(--ink, #15323b); font-size: 16px; line-height: 1.8; }
+.reading-text[role=heading] { font-size: 22px; line-height: 1.4; font-weight: 700; }
+.reading-text p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.term { display: inline; padding: 0; border: 0; border-bottom: 2px dotted #16877f; border-radius: 2px; background: transparent; color: inherit; font: inherit; line-height: inherit; text-align: inherit; cursor: pointer; }
+.term:hover, .term.selected { background: #e0f4ef; }
+button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid #147e78; outline-offset: 3px; }
+.term-list { margin-top: 22px; border-top: 1px solid #dce8e5; padding-top: 16px; font-size: 14px; }
+.term-list summary { cursor: pointer; font-weight: 600; }
+.term-list div { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.term-list button { border: 1px solid #c5dfd8; padding: 8px 12px; border-radius: 20px; background: #f3faf7; color: #175951; cursor: pointer; }
+.term-backdrop { position: fixed; inset: 0; z-index: 1090; background: #082c3912; }
+.term-dialog { position: fixed; z-index: 1100; width: min(360px, calc(100vw - 24px)); box-sizing: border-box; padding: 26px; border: 1px solid #c9e2db; border-radius: 16px; background: white; box-shadow: 0 16px 64px #153b3b28; max-height: calc(100dvh - 24px); overflow-y: auto; color: #18332f; }
+.term-dialog small { color: #277568; font-size: 10px; letter-spacing: .12em; font-weight: 700; }
+.term-dialog h4 { font-size: 20px; margin: 12px 24px 14px 0; }
+.term-dialog p { font-size: 16px; line-height: 1.6; }
+.term-dialog .term-context, .term-sources { font-size: 12px; line-height: 1.5; color: #526963; }
+.term-sources { margin: 14px 0; } .term-sources a { color: #126e63; display: block; }
+.term-close { position: absolute; right: 8px; top: 8px; width: 44px; height: 44px; border: 0; background: transparent; font-size: 26px; cursor: pointer; color: #345e54; }
+@media (max-width: 620px) { .term-dialog { top: auto !important; left: 0 !important; bottom: 0; width: 100%; border-radius: 20px 20px 0 0; max-height: 80dvh; padding-bottom: calc(24px + env(safe-area-inset-bottom)); } .term-backdrop { background: #082c3950; } }

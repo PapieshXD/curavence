@@ -1,0 +1,113 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: med_node
+      POSTGRES_USER: med_node
+      POSTGRES_PASSWORD: med_node_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U med_node -d med_node"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  minio:
+    # Docker Hub and Quay no longer serve this release. Pin the same image digest from its archive mirror.
+    image: ghcr.io/l33tlamer/minio-backup@sha256:a1ea29fa28355559ef137d71fc570e508a214ec84ff8083e39bc5428980b015e
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: med-node
+      MINIO_ROOT_PASSWORD: med-node-secret
+    ports:
+      - "9100:9000"
+      - "9101:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.0
+    command: start-dev --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin-dev
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./infrastructure/keycloak/med-node-realm.json:/opt/keycloak/data/import/med-node-realm.json:ro
+      - keycloak-data:/opt/keycloak/data
+
+  orthanc:
+    image: jodogne/orthanc-plugins:1.12.11
+    ports:
+      - "127.0.0.1:4242:4242"
+      - "127.0.0.1:8042:8042"
+    volumes:
+      - ./infrastructure/orthanc/orthanc.json:/etc/orthanc/orthanc.json:ro
+      - orthanc-data:/var/lib/orthanc/db
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --user=mednode --password=mednode-orthanc-dev -O - http://localhost:8042/system >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  ohif:
+    image: ohif/app:v3.12.11
+    ports:
+      - "3000:80"
+    volumes:
+      - ./infrastructure/ohif/app-config.js:/usr/share/nginx/html/app-config.js:ro
+      - ./infrastructure/ohif/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      orthanc:
+        condition: service_healthy
+
+  imaging-ai-service:
+    build:
+      context: ./imaging-ai-service
+    # Local development must use the current API, not Python code from an older image.
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8090", "--reload", "--reload-dir", "/service/app"]
+    ports:
+      - "127.0.0.1:8090:8090"
+    environment:
+      SEGMENTATION_SERVICE_TOKEN: ${SEGMENTATION_SERVICE_TOKEN:-med-node-segmentation-dev}
+      SEGMENTATION_ENGINE: ${SEGMENTATION_ENGINE:-totalsegmentator}
+      SEGMENTATION_DEVICE: ${SEGMENTATION_DEVICE:-cpu}
+      SEGMENTATION_FAST: ${SEGMENTATION_FAST:-true}
+      SEGMENTATION_RUN_PATHOLOGY_MODELS: ${SEGMENTATION_RUN_PATHOLOGY_MODELS:-true}
+      SEGMENTATION_LLM_ENABLED: ${SEGMENTATION_LLM_ENABLED:-false}
+      SEGMENTATION_LLM_BASE_URL: ${SEGMENTATION_LLM_BASE_URL:-http://host.docker.internal:11434}
+      SEGMENTATION_LLM_MODEL: ${SEGMENTATION_LLM_MODEL:-qwen3.5:4b}
+      SEGMENTATION_ORTHANC_BASE_URL: http://orthanc:8042
+      SEGMENTATION_ORTHANC_USERNAME: mednode
+      SEGMENTATION_ORTHANC_PASSWORD: mednode-orthanc-dev
+      TOTALSEG_HOME_DIR: /models/.totalsegmentator
+    volumes:
+      - ./imaging-ai-service/app:/service/app:ro
+      - imaging-ai-data:/data
+      - imaging-ai-models:/models
+    depends_on:
+      orthanc:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8090/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+volumes:
+  postgres-data:
+  minio-data:
+  keycloak-data:
+  orthanc-data:
+  imaging-ai-data:
+  imaging-ai-models:

@@ -1,0 +1,28 @@
+<main class="login-page">
+  <section class="login-card">
+    <div class="login-brand">
+      <span class="login-brand-symbol" aria-hidden="true"></span>
+      <div><strong>curavence</strong><small>Twoja historia zdrowia</small></div>
+    </div>
+    <div class="login-heading">
+      <h1>Witaj ponownie</h1>
+      <p>Zaloguj się, aby bezpiecznie przejść do swoich danych i aktualnych działań.</p>
+    </div>
+    <form (ngSubmit)="submit()">
+      <label>Login
+        <input type="email" name="username" autocomplete="username" [ngModel]="username()"
+          (ngModelChange)="username.set($event)" placeholder="adres e-mail" />
+      </label>
+      <label>Hasło
+        <input type="password" name="password" autocomplete="current-password" [ngModel]="password()"
+          (ngModelChange)="password.set($event)" />
+      </label>
+      <details><summary>Używam logowania dwuetapowego</summary><label>Kod z aplikacji uwierzytelniającej<input type="text" name="otp" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]{6,8}" maxlength="8" [ngModel]="otp()" (ngModelChange)="otp.set($event)" /></label></details>
+      @if (error()) { <p class="login-error" role="alert">{{ error() }}</p> }
+      <button class="primary-button" type="submit" [disabled]="submitting()">
+        {{ submitting() ? 'Logowanie…' : 'Zaloguj się' }}
+      </button>
+    </form>
+    <p class="login-footnote">To logowanie korzysta z Keycloak; aplikacja nie przechowuje hasła.</p>
+  </section>
+</main>

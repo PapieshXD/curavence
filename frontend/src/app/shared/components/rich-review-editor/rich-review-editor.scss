@@ -1,0 +1,9 @@
+:host { display: block; min-width: 0; }
+.rich-editor { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--white); }
+.rich-editor:focus-within { border-color: var(--blue); box-shadow: 0 0 0 2px var(--blue-soft); }
+.rich-toolbar.ql-toolbar.ql-snow { display: flex; flex-wrap: wrap; gap: 2px; padding: 6px 8px; border: 0; border-bottom: 1px solid var(--border); background: var(--surface-subtle); }
+.rich-toolbar .ql-formats { display: inline-flex; align-items: center; margin: 0 5px 0 0 !important; }
+.rich-editor-area.ql-container.ql-snow { min-height: 105px; border: 0; font: 13px/1.55 var(--font-family-ui); }
+.rich-editor-area .ql-editor { min-height: 105px; padding: 12px; color: var(--ink); overflow-wrap: anywhere; }
+.rich-editor-area .ql-editor img { display: block; max-width: min(100%, 540px); max-height: 420px; margin: 10px 0; border-radius: 5px; object-fit: contain; }
+.rich-editor-error { margin: 5px 0 0; color: #ad3e24; font-size: 11px; }

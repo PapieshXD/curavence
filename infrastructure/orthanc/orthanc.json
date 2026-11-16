@@ -1,0 +1,21 @@
+{
+  "Name": "Curavence Imaging",
+  "StorageDirectory": "/var/lib/orthanc/db",
+  "IndexDirectory": "/var/lib/orthanc/db",
+  "RemoteAccessAllowed": true,
+  "AuthenticationEnabled": true,
+  "RegisteredUsers": {
+    "mednode": "mednode-orthanc-dev"
+  },
+  "Plugins": [
+    "/usr/local/share/orthanc/plugins"
+  ],
+  "DefaultEncoding": "Utf8",
+  "HttpDescribeErrors": true,
+  "DicomWeb": {
+    "Enable": true,
+    "Root": "/dicom-web/",
+    "EnableWado": true,
+    "WadoRoot": "/wado"
+  }
+}

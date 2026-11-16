@@ -1,0 +1,183 @@
+@if (document(); as item) {
+  <section class="document-detail-header">
+    <button class="back-button" type="button" (click)="goBack()">
+      <span aria-hidden="true">←</span> {{ workspace.role() === 'patient' ? backLabel() : 'Dokumenty' }}
+    </button>
+    <div class="document-heading">
+      <span class="document-file-icon"><app-icon name="document" [size]="22" /></span>
+      <div>
+        <div class="heading-line">
+          <h2>{{ workspace.role() === 'patient' ? patientTitle() : item.title }}</h2>
+          <app-status-text [tone]="item.ingestionStatus === 'READY' ? 'success' : 'warning'">
+            {{ workspace.role() === 'patient' ? patientStatus() : (item.ingestionStatus | enumLabel) }}
+          </app-status-text>
+        </div>
+        <p>{{ workspace.role() === 'patient' ? date(item.performedAt) + ' · ' + (item.sourceName || 'Dodano samodzielnie') : (item.originalFilename || 'Plik bez nazwy') + ' · ' + size(item.sizeBytes) }}</p>
+      </div>
+    </div>
+    <button class="secondary-button" type="button" [disabled]="!item.primaryAssetId" (click)="download()">
+      <app-icon name="download" [size]="16" /> {{ workspace.role() === 'patient' ? 'Pobierz oryginał' : 'Pobierz' }}
+    </button>
+  </section>
+
+  @if (workspace.role() === 'patient' && !isSignal()) {
+    <app-reading-guide [documentId]="item.id" [fallbackText]="readData()" [originalAvailable]="!!item.primaryAssetId" (original)="download()" />
+  }
+
+  <div class="document-detail-layout" [class.signal-layout]="isSignal()">
+    <section class="work-panel preview-panel" aria-label="Podgląd dokumentu">
+      <div class="preview-toolbar">
+        <span>{{ workspace.role() === 'patient' ? 'Oryginalny plik' : (isSignal() ? 'Podgląd sygnału EKG' : 'Podgląd pliku') }}</span>
+        <small>{{ workspace.role() === 'patient' ? (item.originalFilename || 'Bezpieczny podgląd') : (item.mimeType || 'Nieznany format') }}</small>
+      </div>
+      <div class="preview-stage" [class.signal-stage]="isSignal()">
+        @if (isSignal()) {
+          @if (ecgLoading()) {
+            <div class="preview-state"><span class="spinner" aria-hidden="true"></span><p>Odczytywanie kanałów i próbek EKG…</p></div>
+          } @else if (ecg(); as signal) {
+            @if (signal.imageDataUrl) {
+              <div class="ecg-image-preview">@for (warning of signal.warnings; track warning) { <p>{{ warning }}</p> }<img [src]="signal.imageDataUrl" [alt]="'Oryginalny zapis EKG: ' + item.title" /></div>
+            } @else {
+              <app-ecg-waveform [data]="signal" [documentId]="documentId()" [calibrationValue]="ecgCalibration()" (selectionChange)="changeSelection($event)" (calibration)="loadEcg($event)" />
+            }
+          } @else {
+            <div class="preview-state error"><app-icon name="activity" [size]="30" /><h3>Nie udało się odczytać sygnału</h3><p>{{ ecgError() }}</p><button class="secondary-button" type="button" (click)="loadEcg()">Spróbuj ponownie</button><button class="text-button" type="button" (click)="download()">Pobierz oryginał</button></div>
+          }
+        } @else if (previewLoading()) {
+          <div class="preview-state"><span class="spinner" aria-hidden="true"></span><p>Wczytywanie podglądu…</p></div>
+        } @else if (previewError()) {
+          <div class="preview-state error"><app-icon name="info" [size]="26" /><p>{{ previewError() }}</p>
+            <button class="secondary-button" type="button" (click)="download()">Pobierz plik</button></div>
+        } @else if (isPdf() && previewUrl()) {
+          <iframe [src]="previewUrl()" [title]="'Podgląd PDF: ' + item.title"></iframe>
+        } @else if (isImage() && imagePreviewUrl()) {
+          <img [src]="imagePreviewUrl()" [alt]="'Podgląd: ' + item.title" />
+        } @else if (!item.primaryAssetId) {
+          <div class="preview-state"><app-icon name="document" [size]="28" /><p>Dokument nie ma dołączonego pliku.</p></div>
+        } @else {
+          <div class="preview-state"><app-icon name="document" [size]="28" /><p>Ten format nie ma podglądu w przeglądarce.</p>
+            <button class="secondary-button" type="button" (click)="download()">Pobierz plik</button></div>
+        }
+      </div>
+    </section>
+
+    <aside class="work-panel detail-sidebar">
+      <nav class="detail-tabs" aria-label="Sekcje dokumentu">
+        <button type="button" [class.active]="tab() === 'info'" (click)="tab.set('info')">Informacje</button>
+        <button type="button" [class.active]="tab() === 'chat'" (click)="tab.set('chat')">
+          Zapytaj AI <span class="ai-dot" aria-hidden="true"></span>
+        </button>
+      </nav>
+
+      @if (tab() === 'info') {
+        <div class="sidebar-content info-content">
+          @if (canManage()) {
+            <label class="detail-field">Nazwa dokumentu
+              <input type="text" maxlength="255" [ngModel]="title()" (ngModelChange)="title.set($event); metadataDirty.set(true)" />
+            </label>
+            <label class="detail-field">Data dokumentu
+              <input type="date" [ngModel]="performedAt()" (ngModelChange)="performedAt.set($event); metadataDirty.set(true)" />
+            </label>
+            @if (canChangeCategory()) { <label class="detail-field">Kategoria dokumentu<select [ngModel]="categoryCode()" (ngModelChange)="categoryCode.set($event); metadataDirty.set(true)">@for(c of editableCategories;track c.code){<option [value]="c.code">{{c.label}}</option>}</select></label> }
+            @if (metadataDirty()) { <button class="secondary-button" type="button" (click)="resetMetadata()">Odrzuć zmiany i odśwież dane</button> }
+            <button class="primary-button full-width" type="button" [disabled]="!title().trim() || saving()" (click)="save()">
+              <app-icon name="check" [size]="16" /> {{ saving() ? 'Zapisywanie…' : 'Zapisz zmiany' }}
+            </button>
+          }
+
+          @if (ecg()) {
+            <div class="ecg-ai-card"><span>ANALIZA AI</span><h3>Omów ten zapis</h3><label class="detail-field">Sposób objaśnienia<select [ngModel]="aiAudience()" (ngModelChange)="changeAudience($event)"><option value="patient">Dla pacjenta — prostym językiem</option><option value="clinician">Dla diagnosty — pomiary i ograniczenia</option></select></label><p>{{ ecg()?.imageDataUrl ? 'AI otrzyma widoczny obraz zapisu. Może pomóc odczytać treść i ocenić czytelność, bez pomiarów ani diagnozy.' : 'AI otrzyma statystyki źródłowe oraz obliczone PQRST i odstępy z wybranego fragmentu. Wyjaśni dostępne pomiary, jakość i ograniczenia. Nie zastępuje interpretacji lekarza.' }}</p><button class="primary-button full-width" type="button" (click)="analyzeEcg()" [disabled]="asking()">Analizuj zapis z AI</button></div>
+          }
+          @if (workspace.role()==='patient') {
+            <details (toggle)="$any($event.target).open && loadHistory()"><summary>Historia zmian danych dokumentu</summary>
+              @if(metadataError()){<p role="alert">{{metadataError()}}</p>}
+              @for(h of metadataHistory();track $index){<article><p>{{h.author}} · {{h.createdAt | date:'dd.MM.yyyy HH:mm'}}</p><p>{{h.oldTitle}} → {{h.newTitle}}</p><p>Data: {{h.oldPerformedAt || 'Brak'}} → {{h.newPerformedAt || 'Brak'}}</p><p>Kategoria: {{h.oldTypeCode}} → {{h.newTypeCode}}</p></article>}@empty{<p>Brak zapisanych zmian metadanych.</p>}
+            </details>
+          }
+          <dl class="document-meta">
+            @if (workspace.role() !== 'patient') { <div><dt>Pacjent</dt><dd>{{ item.patientName }}</dd></div> }
+            <div><dt>Typ</dt><dd>{{ item.typeName }}</dd></div>
+            <div><dt>Data</dt><dd>{{ date(item.performedAt) }}</dd></div>
+            @if (workspace.role() !== 'patient') {
+              <div><dt>Źródło</dt><dd>{{ item.sourceName || 'Nie podano' }}</dd></div>
+              <div><dt>Tekst dla AI</dt><dd>{{ item.hasExtractedText ? 'Dostępny' : 'Niedostępny' }}</dd></div>
+            }
+          </dl>
+
+          @if (canManage()) {
+            <div class="archive-section">
+              @if (archiveConfirm()) {
+                <p>Dokument zniknie z aktywnej listy. Plik nie zostanie trwale usunięty.</p>
+                <div class="archive-actions">
+                  <button class="danger-button" type="button" [disabled]="archiving()" (click)="archive()">
+                    {{ archiving() ? 'Archiwizowanie…' : 'Potwierdź' }}
+                  </button>
+                  <button class="text-button" type="button" (click)="archiveConfirm.set(false)">Anuluj</button>
+                </div>
+              } @else {
+                <button class="archive-button" type="button" (click)="archive()">Archiwizuj dokument</button>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="chat-pane">
+          @if (!canAsk()) {
+            <div class="chat-unavailable">
+              <span><app-icon name="info" [size]="20" /></span>
+              @if (isPdf()) {
+                <h3>Najpierw potrzebny jest OCR</h3>
+                <p>Ten PDF wygląda na skan i nie ma warstwy tekstowej. Pytania będą dostępne po dodaniu OCR.</p>
+              } @else {
+                <h3>{{ isSignal() ? 'Najpierw potrzebny jest odczyt sygnału' : 'Brak tekstu do analizy' }}</h3>
+                <p>{{ isSignal() ? 'Analiza AI będzie dostępna po poprawnym odczytaniu kanałów. Sprawdź komunikat przy podglądzie.' : 'Pytania AI są dostępne dla dokumentów PDF z wyodrębnioną warstwą tekstową.' }}</p>
+              }
+            </div>
+          } @else {
+            <div class="chat-notice"><app-icon name="shield" [size]="15" /> {{ isSignal() ? 'AI objaśnia pomiary algorytmiczne wybranego kanału i fragmentu. Zmiana okna rozpoczyna nową rozmowę. Wyniki wymagają weryfikacji przez lekarza.' : 'Odpowiedzi powstają tylko na podstawie tego dokumentu.' }}</div>
+            <div class="chat-messages" aria-live="polite">
+              @if (messages().length === 0) {
+                <div class="chat-welcome">
+                  <span class="ai-mark">AI</span>
+                  <h3>O co chcesz zapytać?</h3>
+                  <p>Mogę wyszukać fakty, daty i wartości lub przygotować krótkie podsumowanie.</p>
+                  <div class="suggestion-list">
+                    @for (suggestion of suggestions; track suggestion) {
+                      <button type="button" (click)="askSuggestion(suggestion)">{{ suggestion }}</button>
+                    }
+                  </div>
+                </div>
+              }
+              @for (message of messages(); track $index) {
+                <article class="chat-message" [class.user]="message.role === 'user'">
+                  <span>{{ message.role === 'assistant' ? 'AI' : 'Ty' }}</span>
+                  <p>{{ message.content }}</p>
+                </article>
+              }
+              @if (asking()) {
+                <article class="chat-message thinking"><span>AI</span><p><i></i><i></i><i></i><em>Analizuję dokument…</em></p></article>
+              }
+              @if (chatError()) { <p class="chat-error"><app-icon name="info" [size]="15" />{{ chatError() }}</p> }
+            </div>
+            <div class="chat-composer">
+              <textarea rows="2" maxlength="1000" placeholder="Zadaj pytanie o dokument…"
+                aria-label="Pytanie o dokument" [ngModel]="question()" (ngModelChange)="question.set($event)"
+                (keydown)="questionKeydown($event)"></textarea>
+              <button type="button" aria-label="Wyślij pytanie" [disabled]="!question().trim() || asking()" (click)="ask()">
+                <app-icon name="arrow" [size]="17" />
+              </button>
+              <small>Enter wysyła · Shift+Enter dodaje nową linię @if (aiModel()) { · Model: {{ aiModel() }} }</small>
+            </div>
+          }
+        </div>
+      }
+    </aside>
+  </div>
+} @else {
+  <section class="work-panel missing-document">
+    <app-icon name="document" [size]="30" />
+    <h2>Nie znaleziono dokumentu</h2>
+    <p>Dokument nie istnieje, został zarchiwizowany albo nie masz do niego dostępu.</p>
+    <button class="secondary-button" type="button" (click)="goBack()">Wstecz do badań</button>
+  </section>
+}

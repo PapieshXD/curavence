@@ -1,0 +1,2046 @@
+{
+  "version": "2026-11-01.1",
+  "terms": [
+    {
+      "id": "term-001",
+      "name": "Tomografia komputerowa",
+      "aliases": [
+        "TK",
+        "CT"
+      ],
+      "category": "imaging",
+      "contextualAliases": [
+        "TK",
+        "CT"
+      ],
+      "definition": "Badanie tworzące przekrojowe obrazy wnętrza ciała z wykorzystaniem promieniowania rentgenowskiego.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-002",
+      "name": "Rezonans magnetyczny",
+      "aliases": [
+        "MR",
+        "MRI"
+      ],
+      "category": "imaging",
+      "contextualAliases": [
+        "MR",
+        "MRI"
+      ],
+      "definition": "Badanie tworzące obrazy wnętrza ciała z wykorzystaniem pola magnetycznego i fal radiowych.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-003",
+      "name": "Ultrasonografia",
+      "aliases": [
+        "USG"
+      ],
+      "category": "imaging",
+      "contextualAliases": [
+        "USG"
+      ],
+      "definition": "Badanie obrazowe wykorzystujące fale dźwiękowe o wysokiej częstotliwości.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-004",
+      "name": "Radiografia",
+      "aliases": [
+        "RTG"
+      ],
+      "category": "imaging",
+      "contextualAliases": [
+        "RTG"
+      ],
+      "definition": "Badanie obrazowe wykorzystujące promieniowanie rentgenowskie.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-005",
+      "name": "Środek kontrastowy",
+      "aliases": [
+        "kontrast",
+        "środka kontrastowego"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Substancja podawana podczas niektórych badań, aby lepiej uwidocznić określone struktury.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-006",
+      "name": "Zmiana ogniskowa",
+      "aliases": [
+        "zmiany ogniskowe",
+        "zmian ogniskowych"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Obszar różniący się od otaczającej tkanki. Samo określenie nie wskazuje przyczyny tej różnicy.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-007",
+      "name": "Torbiel",
+      "aliases": [
+        "torbiele",
+        "torbieli"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Przestrzeń otoczona ścianą, zwykle wypełniona płynem.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-008",
+      "name": "Guzek",
+      "aliases": [
+        "guzki",
+        "guzka"
+      ],
+      "category": "imaging",
+      "contextualAliases": [
+        "guzki",
+        "guzka"
+      ],
+      "definition": "Niewielka zmiana opisana jako odrębny obszar lub uwypuklenie. Nazwa nie określa jej przyczyny.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-009",
+      "name": "Zwapnienie",
+      "aliases": [
+        "zwapnienia",
+        "zwapnień"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Miejsce odkładania się soli wapnia w tkance.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-010",
+      "name": "Obrzęk",
+      "aliases": [
+        "obrzęku"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Nagromadzenie nadmiernej ilości płynu w tkance.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-011",
+      "name": "Naciek",
+      "aliases": [
+        "nacieki",
+        "nacieku"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Określenie zmiany obejmującej tkankę; jego znaczenie zależy od narządu i pozostałej treści opisu.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-012",
+      "name": "Niedodma",
+      "aliases": [
+        "niedodmy"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Zmniejszenie upowietrznienia i objętości części płuca.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-013",
+      "name": "Płyn w jamie opłucnej",
+      "aliases": [
+        "płynu w jamie opłucnej"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Płyn w przestrzeni między płucem a ścianą klatki piersiowej.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-014",
+      "name": "Miąższ",
+      "aliases": [
+        "miąższu"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Tkanka tworząca zasadniczą, czynną część narządu.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-015",
+      "name": "Węzeł chłonny",
+      "aliases": [
+        "węzły chłonne",
+        "węzłów chłonnych"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Niewielka struktura układu odpornościowego, przez którą przepływa chłonka.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-016",
+      "name": "Wzmocnienie kontrastowe",
+      "aliases": [
+        "wzmocnienia kontrastowego"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Zmiana wyglądu tkanki w obrazie po podaniu środka kontrastowego.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-017",
+      "name": "Hipodensyjny",
+      "aliases": [
+        "hipodensyjna",
+        "hipodensyjne"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Określenie obszaru o mniejszym pochłanianiu promieniowania w TK niż tkanka, do której go porównano.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-018",
+      "name": "Hiperdensyjny",
+      "aliases": [
+        "hiperdensyjna",
+        "hiperdensyjne"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Określenie obszaru o większym pochłanianiu promieniowania w TK niż tkanka, do której go porównano.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-019",
+      "name": "Hipoechogeniczny",
+      "aliases": [
+        "hipoechogeniczna",
+        "hipoechogeniczne"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Określenie obszaru ciemniejszego od porównywanej tkanki w obrazie USG.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-020",
+      "name": "Hiperechogeniczny",
+      "aliases": [
+        "hiperechogeniczna",
+        "hiperechogeniczne"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Określenie obszaru jaśniejszego od porównywanej tkanki w obrazie USG.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-021",
+      "name": "Bezechowy",
+      "aliases": [
+        "bezechowa",
+        "bezechowe"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Określenie obszaru bez widocznych odbić ultradźwięków w obrazie USG.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-022",
+      "name": "Echogeniczność",
+      "aliases": [
+        "echogeniczności"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Sposób odbijania ultradźwięków przez tkankę, widoczny jako jasność obrazu USG.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-023",
+      "name": "Sygnał",
+      "aliases": [
+        "sygnału"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "W opisie MR oznacza jasność danej tkanki w określonym rodzaju obrazu.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-024",
+      "name": "Sekwencja",
+      "aliases": [
+        "sekwencje",
+        "sekwencji"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Sposób wykonania części badania MR, pozwalający uzyskać określony rodzaj obrazu.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-025",
+      "name": "Artefakt",
+      "aliases": [
+        "artefakty",
+        "artefaktów"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Element obrazu wynikający ze sposobu badania lub ruchu, a nie bezpośrednio z budowy tkanki.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-026",
+      "name": "Zmiany zwyrodnieniowe",
+      "aliases": [
+        "zmian zwyrodnieniowych"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Zmiany budowy tkanek, często opisywane w stawach i kręgosłupie.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-027",
+      "name": "Osteofit",
+      "aliases": [
+        "osteofity",
+        "osteofitów"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Wyrośl kostna, często opisywana przy brzegach stawów lub kręgów.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-028",
+      "name": "Dyskopatia",
+      "aliases": [
+        "dyskopatii"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Ogólne określenie zmian dotyczących krążka międzykręgowego.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-029",
+      "name": "Protruzja",
+      "aliases": [
+        "protruzji"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Rodzaj uwypuklenia krążka międzykręgowego poza jego zwykły obrys.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-030",
+      "name": "Ekstruzja",
+      "aliases": [
+        "ekstruzji"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Rodzaj przemieszczenia materiału krążka międzykręgowego poza jego obrys.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-031",
+      "name": "Stenoza",
+      "aliases": [
+        "stenozy"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Zwężenie przewodu, kanału lub otworu w ciele.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-032",
+      "name": "Kanał kręgowy",
+      "aliases": [
+        "kanału kręgowego"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Przestrzeń wewnątrz kręgosłupa, w której znajdują się struktury nerwowe.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-033",
+      "name": "Korzeń nerwowy",
+      "aliases": [
+        "korzenie nerwowe",
+        "korzenia nerwowego"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Odcinek nerwu wychodzący z rdzenia kręgowego lub wchodzący do niego.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-034",
+      "name": "Rdzeń kręgowy",
+      "aliases": [
+        "rdzenia kręgowego"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Część układu nerwowego przebiegająca w kanale kręgowym.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-035",
+      "name": "Łąkotka",
+      "aliases": [
+        "łąkotki",
+        "łąkotce"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Struktura chrzęstna w kolanie, która pomaga rozkładać obciążenie stawu.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-036",
+      "name": "Więzadło",
+      "aliases": [
+        "więzadła",
+        "więzadeł"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Pasmo tkanki łączące kości i pomagające stabilizować staw.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-037",
+      "name": "Ścięgno",
+      "aliases": [
+        "ścięgna",
+        "ścięgien"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Tkanka łącząca mięsień z kością.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-038",
+      "name": "Wysięk",
+      "aliases": [
+        "wysięku"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Płyn gromadzący się w jamie ciała lub stawie, np. w związku z procesem zapalnym.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-039",
+      "name": "Zmiana lita",
+      "aliases": [
+        "zmiany lite"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Zmiana zbudowana z tkanki, w odróżnieniu od przestrzeni wypełnionej samym płynem.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-040",
+      "name": "Zmiana nieswoista",
+      "aliases": [
+        "zmiany nieswoiste"
+      ],
+      "category": "imaging",
+      "contextualAliases": [],
+      "definition": "Zmiana, której wygląd nie wskazuje jednoznacznie jednej przyczyny.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: RadiologyInfo",
+          "url": "https://www.radiologyinfo.org/en/radiology-reports"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-041",
+      "name": "Hemoglobina",
+      "aliases": [
+        "Hb",
+        "HGB",
+        "hemoglobiny"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "Hb",
+        "HGB"
+      ],
+      "definition": "Białko w krwinkach czerwonych, które przenosi tlen.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-042",
+      "name": "Erytrocyty",
+      "aliases": [
+        "RBC",
+        "erytrocytów"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "RBC"
+      ],
+      "definition": "Krwinki czerwone, które przenoszą tlen dzięki zawartej w nich hemoglobinie.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-043",
+      "name": "Leukocyty",
+      "aliases": [
+        "WBC",
+        "leukocytów"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "WBC"
+      ],
+      "definition": "Krwinki białe uczestniczące w obronie organizmu.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-044",
+      "name": "Płytki krwi",
+      "aliases": [
+        "PLT",
+        "trombocyty"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "PLT"
+      ],
+      "definition": "Fragmenty komórek uczestniczące w zatrzymywaniu krwawienia.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-045",
+      "name": "Hematokryt",
+      "aliases": [
+        "HCT",
+        "hematokrytu"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "HCT"
+      ],
+      "definition": "Udział objętości krwinek czerwonych w objętości krwi.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-046",
+      "name": "Średnia objętość erytrocytu",
+      "aliases": [
+        "MCV"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "MCV"
+      ],
+      "definition": "Wskaźnik opisujący przeciętną wielkość krwinki czerwonej.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-047",
+      "name": "Średnia masa hemoglobiny w erytrocycie",
+      "aliases": [
+        "MCH"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "MCH"
+      ],
+      "definition": "Wskaźnik ilości hemoglobiny przypadającej średnio na jedną krwinkę czerwoną.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-048",
+      "name": "Średnie stężenie hemoglobiny w erytrocytach",
+      "aliases": [
+        "MCHC"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "MCHC"
+      ],
+      "definition": "Wskaźnik stężenia hemoglobiny w objętości krwinek czerwonych.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-049",
+      "name": "Zróżnicowanie objętości erytrocytów",
+      "aliases": [
+        "RDW"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "RDW"
+      ],
+      "definition": "Wskaźnik tego, jak bardzo krwinki czerwone różnią się wielkością.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-050",
+      "name": "Neutrofile",
+      "aliases": [
+        "neutrofili",
+        "granulocyty obojętnochłonne"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Rodzaj krwinek białych uczestniczących m.in. w obronie przed zakażeniami.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-051",
+      "name": "Limfocyty",
+      "aliases": [
+        "limfocytów"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Rodzaj krwinek białych uczestniczących w odpowiedzi odpornościowej.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-052",
+      "name": "Monocyty",
+      "aliases": [
+        "monocytów"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Rodzaj krwinek białych uczestniczących m.in. w usuwaniu drobnoustrojów i uszkodzonych komórek.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-053",
+      "name": "Eozynofile",
+      "aliases": [
+        "eozynofili"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Rodzaj krwinek białych uczestniczących m.in. w reakcjach alergicznych i obronie przed pasożytami.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-054",
+      "name": "Bazofile",
+      "aliases": [
+        "bazofili"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Rodzaj krwinek białych uczestniczących w reakcjach odpornościowych, w tym alergicznych.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-055",
+      "name": "Białko C-reaktywne",
+      "aliases": [
+        "CRP"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "CRP"
+      ],
+      "definition": "Białko, którego stężenie może wzrastać podczas reakcji zapalnej.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-056",
+      "name": "Odczyn Biernackiego",
+      "aliases": [
+        "OB"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "OB"
+      ],
+      "definition": "Badanie szybkości opadania krwinek czerwonych w próbce krwi.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-057",
+      "name": "Glukoza",
+      "aliases": [
+        "glukozy"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Cukier wykorzystywany przez organizm jako źródło energii.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-058",
+      "name": "Hemoglobina glikowana",
+      "aliases": [
+        "HbA1c"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "HbA1c"
+      ],
+      "definition": "Wskaźnik związany ze średnim stężeniem glukozy we krwi w ostatnich miesiącach.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-059",
+      "name": "Kreatynina",
+      "aliases": [
+        "kreatyniny"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Substancja powstająca w mięśniach i usuwana głównie przez nerki.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-060",
+      "name": "Szacunkowa filtracja kłębuszkowa",
+      "aliases": [
+        "eGFR"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "eGFR"
+      ],
+      "definition": "Obliczeniowy wskaźnik tego, jak sprawnie nerki filtrują krew.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-061",
+      "name": "Mocznik",
+      "aliases": [
+        "mocznika"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Substancja powstająca przy przemianie białek, usuwana głównie przez nerki.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-062",
+      "name": "Kwas moczowy",
+      "aliases": [
+        "kwasu moczowego"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Produkt przemian puryn, usuwany z organizmu głównie przez nerki.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-063",
+      "name": "Sód",
+      "aliases": [
+        "sodu",
+        "Na"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "sodu",
+        "Na"
+      ],
+      "definition": "Elektrolit pomagający regulować ilość wody w organizmie oraz pracę nerwów i mięśni.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-064",
+      "name": "Potas",
+      "aliases": [
+        "potasu",
+        "K"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "potasu",
+        "K"
+      ],
+      "definition": "Elektrolit ważny dla pracy komórek, mięśni i serca.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-065",
+      "name": "Wapń",
+      "aliases": [
+        "wapnia",
+        "Ca"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "wapnia",
+        "Ca"
+      ],
+      "definition": "Pierwiastek ważny m.in. dla kości, mięśni i krzepnięcia krwi.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-066",
+      "name": "Magnez",
+      "aliases": [
+        "magnezu",
+        "Mg"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "Mg"
+      ],
+      "definition": "Pierwiastek uczestniczący w wielu procesach komórkowych i pracy mięśni.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-067",
+      "name": "Aminotransferaza alaninowa",
+      "aliases": [
+        "ALT",
+        "AlAT"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "ALT",
+        "AlAT"
+      ],
+      "definition": "Enzym oznaczany we krwi, wykorzystywany m.in. w ocenie uszkodzenia komórek wątroby.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-068",
+      "name": "Aminotransferaza asparaginianowa",
+      "aliases": [
+        "AST",
+        "AspAT"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "AST",
+        "AspAT"
+      ],
+      "definition": "Enzym występujący m.in. w wątrobie i mięśniach.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-069",
+      "name": "Gamma-glutamylotransferaza",
+      "aliases": [
+        "GGTP",
+        "GGT"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "GGTP",
+        "GGT"
+      ],
+      "definition": "Enzym wykorzystywany m.in. przy ocenie wątroby i dróg żółciowych.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-070",
+      "name": "Fosfataza alkaliczna",
+      "aliases": [
+        "ALP"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "ALP"
+      ],
+      "definition": "Enzym pochodzący m.in. z kości i układu wątrobowo-żółciowego.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-071",
+      "name": "Bilirubina",
+      "aliases": [
+        "bilirubiny"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Barwnik powstający przy rozpadzie hemoglobiny, przetwarzany przez wątrobę.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-072",
+      "name": "Albumina",
+      "aliases": [
+        "albuminy"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Białko wytwarzane w wątrobie, obecne m.in. w osoczu krwi.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-073",
+      "name": "Cholesterol całkowity",
+      "aliases": [
+        "cholesterolu całkowitego"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Oznaczenie łącznej ilości cholesterolu przenoszonego przez różne cząstki we krwi.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-074",
+      "name": "Cholesterol LDL",
+      "aliases": [
+        "LDL"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "LDL"
+      ],
+      "definition": "Cholesterol przenoszony przez lipoproteiny o małej gęstości.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-075",
+      "name": "Cholesterol HDL",
+      "aliases": [
+        "HDL"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "HDL"
+      ],
+      "definition": "Cholesterol przenoszony przez lipoproteiny o dużej gęstości.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-076",
+      "name": "Trójglicerydy",
+      "aliases": [
+        "triglicerydy",
+        "TG"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "TG"
+      ],
+      "definition": "Rodzaj tłuszczów obecnych we krwi i magazynowanych jako źródło energii.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-077",
+      "name": "Tyreotropina",
+      "aliases": [
+        "TSH"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "TSH"
+      ],
+      "definition": "Hormon przysadki regulujący pracę tarczycy.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-078",
+      "name": "Wolna tyroksyna",
+      "aliases": [
+        "FT4",
+        "fT4"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "FT4",
+        "fT4"
+      ],
+      "definition": "Niezwiązana z białkami część jednego z hormonów tarczycy.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-079",
+      "name": "Wolna trijodotyronina",
+      "aliases": [
+        "FT3",
+        "fT3"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "FT3",
+        "fT3"
+      ],
+      "definition": "Niezwiązana z białkami część jednego z hormonów tarczycy.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-080",
+      "name": "Ferrytyna",
+      "aliases": [
+        "ferrytyny"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Białko magazynujące żelazo. Na jego stężenie wpływają także inne procesy, np. zapalenie.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-081",
+      "name": "Żelazo",
+      "aliases": [
+        "żelaza",
+        "Fe"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "Fe"
+      ],
+      "definition": "Pierwiastek potrzebny m.in. do wytwarzania hemoglobiny.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-082",
+      "name": "Witamina B12",
+      "aliases": [
+        "witaminy B12"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Witamina potrzebna m.in. do tworzenia krwinek i prawidłowego działania układu nerwowego.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-083",
+      "name": "Kwas foliowy",
+      "aliases": [
+        "foliany",
+        "kwasu foliowego"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Witamina z grupy B potrzebna m.in. do powstawania komórek.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-084",
+      "name": "D-dimer",
+      "aliases": [
+        "D-dimery",
+        "D-dimerów"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Fragment białka powstający podczas rozkładania skrzepu.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-085",
+      "name": "Międzynarodowy współczynnik znormalizowany",
+      "aliases": [
+        "INR"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "INR"
+      ],
+      "definition": "Ujednolicony sposób przedstawiania wyniku czasu protrombinowego, związanego z krzepnięciem krwi.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-086",
+      "name": "Troponina",
+      "aliases": [
+        "troponiny"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Białko oznaczane we krwi, wykorzystywane w ocenie uszkodzenia mięśnia sercowego.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-087",
+      "name": "Zakres referencyjny",
+      "aliases": [
+        "zakres odniesienia",
+        "wartości referencyjne"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Przedział wartości podany przez laboratorium dla określonego badania i grupy odniesienia. Sam nie stanowi rozpoznania.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-088",
+      "name": "Hemoliza",
+      "aliases": [
+        "hemolizy"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Rozpad krwinek czerwonych. W próbce krwi może wpływać na wiarygodność niektórych oznaczeń.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-089",
+      "name": "Surowica",
+      "aliases": [
+        "surowicy"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [],
+      "definition": "Płynna część krwi uzyskana po jej skrzepnięciu.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-090",
+      "name": "Osocze",
+      "aliases": [
+        "osocza"
+      ],
+      "category": "laboratory",
+      "contextualAliases": [
+        "osocza"
+      ],
+      "definition": "Płynna część krwi zawierająca m.in. białka związane z krzepnięciem.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-091",
+      "name": "Elektrokardiografia",
+      "aliases": [
+        "EKG",
+        "ECG"
+      ],
+      "category": "ecg",
+      "contextualAliases": [
+        "EKG",
+        "ECG"
+      ],
+      "definition": "Badanie rejestrujące elektryczną aktywność serca za pomocą elektrod.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-092",
+      "name": "Rytm zatokowy",
+      "aliases": [
+        "rytmu zatokowego"
+      ],
+      "category": "ecg",
+      "contextualAliases": [],
+      "definition": "Rytm serca rozpoczynający się w węźle zatokowym, naturalnym rozruszniku serca.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-093",
+      "name": "Częstość rytmu serca",
+      "aliases": [
+        "HR"
+      ],
+      "category": "ecg",
+      "contextualAliases": [
+        "HR"
+      ],
+      "definition": "Liczba uderzeń serca w ciągu minuty.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-094",
+      "name": "Bradykardia",
+      "aliases": [
+        "bradykardii"
+      ],
+      "category": "ecg",
+      "contextualAliases": [],
+      "definition": "Określenie zwolnionej częstości rytmu serca, ocenianej w kontekście wieku i sytuacji.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-095",
+      "name": "Tachykardia",
+      "aliases": [
+        "tachykardii"
+      ],
+      "category": "ecg",
+      "contextualAliases": [],
+      "definition": "Określenie przyspieszonej częstości rytmu serca, ocenianej w kontekście wieku i sytuacji.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-096",
+      "name": "Załamek P",
+      "aliases": [
+        "załamka P"
+      ],
+      "category": "ecg",
+      "contextualAliases": [],
+      "definition": "Fragment EKG związany z elektrycznym pobudzeniem przedsionków serca.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-097",
+      "name": "Zespół QRS",
+      "aliases": [
+        "QRS",
+        "zespołu QRS"
+      ],
+      "category": "ecg",
+      "contextualAliases": [
+        "QRS"
+      ],
+      "definition": "Fragment EKG związany z elektrycznym pobudzeniem komór serca.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-098",
+      "name": "Odstęp PR",
+      "aliases": [
+        "PR",
+        "odstępu PR"
+      ],
+      "category": "ecg",
+      "contextualAliases": [
+        "PR"
+      ],
+      "definition": "Czas od początku pobudzenia przedsionków do początku pobudzenia komór widoczny w EKG.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-099",
+      "name": "Odstęp QT",
+      "aliases": [
+        "QT",
+        "odstępu QT"
+      ],
+      "category": "ecg",
+      "contextualAliases": [
+        "QT"
+      ],
+      "definition": "Czas obejmujący elektryczne pobudzenie komór i powrót ich komórek do stanu wyjściowego.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    },
+    {
+      "id": "term-100",
+      "name": "Skorygowany odstęp QT",
+      "aliases": [
+        "QTc"
+      ],
+      "category": "ecg",
+      "contextualAliases": [
+        "QTc"
+      ],
+      "definition": "Odstęp QT przeliczony z uwzględnieniem częstości rytmu serca.",
+      "sources": [
+        {
+          "title": "Materiały do przeglądu: MedlinePlus",
+          "url": "https://medlineplus.gov/lab-tests/"
+        }
+      ],
+      "reviewStatus": "DRAFT",
+      "reviewedAt": null,
+      "reviewedBy": null
+    }
+  ]
+}

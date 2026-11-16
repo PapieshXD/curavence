@@ -1,0 +1,5 @@
+failure-threshold: error
+ignored:
+  # apt and pip resolutions are inspected by the release image vulnerability scan.
+  - DL3008
+  - DL3013

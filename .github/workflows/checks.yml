@@ -1,0 +1,242 @@
+name: Shared checks
+on:
+  workflow_call:
+    inputs:
+      full-history:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  backend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: med_node
+          POSTGRES_USER: med_node
+          POSTGRES_PASSWORD: ci-only-password
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U med_node -d med_node"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      TEST_POSTGRES_URL: jdbc:postgresql://localhost:5432/med_node
+      TEST_POSTGRES_USER: med_node
+      TEST_POSTGRES_PASSWORD: ci-only-password
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@f2beeb24e141e01a676f977032f5a29d81c9e27e # v5.1.0
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          cache-dependency-path: backend/pom.xml
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with: {python-version: '3.11'}
+      - run: mkdir -p reports
+      - name: Tests, migrations, coverage and bytecode analysis
+        working-directory: backend
+        run: bash ./mvnw -B -ntp -Pquality verify
+      - name: Confirm PostgreSQL tests were executed
+        run: python .github/scripts/check_postgres_tests.py
+      - name: Gate new SpotBugs findings
+        run: python .github/scripts/quality.py gate spotbugs backend/target/spotbugsXml.xml
+      - name: Scan packaged Java dependencies
+        if: ${{ !cancelled() }}
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python .github/scripts/install_tools.py trivy
+          python .github/scripts/dependency_scan.py backend
+      - name: Summarize backend
+        if: always()
+        run: python .github/scripts/summarize.py
+      - name: Backend reports
+        if: always()
+        id: reports
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: backend-reports
+          path: |
+            reports/
+            backend/target/surefire-reports/
+            backend/target/site/jacoco/
+            backend/target/spotbugsXml.xml
+          retention-days: 7
+      - if: always()
+        env:
+          REPORT_URL: ${{ steps.reports.outputs.artifact-url }}
+        run: echo "Backend reports and coverage — $REPORT_URL" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: backend-build
+          path: backend/target/backend-0.0.1-SNAPSHOT.jar
+          retention-days: 7
+  frontend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
+        with:
+          node-version: '22.12.0'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with: {python-version: '3.11'}
+      - run: npm install --global npm@11.6.2
+      - run: npm ci
+        working-directory: frontend
+      - name: Angular and template lint
+        run: python .github/scripts/quality.py scan eslint
+      - name: Unit tests and coverage
+        working-directory: frontend
+        run: npm run coverage
+      - name: Production build and bundle budgets
+        working-directory: frontend
+        run: npm run build -- --configuration production
+      - name: Scan npm lockfile
+        if: ${{ !cancelled() }}
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python .github/scripts/install_tools.py trivy
+          python .github/scripts/dependency_scan.py frontend
+      - name: Summarize frontend
+        if: always()
+        run: python .github/scripts/summarize.py
+      - name: Frontend reports
+        if: always()
+        id: reports
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: frontend-reports
+          path: |
+            reports/
+            frontend/coverage/
+          retention-days: 7
+      - if: always()
+        env:
+          REPORT_URL: ${{ steps.reports.outputs.artifact-url }}
+        run: echo "Frontend reports and coverage — $REPORT_URL" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: frontend-build
+          path: frontend/dist/frontend/browser/
+          retention-days: 7
+  python:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: imaging-ai-service/requirements-ci.lock
+      - run: |
+          python -m pip install -r imaging-ai-service/requirements-ci.lock
+          python -m pip install --no-deps -e 'imaging-ai-service[test]'
+          python -m pip check
+          python -c 'import wfdb, pyedflib, scipy'
+      - run: python .github/scripts/quality.py scan ruff
+      - name: Python tests and coverage
+        working-directory: imaging-ai-service
+        run: python -m pytest --junitxml=../reports/pytest.xml --cov=app --cov-report=xml:../reports/python-coverage.xml --cov-report=html:../reports/python-coverage
+      - name: Scan installed Python packages
+        if: ${{ !cancelled() }}
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python .github/scripts/install_tools.py trivy
+          python .github/scripts/dependency_scan.py python
+      - name: Summarize Python
+        if: always()
+        run: python .github/scripts/summarize.py
+      - name: Python reports
+        if: always()
+        id: reports
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: python-reports
+          path: reports/
+          retention-days: 7
+      - if: always()
+        env:
+          REPORT_URL: ${{ steps.reports.outputs.artifact-url }}
+        run: echo "Python reports and coverage — $REPORT_URL" >> "$GITHUB_STEP_SUMMARY"
+  repository:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: .github/quality/requirements.txt
+      - run: |
+          mkdir -p reports
+          python -m pip install -r .github/quality/requirements.txt
+          python .github/scripts/install_tools.py actionlint gitleaks hadolint
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes shellcheck=0.9.0-1
+      - name: Validate gates and expiring exceptions
+        run: |
+          python -m unittest discover -s .github/scripts -p 'test_*.py'
+          python .github/scripts/quality.py exceptions
+      - name: Verify real secret and workflow detectors
+        run: python .github/scripts/probe_repository_scanners.py
+      - name: Workflow correctness and embedded Bash
+        run: actionlint -color
+      - name: Workflow security
+        run: zizmor --offline --min-severity high .github/workflows
+      - name: Dockerfile lint
+        run: hadolint backend/Dockerfile frontend/Dockerfile imaging-ai-service/Dockerfile
+      - name: Shell scripts
+        run: |
+          while IFS= read -r -d '' file; do
+            shellcheck "$file"
+          done < <(git ls-files -z '*.sh')
+      - name: Scan secrets (redacted, no baseline)
+        env:
+          FULL_HISTORY: ${{ inputs.full-history }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          options=()
+          if [[ "$FULL_HISTORY" != true && -n "$BASE_SHA" ]]; then
+            options+=(--log-opts="$BASE_SHA..HEAD")
+          fi
+          gitleaks git --redact --report-format json --report-path reports/gitleaks.json "${options[@]}" .
+      - name: Local Semgrep rules
+        env:
+          SEMGREP_SEND_METRICS: 'off'
+          SEMGREP_ENABLE_VERSION_CHECK: '0'
+        run: python .github/scripts/quality.py scan semgrep
+      - name: Summarize repository
+        if: always()
+        run: python .github/scripts/summarize.py
+      - name: Repository reports
+        if: always()
+        id: reports
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: repository-reports
+          path: reports/
+          retention-days: 7
+      - if: always()
+        env:
+          REPORT_URL: ${{ steps.reports.outputs.artifact-url }}
+        run: echo "Repository security reports — $REPORT_URL" >> "$GITHUB_STEP_SUMMARY"

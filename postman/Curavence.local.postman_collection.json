@@ -1,0 +1,3020 @@
+{
+  "info": {
+    "name": "Curavence — lokalne API",
+    "description": "Pełny spis kontrolerów backendu i serwisu analizy z aktualnego checkoutu. Szczegóły: README.md. Token i hasło wpisz lokalnie w zmiennych kolekcji.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Start i logowanie",
+      "item": [
+        {
+          "name": "GET /api/health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
+            },
+            "description": "Stan backendu",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/auth/login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Login; zapisuje accessToken jako token",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const data = pm.response.json();",
+                  "  pm.collectionVariables.set('token', data.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /api/workspace",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/workspace",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workspace"
+              ]
+            },
+            "description": "Dane widoku i identyfikatory pacjenta, badań, zasobów",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Badania i dokumenty",
+      "item": [
+        {
+          "name": "POST /api/studies",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/studies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "studies"
+              ]
+            },
+            "description": "Dodanie ogólnego badania: multipart file, title, studyTypeCode, patientId, performedAt",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "title",
+                  "value": "Badanie testowe",
+                  "type": "text"
+                },
+                {
+                  "key": "studyTypeCode",
+                  "value": "MEDICAL_DOCUMENT",
+                  "type": "text"
+                },
+                {
+                  "key": "patientId",
+                  "value": "{{patientId}}",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/assets/{{assetId}}/content",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/assets/{{assetId}}/content?download=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "assets",
+                "{{assetId}}",
+                "content"
+              ]
+            },
+            "description": "Oryginalny plik; download=true wymusza załącznik",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/documents",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "documents"
+              ]
+            },
+            "description": "Dodanie dokumentu: multipart file, title, patientId, performedAt, typeCode",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "title",
+                  "value": "Dokument testowy",
+                  "type": "text"
+                },
+                {
+                  "key": "patientId",
+                  "value": "{{patientId}}",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "typeCode",
+                  "value": "LABORATORY",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/documents/{{documentId}}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/{{documentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{documentId}}"
+              ]
+            },
+            "description": "Zmiana metadanych dokumentu",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Wyniki badań\",\n  \"performedAt\": \"2026-10-31T10:00:00Z\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/documents/{{documentId}}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/{{documentId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{documentId}}"
+              ]
+            },
+            "description": "Archiwizacja dokumentu",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/documents/{{documentId}}/clinical-results",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/{{documentId}}/clinical-results",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{documentId}}",
+                "clinical-results"
+              ]
+            },
+            "description": "Wydobyte wyniki kliniczne",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/documents/{{documentId}}/questions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/{{documentId}}/questions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{documentId}}",
+                "questions"
+              ]
+            },
+            "description": "Pytanie o dokument",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"Co oznacza ten wynik prostym językiem?\",\n  \"history\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/documents/{{documentId}}/ecg",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/{{documentId}}/ecg?samplingRate=500&unit=mV",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{documentId}}",
+                "ecg"
+              ]
+            },
+            "description": "Podgląd EKG; parametry opcjonalne",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/documents/{{documentId}}/ecg/calibration-assessment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/{{documentId}}/ecg/calibration-assessment",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{documentId}}",
+                "ecg",
+                "calibration-assessment"
+              ]
+            },
+            "description": "Ocena kalibracji EKG",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/documents/{{documentId}}/ecg/morphology",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/{{documentId}}/ecg/morphology?channelIndex=0&startSample=0&sampleCount=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{documentId}}",
+                "ecg",
+                "morphology"
+              ]
+            },
+            "description": "Morfologia EKG; opcjonalnie samplingRate i unit",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/documents/{{documentId}}/ecg/questions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/{{documentId}}/ecg/questions?audience=patient&channelIndex=0&startSample=0&sampleCount=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{documentId}}",
+                "ecg",
+                "questions"
+              ]
+            },
+            "description": "Pytanie o EKG; opcjonalnie samplingRate i unit",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"Wyjaśnij ten fragment EKG\",\n  \"history\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Udostępnianie",
+      "item": [
+        {
+          "name": "POST /api/access-grants",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/access-grants",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "access-grants"
+              ]
+            },
+            "description": "Bezpośrednia zgoda pacjenta",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipientEmail\": \"lekarz@med-node.test\",\n  \"scope\": \"SELECTED_STUDIES\",\n  \"purpose\": \"Konsultacja\",\n  \"expiresAt\": \"2027-01-31T12:00:00Z\",\n  \"studyIds\": [\n    \"{{studyId}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/access-grants/{{grantId}}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/access-grants/{{grantId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "access-grants",
+                "{{grantId}}"
+              ]
+            },
+            "description": "Cofnięcie zgody",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/sharing/codes",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/sharing/codes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sharing",
+                "codes"
+              ]
+            },
+            "description": "Pacjent tworzy kod jednorazowy",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/sharing/codes/{{codeId}}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/sharing/codes/{{codeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sharing",
+                "codes",
+                "{{codeId}}"
+              ]
+            },
+            "description": "Pacjent unieważnia kod",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/sharing/requests",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/sharing/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sharing",
+                "requests"
+              ]
+            },
+            "description": "Specjalista używa kodu",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"{{sharingCode}}\",\n  \"scope\": \"SELECTED_STUDIES\",\n  \"purpose\": \"Konsultacja\",\n  \"durationDays\": 7\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/sharing/requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/sharing/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sharing",
+                "requests"
+              ]
+            },
+            "description": "Lista próśb o dostęp",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/sharing/requests/{{requestId}}/decision",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/sharing/requests/{{requestId}}/decision",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sharing",
+                "requests",
+                "{{requestId}}",
+                "decision"
+              ]
+            },
+            "description": "Pacjent zatwierdza lub odrzuca; studyIds przy zatwierdzeniu",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approve\": true,\n  \"studyIds\": [\n    \"{{studyId}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Wizyty i opinie",
+      "item": [
+        {
+          "name": "GET /api/visits",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits"
+              ]
+            },
+            "description": "Lista pakietów wizyt",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/visits",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits"
+              ]
+            },
+            "description": "Pacjent tworzy pakiet",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Konsultacja wyników\",\n  \"symptoms\": \"\",\n  \"questions\": \"Co oznaczają wyniki?\",\n  \"visitDate\": \"2026-11-15\",\n  \"studyIds\": [\n    \"{{studyId}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/visits/{{visitId}}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits/{{visitId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits",
+                "{{visitId}}"
+              ]
+            },
+            "description": "Pacjent edytuje szkic",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Konsultacja wyników\",\n  \"symptoms\": \"\",\n  \"questions\": \"Co oznaczają wyniki?\",\n  \"visitDate\": \"2026-11-15\",\n  \"studyIds\": [\n    \"{{studyId}}\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/visits/{{visitId}}/share",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits/{{visitId}}/share",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits",
+                "{{visitId}}",
+                "share"
+              ]
+            },
+            "description": "Pacjent udostępnia lekarzowi",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipientEmail\": \"lekarz@med-node.test\",\n  \"expiresAt\": \"2027-01-31T12:00:00Z\",\n  \"confirmed\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/visits/{{visitId}}/plan",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits/{{visitId}}/plan",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits",
+                "{{visitId}}",
+                "plan"
+              ]
+            },
+            "description": "Lekarz zapisuje lub zatwierdza plan",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"summary\": \"Omówiono wyniki.\",\n  \"actions\": [\n    {\n      \"description\": \"Umówić kontrolę\",\n      \"dueDate\": \"2026-12-01\",\n      \"responsible\": \"PACJENT\"\n    }\n  ],\n  \"approved\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/visits/{{visitId}}/actions/{{actionId}}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/visits/{{visitId}}/actions/{{actionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "visits",
+                "{{visitId}}",
+                "actions",
+                "{{actionId}}"
+              ]
+            },
+            "description": "Pacjent oznacza działanie",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"completed\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/studies/{{studyId}}/reviews",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/studies/{{studyId}}/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "studies",
+                "{{studyId}}",
+                "reviews"
+              ]
+            },
+            "description": "Lekarz dodaje opinię",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"summary\": \"Opis wyniku\",\n  \"conclusion\": \"Wnioski do konsultacji\",\n  \"signed\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/studies/{{studyId}}/reviews/rewrite",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/studies/{{studyId}}/reviews/rewrite",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "studies",
+                "{{studyId}}",
+                "reviews",
+                "rewrite"
+              ]
+            },
+            "description": "Propozycja uproszczenia opinii",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"summary\": \"Opis wyniku\",\n  \"conclusion\": \"Wnioski\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/patients/me",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/patients/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "patients",
+                "me"
+              ]
+            },
+            "description": "Pacjent aktualizuje numer telefonu",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+48123456789\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Obrazowanie",
+      "item": [
+        {
+          "name": "POST /api/v1/patients/{{patientId}}/imaging-studies",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/patients/{{patientId}}/imaging-studies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{patientId}}",
+                "imaging-studies"
+              ]
+            },
+            "description": "DICOM ZIP lub pliki: multipart files, description, performedAt",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "files",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "description",
+                  "value": "MR głowy",
+                  "type": "text"
+                },
+                {
+                  "key": "performedAt",
+                  "value": "2026-10-31T10:00:00Z",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/patients/{{patientId}}/imaging-studies",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/patients/{{patientId}}/imaging-studies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{patientId}}",
+                "imaging-studies"
+              ]
+            },
+            "description": "Lista badań obrazowych pacjenta",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}"
+              ]
+            },
+            "description": "Szczegóły i serie",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "status"
+              ]
+            },
+            "description": "Stan przetwarzania",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/imaging-studies/{{imagingStudyId}}/retry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/retry",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "retry"
+              ]
+            },
+            "description": "Ponowienie importu",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/imaging-studies/{{imagingStudyId}}/viewer-session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/viewer-session?advanced=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "viewer-session"
+              ]
+            },
+            "description": "Sesja OHIF; zwraca adres przeglądarki",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/overview",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/overview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "overview"
+              ]
+            },
+            "description": "Przegląd; opcjonalnie seriesId",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/preview",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/preview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "preview"
+              ]
+            },
+            "description": "Miniatura PNG",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/series/{{seriesId}}/contact-sheet",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/series/{{seriesId}}/contact-sheet?overlay=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "series",
+                "{{seriesId}}",
+                "contact-sheet"
+              ]
+            },
+            "description": "Arkusz PNG",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/series/{{seriesId}}/frames/{{frameIndex}}/image",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/series/{{seriesId}}/frames/{{frameIndex}}/image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "series",
+                "{{seriesId}}",
+                "frames",
+                "{{frameIndex}}",
+                "image"
+              ]
+            },
+            "description": "Klatka źródłowa PNG",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/series/{{seriesId}}/frames/{{frameIndex}}/overlay",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/series/{{seriesId}}/frames/{{frameIndex}}/overlay",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "series",
+                "{{seriesId}}",
+                "frames",
+                "{{frameIndex}}",
+                "overlay"
+              ]
+            },
+            "description": "Warstwa nakładki PNG",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/annotations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/annotations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "annotations"
+              ]
+            },
+            "description": "Lista adnotacji",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/imaging-studies/{{imagingStudyId}}/annotations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/annotations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "annotations"
+              ]
+            },
+            "description": "Utwórz adnotację",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seriesId\": \"{{seriesId}}\",\n  \"type\": \"POINT\",\n  \"geometry\": {\n    \"x\": 100,\n    \"y\": 100\n  },\n  \"measurement\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/v1/imaging-studies/{{imagingStudyId}}/annotations/{{annotationId}}",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/annotations/{{annotationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "annotations",
+                "{{annotationId}}"
+              ]
+            },
+            "description": "Zmień adnotację; version z odpowiedzi GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seriesId\": \"{{seriesId}}\",\n  \"type\": \"POINT\",\n  \"geometry\": {\n    \"x\": 120,\n    \"y\": 120\n  },\n  \"measurement\": {},\n  \"version\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/v1/imaging-studies/{{imagingStudyId}}/annotations/{{annotationId}}",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/annotations/{{annotationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "annotations",
+                "{{annotationId}}"
+              ]
+            },
+            "description": "Usuń adnotację",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/viewer-capabilities",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/viewer-capabilities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "viewer-capabilities"
+              ]
+            },
+            "description": "Możliwości przeglądarki",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/view-preferences",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/view-preferences",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "view-preferences"
+              ]
+            },
+            "description": "Preferencje widoku",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /api/v1/imaging-studies/{{imagingStudyId}}/view-preferences",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/view-preferences",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "view-preferences"
+              ]
+            },
+            "description": "Zapis preferencji",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hiddenSeriesUids\": [],\n  \"lastLayout\": \"study\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/analysis-history",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/analysis-history",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "analysis-history"
+              ]
+            },
+            "description": "Historia analiz",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/imaging-studies/{{imagingStudyId}}/analysis/{{analysisId}}/scope",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/analysis/{{analysisId}}/scope",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "analysis",
+                "{{analysisId}}",
+                "scope"
+              ]
+            },
+            "description": "Nowa analiza z nowym zakresem",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scopeMode\": \"ALL_ELIGIBLE\",\n  \"seriesInstanceUids\": [],\n  \"pipeline\": \"AUTO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/imaging-studies/{{imagingStudyId}}/analysis/{{analysisId}}/feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/analysis/{{analysisId}}/feedback",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "analysis",
+                "{{analysisId}}",
+                "feedback"
+              ]
+            },
+            "description": "Opinia lekarza o wskazaniu",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"findingId\": \"{{findingId}}\",\n  \"action\": \"NEEDS_REVIEW\",\n  \"comment\": \"Wymaga oceny\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/analysis/{{analysisId}}/feedback",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/analysis/{{analysisId}}/feedback",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "analysis",
+                "{{analysisId}}",
+                "feedback"
+              ]
+            },
+            "description": "Opinie lekarza",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Analiza obrazów",
+      "item": [
+        {
+          "name": "POST /api/v1/imaging-studies/{{imagingStudyId}}/analyses",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/analyses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "analyses"
+              ]
+            },
+            "description": "Start analizy; alias /analysis",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scopeMode\": \"ALL_ELIGIBLE\",\n  \"seriesInstanceUids\": [],\n  \"pipeline\": \"AUTO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/analyses/capabilities",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/analyses/capabilities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "analyses",
+                "capabilities"
+              ]
+            },
+            "description": "Obsługiwane analizy; alias /analysis",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/analyses/latest",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/analyses/latest?audience=patient",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "analyses",
+                "latest"
+              ]
+            },
+            "description": "Ostatnia analiza; alias /analysis",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/analyses/{{analysisId}}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/analyses/{{analysisId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "analyses",
+                "{{analysisId}}"
+              ]
+            },
+            "description": "Szczegóły analizy; alias /analysis",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/imaging-studies/{{imagingStudyId}}/analyses/{{analysisId}}/artifacts/{{artifactId}}/content",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/imaging-studies/{{imagingStudyId}}/analyses/{{analysisId}}/artifacts/{{artifactId}}/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "imaging-studies",
+                "{{imagingStudyId}}",
+                "analyses",
+                "{{analysisId}}",
+                "artifacts",
+                "{{artifactId}}",
+                "content"
+              ]
+            },
+            "description": "Pobierz artefakt; alias /analysis",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AI i techniczne",
+      "item": [
+        {
+          "name": "GET /api/ai/capabilities",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/capabilities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "capabilities"
+              ]
+            },
+            "description": "Możliwości AI",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/ai/explanations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Workspace-Role",
+                "value": "{{workspaceRole}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/explanations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "explanations"
+              ]
+            },
+            "description": "Zlecenie wyjaśnienia; lokalnie AI może działać w mock mode",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patientId\": \"{{patientId}}\",\n  \"documentId\": \"{{documentId}}\",\n  \"requestedBy\": \"{{username}}\",\n  \"sourceText\": \"Przykładowy tekst wyniku\",\n  \"contextFragments\": [],\n  \"language\": \"pl\",\n  \"forceRefresh\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/ai/callbacks/explanations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/callbacks/explanations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "ai",
+                "callbacks",
+                "explanations"
+              ]
+            },
+            "description": "Callback workera; techniczny endpoint bez Bearer",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobId\": \"test-job\",\n  \"status\": \"SUCCEEDED\",\n  \"summary\": \"Test\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/viewer/{{sessionId}}/config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/viewer/{{sessionId}}/config?simplified=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "viewer",
+                "{{sessionId}}",
+                "config"
+              ]
+            },
+            "description": "Konfiguracja OHIF; sesja/cookie",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/viewer/{{sessionId}}/dicomweb/studies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/viewer/{{sessionId}}/dicomweb/studies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "viewer",
+                "{{sessionId}}",
+                "dicomweb",
+                "studies"
+              ]
+            },
+            "description": "Proxy DICOMweb; sesja/cookie, różne ścieżki i HEAD",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Serwis analizy 8090",
+      "item": [
+        {
+          "name": "GET /health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{workerUrl}}/health",
+              "host": [
+                "{{workerUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Stan serwisu",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /v1/ecg/preview",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Service-Token",
+                "value": "{{serviceToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{workerUrl}}/v1/ecg/preview?filename=sample.csv&sampling_rate=500&unit=mV",
+              "host": [
+                "{{workerUrl}}"
+              ],
+              "path": [
+                "v1",
+                "ecg",
+                "preview"
+              ]
+            },
+            "description": "Surowe bajty pliku w body; techniczny",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "file",
+              "file": {
+                "src": ""
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /v1/ecg/morphology",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Service-Token",
+                "value": "{{serviceToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{workerUrl}}/v1/ecg/morphology?filename=sample.csv&sampling_rate=500&unit=mV&channel_index=0&start_sample=0&sample_count=0",
+              "host": [
+                "{{workerUrl}}"
+              ],
+              "path": [
+                "v1",
+                "ecg",
+                "morphology"
+              ]
+            },
+            "description": "Surowe bajty pliku w body; techniczny",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "file",
+              "file": {
+                "src": ""
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /v1/analyses",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Service-Token",
+                "value": "{{serviceToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{workerUrl}}/v1/analyses",
+              "host": [
+                "{{workerUrl}}"
+              ],
+              "path": [
+                "v1",
+                "analyses"
+              ]
+            },
+            "description": "Analiza DICOM; techniczny",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"analysisId\": \"{{analysisId}}\",\n  \"study\": {\n    \"studyInstanceUid\": \"{{studyInstanceUid}}\",\n    \"storageProvider\": \"orthanc\",\n    \"series\": []\n  },\n  \"options\": {\n    \"fast\": true,\n    \"device\": \"cpu\",\n    \"runPathologyModels\": false,\n    \"scopeMode\": \"ALL_ELIGIBLE\",\n    \"seriesInstanceUids\": []\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /v1/analyses/{{analysisId}}/artifacts/{{artifactId}}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Service-Token",
+                "value": "{{serviceToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{workerUrl}}/v1/analyses/{{analysisId}}/artifacts/{{artifactId}}",
+              "host": [
+                "{{workerUrl}}"
+              ],
+              "path": [
+                "v1",
+                "analyses",
+                "{{analysisId}}",
+                "artifacts",
+                "{{artifactId}}"
+              ]
+            },
+            "description": "Pobierz artefakt",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST /v1/previews",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "X-Service-Token",
+                "value": "{{serviceToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{workerUrl}}/v1/previews",
+              "host": [
+                "{{workerUrl}}"
+              ],
+              "path": [
+                "v1",
+                "previews"
+              ]
+            },
+            "description": "Przygotuj podgląd",
+            "auth": {
+              "type": "noauth"
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studyInstanceUid\": \"{{studyInstanceUid}}\",\n  \"seriesInstanceUid\": \"{{seriesInstanceUid}}\",\n  \"masks\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /v1/previews/{{cacheKey}}/{{filename}}",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "X-Service-Token",
+                "value": "{{serviceToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{workerUrl}}/v1/previews/{{cacheKey}}/{{filename}}",
+              "host": [
+                "{{workerUrl}}"
+              ],
+              "path": [
+                "v1",
+                "previews",
+                "{{cacheKey}}",
+                "{{filename}}"
+              ]
+            },
+            "description": "Pobierz PNG",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8080",
+      "type": "default"
+    },
+    {
+      "key": "workerUrl",
+      "value": "http://127.0.0.1:8090",
+      "type": "default"
+    },
+    {
+      "key": "username",
+      "value": "pacjent@med-node.test",
+      "type": "default"
+    },
+    {
+      "key": "password",
+      "value": "",
+      "type": "secret"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "workspaceRole",
+      "value": "patient",
+      "type": "default"
+    },
+    {
+      "key": "patientId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "studyId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "documentId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "assetId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "grantId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "codeId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "sharingCode",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "requestId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "visitId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "actionId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "imagingStudyId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "seriesId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "frameIndex",
+      "value": "0",
+      "type": "default"
+    },
+    {
+      "key": "annotationId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "analysisId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "artifactId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "findingId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "sessionId",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "studyInstanceUid",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "seriesInstanceUid",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "cacheKey",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "filename",
+      "value": "preview.png",
+      "type": "default"
+    },
+    {
+      "key": "serviceToken",
+      "value": "",
+      "type": "secret"
+    }
+  ]
+}

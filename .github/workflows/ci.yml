@@ -1,0 +1,25 @@
+name: CI
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  checks:
+    if: github.event_name != 'push' || github.ref_name == github.event.repository.default_branch
+    uses: ./.github/workflows/checks.yml
+  required:
+    name: required
+    if: always() && (github.event_name != 'push' || github.ref_name == github.event.repository.default_branch)
+    needs: checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Require every check
+        env:
+          RESULT: ${{ needs.checks.result }}
+        run: test "$RESULT" = success
