@@ -33,11 +33,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Component
 public class GoogleHealthcareDicomStorageAdapter implements DicomStoragePort {
 
     private static final String CLOUD_SCOPE = "https://www.googleapis.com/auth/cloud-platform";
+    private static final Pattern SAFE_DICOMWEB_PATH = Pattern.compile("^/[A-Za-z0-9._~!$&'()*+,;=:@%/-]*$");
+    private static final Pattern SAFE_DICOMWEB_QUERY = Pattern.compile("^[A-Za-z0-9._~!$'()*+,;:@%&=/-]*$");
     private static final Set<String> FORWARDED_RESPONSE_HEADERS = Set.of(
             "content-type", "content-length", "content-disposition", "etag", "last-modified",
             "cache-control", "accept-ranges", "content-range");
@@ -126,10 +129,17 @@ public class GoogleHealthcareDicomStorageAdapter implements DicomStoragePort {
     @Override
     public DicomWebResponse execute(DicomWebRequest source, String enforcedStudyInstanceUid) {
         String path = source.path();
-        if (path.contains("..") || path.contains("\\")) {
+        if (path == null || path.isBlank()) path = "/";
+        if (!path.startsWith("/") || path.contains("..") || path.contains("\\")
+                || !SAFE_DICOMWEB_PATH.matcher(path).matches()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nieprawidłowa ścieżka DICOMweb");
         }
+
         String query = source.queryString();
+        if (query != null && !query.isBlank() && !SAFE_DICOMWEB_QUERY.matcher(query).matches()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nieprawidłowe parametry DICOMweb");
+        }
+
         String normalizedPath = path.startsWith("/") ? path.substring(1) : path;
         if ("studies".equals(normalizedPath) && enforcedStudyInstanceUid != null) {
             String filter = "StudyInstanceUID="
